@@ -2,6 +2,45 @@ import type { Dictionary } from './fr'
 
 export const en: Dictionary = {
   appName: 'Truth or Dare',
+  nav: {
+    label: 'Main navigation',
+    play: 'Play',
+    players: 'Players',
+    dares: 'My dares',
+    profile: 'Profile',
+  },
+  ageGate: {
+    eyebrow: '18+ only',
+    title: 'Adults only',
+    body: 'Truth or Dare contains daring challenges meant for consenting adults. Confirm your age to continue.',
+    confirm: 'I am 18 or older',
+    decline: 'I am under 18',
+    declined: 'This app is for adults only. Come back when you turn 18!',
+  },
+  home: {
+    titleBefore: 'Truth',
+    titleOr: 'or',
+    titleAfter: 'Dare',
+    tagline: 'Phone in the middle, everyone in their seat. Draw the card, own it.',
+    newGame: 'New game',
+    resume: 'Resume game',
+    joinRoom: 'Join a room',
+    soon: 'Soon',
+  },
+  profile: {
+    title: 'Profile',
+    theme: 'Theme',
+    themes: { nuit: 'Night', ivoire: 'Ivory', terre: 'Earth' },
+    language: 'Language',
+    sound: 'Sounds',
+    haptics: 'Vibrations',
+  },
+  myDares: {
+    title: 'My dares',
+    empty: 'No custom dares yet.',
+    emptyHint: 'Create your dares from a player’s page.',
+  },
+  comingSoon: 'Coming soon',
   categories: {
     fun: { name: 'Just for fun', description: 'Light challenges to break the ice' },
     honest: { name: 'Brutal honesty', description: 'Truths with no cheating' },
