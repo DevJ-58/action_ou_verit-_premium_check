@@ -74,6 +74,28 @@ export const fr = {
     add: 'Créer un défi',
     removeDare: 'Supprimer le défi',
   },
+  setup: {
+    title: 'Nouvelle partie',
+    players: 'Autour de la table',
+    playersHint:
+      'Touche un joueur pour l’inclure. L’ordre suit le tour de table, dans le sens des aiguilles d’une montre.',
+    needPlayers: 'Il faut au moins 2 joueurs.',
+    moveUp: 'Monter {name}',
+    moveDown: 'Descendre {name}',
+    categories: 'Catégories',
+    settings: 'Réglages',
+    rounds: 'Tours',
+    timer: 'Minuteur par défi',
+    timerOff: 'Aucun',
+    source: 'Défis utilisés',
+    sources: { system: 'Du jeu', custom: 'Perso', both: 'Les deux' },
+    skips: 'Passes par joueur',
+    picker: 'Désignation',
+    pickers: { bottle: 'Bouteille', random: 'Tirage lumineux' },
+    warning:
+      '{name} : aucune catégorie choisie ne respecte ses limites. Il ou elle n’aura que des défis écrits.',
+    launch: 'Lancer la partie',
+  },
   categories: {
     fun: { name: 'Juste pour rire', description: 'Des défis légers pour briser la glace' },
     honest: { name: 'Limite franchise', description: 'Des vérités qui ne trichent pas' },

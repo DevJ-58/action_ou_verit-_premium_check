@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router'
 import { ArrowRight } from 'lucide-react'
 import { Button, KenteBand } from '@/design-system'
+import { hasResumableGame } from '@/features/game/resumable'
 import { useT } from '@/i18n/useT'
 import { CardFan } from './CardFan'
 
 export function HomeScreen() {
   const t = useT()
   const navigate = useNavigate()
+  const canResume = hasResumableGame()
   return (
     <div className="flex flex-1 flex-col pt-[env(safe-area-inset-top)]">
       <KenteBand />
@@ -28,6 +30,11 @@ export function HomeScreen() {
           <p className="mt-2.5 text-base leading-normal text-muted">{t.home.tagline}</p>
         </div>
         <div className="mt-auto flex flex-col gap-2.5 px-5 pt-6 pb-5">
+          {canResume ? (
+            <Button variant="truth" size="lg" onClick={() => navigate('/partie')}>
+              {t.home.resume}
+            </Button>
+          ) : null}
           <Button
             size="lg"
             className="justify-between"

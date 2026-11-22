@@ -2,7 +2,6 @@ import type { RouteObject } from 'react-router'
 import { AgeGateScreen } from '@/features/onboarding/AgeGateScreen'
 import { HomeScreen } from '@/features/home/HomeScreen'
 import { MyDaresScreen } from '@/features/dares/MyDaresScreen'
-import { PlayerEditorScreen } from '@/features/players/PlayerEditorScreen'
 import { PlayersScreen } from '@/features/players/PlayersScreen'
 import { ProfileScreen } from '@/features/profile/ProfileScreen'
 import { ComingSoonScreen } from './ComingSoonScreen'
@@ -27,8 +26,18 @@ export const routes: RouteObject[] = [
               { path: 'profil', element: <ProfileScreen /> },
             ],
           },
-          { path: 'joueurs/:playerId', element: <PlayerEditorScreen /> },
-          { path: 'partie/nouvelle', element: <ComingSoonScreen /> },
+          {
+            path: 'joueurs/:playerId',
+            lazy: async () => ({
+              Component: (await import('@/features/players/PlayerEditorScreen')).PlayerEditorScreen,
+            }),
+          },
+          {
+            path: 'partie/nouvelle',
+            lazy: async () => ({
+              Component: (await import('@/features/game-setup/SetupScreen')).SetupScreen,
+            }),
+          },
           { path: 'partie', element: <ComingSoonScreen /> },
           { path: 'partie/recap', element: <ComingSoonScreen /> },
           { path: '*', element: <HomeScreen /> },
