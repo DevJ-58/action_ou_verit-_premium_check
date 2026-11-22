@@ -16,6 +16,7 @@ import {
 } from '@/engine'
 import { newId } from '@/lib/id'
 import { safeStorage } from '@/lib/safeStorage'
+import { isValidGame } from './validateGame'
 
 export interface GameStoreState {
   game: GameState | null
@@ -41,8 +42,14 @@ export function createGameStore(rngFactory: () => Rng = defaultRng) {
       (set, get) => ({
         game: null,
         error: null,
-        start: ({ settings, players }) =>
-          set({ game: createGame({ id: newId('game'), settings, players }), error: null }),
+        start: ({ settings, players }) => {
+          try {
+            set({ game: createGame({ id: newId('game'), settings, players }), error: null })
+          } catch (error) {
+            if (error instanceof GameRuleError) set({ error: error.code })
+            else throw error
+          }
+        },
         dispatch: (action) => {
           const { game } = get()
           if (!game) return
@@ -61,6 +68,10 @@ export function createGameStore(rngFactory: () => Rng = defaultRng) {
         storage: createJSONStorage(() => safeStorage),
         partialize: ({ game }) => ({ game }),
         migrate: () => ({ game: null }) as unknown as GameStoreState,
+        merge: (persisted, current) => {
+          const game = (persisted as { game?: unknown } | undefined)?.game
+          return { ...current, game: isValidGame(game) ? game : null }
+        },
       },
     ),
   )

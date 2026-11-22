@@ -5,6 +5,19 @@ import type { Dare, Player } from '@/engine'
 import { newId } from '@/lib/id'
 import { safeStorage } from '@/lib/safeStorage'
 
+function isValidPlayer(value: unknown): value is Player {
+  if (typeof value !== 'object' || value === null) return false
+  const p = value as Record<string, unknown>
+  return (
+    typeof p.id === 'string' &&
+    typeof p.name === 'string' &&
+    typeof p.limits === 'object' &&
+    p.limits !== null &&
+    Array.isArray((p.limits as Record<string, unknown>).excludedCategories) &&
+    Array.isArray(p.customDares)
+  )
+}
+
 export type CustomDareDraft = Omit<Dare, 'id' | 'authorId'> & { id?: string }
 
 export interface PlayersState {
@@ -62,6 +75,13 @@ export function createPlayersStore() {
         storage: createJSONStorage(() => safeStorage),
         partialize: ({ players }) => ({ players }),
         migrate: () => ({ players: [] }) as unknown as PlayersState,
+        merge: (persisted, current) => {
+          const players = (persisted as { players?: unknown } | undefined)?.players
+          return {
+            ...current,
+            players: Array.isArray(players) ? players.filter(isValidPlayer) : [],
+          }
+        },
       },
     ),
   )

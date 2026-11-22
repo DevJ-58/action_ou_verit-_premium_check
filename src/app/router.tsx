@@ -5,12 +5,14 @@ import { MyDaresScreen } from '@/features/dares/MyDaresScreen'
 import { PlayersScreen } from '@/features/players/PlayersScreen'
 import { ProfileScreen } from '@/features/profile/ProfileScreen'
 import { RequireAge } from './RequireAge'
+import { RootErrorScreen } from './RootErrorScreen'
 import { RootLayout } from './RootLayout'
 import { TabsLayout } from './TabsLayout'
 
 export const routes: RouteObject[] = [
   {
     element: <RootLayout />,
+    errorElement: <RootErrorScreen />,
     children: [
       { path: '/bienvenue', element: <AgeGateScreen /> },
       {

@@ -32,6 +32,19 @@ export const SETTINGS_DEFAULTS: SettingsValues = {
 
 const SETTINGS_VERSION = 1
 
+/** Keeps only well-formed saved values; anything else falls back to its default. */
+function sanitizeSettings(raw: unknown): Partial<SettingsValues> {
+  if (typeof raw !== 'object' || raw === null) return {}
+  const s = raw as Record<string, unknown>
+  const out: Partial<SettingsValues> = {}
+  if (s.language === 'fr' || s.language === 'en') out.language = s.language
+  if (s.theme === 'nuit' || s.theme === 'ivoire' || s.theme === 'terre') out.theme = s.theme
+  if (typeof s.sound === 'boolean') out.sound = s.sound
+  if (typeof s.haptics === 'boolean') out.haptics = s.haptics
+  if (typeof s.ageConfirmedAt === 'string') out.ageConfirmedAt = s.ageConfirmedAt
+  return out
+}
+
 export function createSettingsStore() {
   return createStore<SettingsState>()(
     persist(
@@ -56,6 +69,7 @@ export function createSettingsStore() {
         }),
         // Any unknown or older shape is discarded: settings are cheap to redo.
         migrate: () => ({ ...SETTINGS_DEFAULTS }) as SettingsState,
+        merge: (persisted, current) => ({ ...current, ...sanitizeSettings(persisted) }),
       },
     ),
   )

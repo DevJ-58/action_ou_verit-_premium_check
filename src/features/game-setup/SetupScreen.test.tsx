@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '@/app/router'
@@ -83,4 +83,40 @@ test('players can be reordered around the table', async () => {
   await userEvent.click(screen.getByRole('button', { name: /juste pour rire/i }))
   await userEvent.click(await launch())
   expect(gameStore.getState().game!.players.map((p) => p.name)).toEqual(['Kofi', 'Awa'])
+})
+
+test('more than 12 seated players blocks launch with an explanation', async () => {
+  addPlayers(...Array.from({ length: 13 }, (_, i) => `Joueur ${i + 1}`))
+  renderSetup()
+  await userEvent.click(await screen.findByRole('button', { name: /juste pour rire/i }))
+  expect(screen.getAllByRole('button', { pressed: true, name: /joueur \d+/i })).toHaveLength(12)
+  await userEvent.click(screen.getByRole('button', { name: /joueur 13/i }))
+  expect(await launch()).toBeDisabled()
+  expect(screen.getByText(/12 joueurs maximum/i)).toBeInTheDocument()
+})
+
+test('launching over a game in progress asks before replacing it', async () => {
+  addPlayers('Awa', 'Kofi')
+  const { createGame } = await import('@/engine')
+  const existing = createGame({
+    id: 'old',
+    players: playersStore.getState().players,
+    settings: {
+      mode: 'nearby',
+      categories: ['fun'],
+      source: 'both',
+      rounds: 1,
+      timerSeconds: 0,
+      maxSkips: 3,
+      picker: 'bottle',
+    },
+  })
+  act(() => gameStore.setState({ game: existing, error: null }))
+  renderSetup()
+  await userEvent.click(await screen.findByRole('button', { name: /juste pour rire/i }))
+  await userEvent.click(await launch())
+  expect(gameStore.getState().game!.id).toBe('old')
+  const dialog = await screen.findByRole('dialog', { name: /remplacer la partie en cours/i })
+  await userEvent.click(within(dialog).getByRole('button', { name: /remplacer/i }))
+  expect(gameStore.getState().game!.id).not.toBe('old')
 })

@@ -94,6 +94,10 @@ export const en: Dictionary = {
     pickers: { bottle: 'Bottle', random: 'Light sweep' },
     warning: '{name}: no chosen category fits their limits. They will only get written dares.',
     launch: 'Start the game',
+    tooMany: '12 players max around the table: remove someone to start.',
+    replaceTitle: 'Replace the game in progress?',
+    replaceHint: 'The game already started will be lost.',
+    replace: 'Replace',
   },
   game: {
     round: 'Round',
@@ -147,6 +151,12 @@ export const en: Dictionary = {
     },
     replay: 'Play again',
     home: 'Home',
+  },
+  crash: {
+    title: 'Something went wrong',
+    body: 'The data saved on this phone looks damaged. You can reset it and start fresh.',
+    reset: 'Reset data',
+    home: 'Back to home',
   },
   categories: {
     fun: { name: 'Just for fun', description: 'Light challenges to break the ice' },

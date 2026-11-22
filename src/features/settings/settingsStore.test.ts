@@ -38,3 +38,16 @@ test('setters update state and persist it', () => {
   expect(state.ageConfirmedAt).not.toBeNull()
   expect(localStorage.getItem('av:settings')).toContain('"theme":"ivoire"')
 })
+
+test('unknown values in a same-version save fall back field by field', async () => {
+  localStorage.setItem(
+    'av:settings',
+    JSON.stringify({
+      state: { language: 'de', theme: null, sound: 'yes', haptics: false, ageConfirmedAt: 42 },
+      version: 1,
+    }),
+  )
+  const store = createSettingsStore()
+  await store.persist.rehydrate()
+  expect(store.getState()).toMatchObject({ ...SETTINGS_DEFAULTS, haptics: false })
+})

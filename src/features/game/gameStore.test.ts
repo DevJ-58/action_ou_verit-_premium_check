@@ -46,3 +46,21 @@ test('the current game persists and quit clears it', () => {
   store.getState().quit()
   expect(store.getState().game).toBeNull()
 })
+
+test('starting with too many players records the error instead of throwing', () => {
+  const store = createGameStore(() => createSeededRng(1))
+  const many = Array.from({ length: 13 }, (_, i) => makePlayer(`p${i}`))
+  expect(() => store.getState().start({ settings, players: many })).not.toThrow()
+  expect(store.getState().error).toBe('tooManyPlayers')
+  expect(store.getState().game).toBeNull()
+})
+
+test('a malformed persisted game is dropped on rehydration', async () => {
+  localStorage.setItem(
+    'av:game',
+    JSON.stringify({ state: { game: { phase: 'choosing', id: 'x' } }, version: 1 }),
+  )
+  const store = createGameStore(() => createSeededRng(1))
+  await store.persist.rehydrate()
+  expect(store.getState().game).toBeNull()
+})

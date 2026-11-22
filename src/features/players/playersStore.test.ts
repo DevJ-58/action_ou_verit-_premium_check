@@ -54,3 +54,28 @@ test('players persist and a corrupted value falls back to an empty roster', asyn
   await fresh.persist.rehydrate()
   expect(fresh.getState().players).toEqual([])
 })
+
+test('malformed players in a same-version save are dropped', async () => {
+  localStorage.setItem(
+    'av:players',
+    JSON.stringify({
+      state: {
+        players: [
+          {
+            id: 'ok',
+            name: 'Awa',
+            avatar: '',
+            limits: { excludedCategories: [], maxIntensity: 4 },
+            customDares: [],
+          },
+          { id: 'bad', name: 42 },
+          null,
+        ],
+      },
+      version: 1,
+    }),
+  )
+  const store = createPlayersStore()
+  await store.persist.rehydrate()
+  expect(store.getState().players.map((p) => p.id)).toEqual(['ok'])
+})

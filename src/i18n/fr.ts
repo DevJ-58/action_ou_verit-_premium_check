@@ -95,6 +95,10 @@ export const fr = {
     warning:
       '{name} : aucune catégorie choisie ne respecte ses limites. Il ou elle n’aura que des défis écrits.',
     launch: 'Lancer la partie',
+    tooMany: '12 joueurs maximum autour de la table : retire quelqu’un pour lancer.',
+    replaceTitle: 'Remplacer la partie en cours ?',
+    replaceHint: 'La partie déjà commencée sera perdue.',
+    replace: 'Remplacer',
   },
   game: {
     round: 'Tour',
@@ -148,6 +152,12 @@ export const fr = {
     },
     replay: 'Rejouer',
     home: 'Accueil',
+  },
+  crash: {
+    title: 'Quelque chose s’est mal passé',
+    body: 'Les données enregistrées sur ce téléphone semblent abîmées. Tu peux les réinitialiser pour repartir de zéro.',
+    reset: 'Réinitialiser les données',
+    home: 'Revenir à l’accueil',
   },
   categories: {
     fun: { name: 'Juste pour rire', description: 'Des défis légers pour briser la glace' },

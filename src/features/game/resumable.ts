@@ -1,4 +1,5 @@
 import { safeStorage } from '@/lib/safeStorage'
+import { isValidGame } from './validateGame'
 
 /**
  * Whether a persisted game can be resumed. Reads storage directly so the home
@@ -8,9 +9,8 @@ export function hasResumableGame(): boolean {
   try {
     const raw = safeStorage.getItem('av:game')
     if (typeof raw !== 'string') return false
-    const phase = (JSON.parse(raw) as { state?: { game?: { phase?: string } | null } }).state?.game
-      ?.phase
-    return phase !== undefined && phase !== 'finished'
+    const game = (JSON.parse(raw) as { state?: { game?: unknown } }).state?.game
+    return isValidGame(game) && game.phase !== 'finished'
   } catch {
     return false
   }
