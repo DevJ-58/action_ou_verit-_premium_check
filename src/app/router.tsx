@@ -38,7 +38,12 @@ export const routes: RouteObject[] = [
               Component: (await import('@/features/game-setup/SetupScreen')).SetupScreen,
             }),
           },
-          { path: 'partie', element: <ComingSoonScreen /> },
+          {
+            path: 'partie',
+            lazy: async () => ({
+              Component: (await import('@/features/game/GameScreen')).GameScreen,
+            }),
+          },
           { path: 'partie/recap', element: <ComingSoonScreen /> },
           { path: '*', element: <HomeScreen /> },
         ],

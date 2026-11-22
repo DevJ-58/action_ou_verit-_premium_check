@@ -5,7 +5,8 @@ export type AvatarRole = 'none' | 'answerer' | 'asker'
 export interface AvatarProps {
   name: string
   size?: 'sm' | 'md' | 'lg'
-  role?: AvatarRole
+  /** Highlight for the player designated by the bottle (answerer) or asking. */
+  highlight?: AvatarRole
 }
 
 const sizes = { sm: 'size-10 text-lg', md: 'size-12.5 text-[22px]', lg: 'size-16 text-3xl' }
@@ -17,7 +18,7 @@ const roles: Record<AvatarRole, string> = {
 }
 
 /** Player medallion: the initial of the name in the display serif. */
-export function Avatar({ name, size = 'md', role = 'none' }: AvatarProps) {
+export function Avatar({ name, size = 'md', highlight = 'none' }: AvatarProps) {
   const initial = Array.from(name.trim())[0]?.toLocaleUpperCase('fr') ?? '?'
   return (
     <span
@@ -26,7 +27,7 @@ export function Avatar({ name, size = 'md', role = 'none' }: AvatarProps) {
       className={cn(
         'inline-flex shrink-0 items-center justify-center rounded-full font-display',
         sizes[size],
-        roles[role],
+        roles[highlight],
       )}
     >
       {initial}

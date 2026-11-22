@@ -1,6 +1,9 @@
 import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
+import { createGame } from '@/engine'
+import { makePlayer } from '@/engine/testing'
+import { gameStore } from '@/features/game/gameStore'
 import { settingsStore, SETTINGS_DEFAULTS } from '@/features/settings/settingsStore'
 import { routes } from './router'
 
@@ -47,8 +50,22 @@ describe('with age confirmed', () => {
   })
 
   test('the bottom navigation is hidden on the game screen', async () => {
+    const game = createGame({
+      id: 'g',
+      players: [makePlayer('a'), makePlayer('b')],
+      settings: {
+        mode: 'nearby',
+        categories: ['fun'],
+        source: 'both',
+        rounds: 1,
+        timerSeconds: 0,
+        maxSkips: 3,
+        picker: 'bottle',
+      },
+    })
+    act(() => gameStore.setState({ game, error: null }))
     renderAt('/partie')
-    await screen.findByRole('main')
+    await screen.findByRole('button', { name: /tourner la bouteille/i })
     expect(
       screen.queryByRole('navigation', { name: /navigation principale/i }),
     ).not.toBeInTheDocument()

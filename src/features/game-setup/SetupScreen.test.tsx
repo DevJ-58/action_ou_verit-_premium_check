@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '@/app/router'
@@ -73,7 +73,7 @@ test('launching starts a game with the default settings and opens the table', as
     picker: 'bottle',
   })
   expect(game.players.map((p) => p.name)).toEqual(['Awa', 'Kofi'])
-  expect(router.state.location.pathname).toBe('/partie')
+  await waitFor(() => expect(router.state.location.pathname).toBe('/partie'))
 })
 
 test('players can be reordered around the table', async () => {
