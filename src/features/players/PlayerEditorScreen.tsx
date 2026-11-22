@@ -9,6 +9,7 @@ import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { LimitsEditor } from './LimitsEditor'
 import { playersStore, usePlayers, type CustomDareDraft } from './playersStore'
+import { useStats } from './statsStore'
 import { validatePlayerName } from './validation'
 
 export function PlayerEditorScreen() {
@@ -17,6 +18,7 @@ export function PlayerEditorScreen() {
   const { playerId = '' } = useParams()
   const players = usePlayers((s) => s.players)
   const player = players.find((p) => p.id === playerId)
+  const stats = useStats((s) => s.byPlayer[playerId]) ?? { games: 0, done: 0, skipped: 0 }
   const [name, setName] = useState(player?.name ?? '')
   const [nameError, setNameError] = useState<string>()
   const [editing, setEditing] = useState<CustomDareDraft | 'new' | null>(null)
@@ -50,6 +52,10 @@ export function PlayerEditorScreen() {
             />
           </div>
         </div>
+
+        <p className="-mt-6 text-sm font-semibold text-muted">
+          {format(t.players.stats, { ...stats })}
+        </p>
 
         <LimitsEditor
           limits={player.limits}

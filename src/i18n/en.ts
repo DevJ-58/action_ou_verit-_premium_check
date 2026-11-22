@@ -40,7 +40,6 @@ export const en: Dictionary = {
     empty: 'No custom dares yet.',
     emptyHint: 'Create your dares from a player’s page.',
   },
-  comingSoon: 'Coming soon',
   players: {
     title: 'Players',
     empty: 'Nobody is registered on this phone yet.',
@@ -60,6 +59,7 @@ export const en: Dictionary = {
     maxIntensity: 'Maximum intensity',
     excluded: 'Excluded categories',
     dareCount: '{count} custom dare(s)',
+    stats: '{games} game(s) · {done} dare(s) done · {skipped} skip(s)',
   },
   dareForm: {
     newTitle: 'New dare',
@@ -133,6 +133,20 @@ export const en: Dictionary = {
     timeUp: 'Time’s up!',
     intensity: 'Intensity {level} of 4',
     written: 'Written by {name}',
+  },
+  recap: {
+    winner: '{name} wins the game',
+    ranking: 'Ranking',
+    titles: 'Titles',
+    points: '{points} pts',
+    awards: {
+      winner: 'Champion',
+      bravest: 'Bravest',
+      truthKing: 'Truth master',
+      escapeArtist: 'Escape artist',
+    },
+    replay: 'Play again',
+    home: 'Home',
   },
   categories: {
     fun: { name: 'Just for fun', description: 'Light challenges to break the ice' },

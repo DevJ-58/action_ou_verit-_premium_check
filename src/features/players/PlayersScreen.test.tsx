@@ -51,3 +51,18 @@ test('deleting a player asks for confirmation first', async () => {
   await userEvent.click(within(dialog).getByRole('button', { name: /^supprimer$/i }))
   expect(playersStore.getState().players).toHaveLength(0)
 })
+
+test('a player page shows real stats from finished games', async () => {
+  const awa = playersStore.getState().addPlayer({ name: 'Awa', avatar: '' })
+  const { statsStore } = await import('./statsStore')
+  act(() =>
+    statsStore.setState({
+      recordedGameIds: ['g'],
+      byPlayer: { [awa.id]: { games: 2, done: 5, skipped: 1 } },
+    }),
+  )
+  renderAt(`/joueurs/${awa.id}`)
+  expect(
+    await screen.findByText(/2 partie\(s\) · 5 défi\(s\) relevé\(s\) · 1 passe\(s\)/),
+  ).toBeInTheDocument()
+})

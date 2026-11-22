@@ -39,7 +39,6 @@ export const fr = {
     empty: 'Aucun défi personnalisé pour l’instant.',
     emptyHint: 'Crée tes défis depuis la fiche d’un joueur.',
   },
-  comingSoon: 'Bientôt disponible',
   players: {
     title: 'Joueurs',
     empty: 'Personne n’est encore inscrit sur ce téléphone.',
@@ -59,6 +58,7 @@ export const fr = {
     maxIntensity: 'Intensité maximale',
     excluded: 'Catégories exclues',
     dareCount: '{count} défi(s) perso',
+    stats: '{games} partie(s) · {done} défi(s) relevé(s) · {skipped} passe(s)',
   },
   dareForm: {
     newTitle: 'Nouveau défi',
@@ -134,6 +134,20 @@ export const fr = {
     timeUp: 'Temps écoulé !',
     intensity: 'Intensité {level} sur 4',
     written: 'Écrit par {name}',
+  },
+  recap: {
+    winner: '{name} remporte la partie',
+    ranking: 'Classement',
+    titles: 'Titres',
+    points: '{points} pts',
+    awards: {
+      winner: 'Grand gagnant',
+      bravest: 'Le plus courageux',
+      truthKing: 'Roi de la vérité',
+      escapeArtist: 'Roi de l’esquive',
+    },
+    replay: 'Rejouer',
+    home: 'Accueil',
   },
   categories: {
     fun: { name: 'Juste pour rire', description: 'Des défis légers pour briser la glace' },

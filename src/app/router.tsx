@@ -4,7 +4,6 @@ import { HomeScreen } from '@/features/home/HomeScreen'
 import { MyDaresScreen } from '@/features/dares/MyDaresScreen'
 import { PlayersScreen } from '@/features/players/PlayersScreen'
 import { ProfileScreen } from '@/features/profile/ProfileScreen'
-import { ComingSoonScreen } from './ComingSoonScreen'
 import { RequireAge } from './RequireAge'
 import { RootLayout } from './RootLayout'
 import { TabsLayout } from './TabsLayout'
@@ -44,7 +43,12 @@ export const routes: RouteObject[] = [
               Component: (await import('@/features/game/GameScreen')).GameScreen,
             }),
           },
-          { path: 'partie/recap', element: <ComingSoonScreen /> },
+          {
+            path: 'partie/recap',
+            lazy: async () => ({
+              Component: (await import('@/features/game/RecapScreen')).RecapScreen,
+            }),
+          },
           { path: '*', element: <HomeScreen /> },
         ],
       },
