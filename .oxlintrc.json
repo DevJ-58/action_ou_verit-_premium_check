@@ -40,7 +40,8 @@
           "@/design-system/fonts"
         ]
       }
-    ]
+    ],
+    "jsx-a11y/prefer-tag-over-role": "off"
   },
   "overrides": [
     {
