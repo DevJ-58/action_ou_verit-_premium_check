@@ -168,6 +168,10 @@ test('the timer announces when time is up without ending the turn', async () => 
     ),
   )
   expect(await screen.findByRole('timer')).toBeInTheDocument()
+  // Let React run the countdown's effect (scheduled on faked timers) before time flies.
+  await act(async () => {
+    vi.advanceTimersByTime(1_000)
+  })
   await act(async () => {
     vi.advanceTimersByTime(31_000)
   })
