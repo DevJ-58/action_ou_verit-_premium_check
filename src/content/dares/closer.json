@@ -1,0 +1,89 @@
+{
+  "truths": [
+    "Avec qui ici aimerais-tu passer plus de temps ?",
+    "Quelle personne ici te met le plus à l’aise ?",
+    "Quel geste de tendresse préfères-tu recevoir ?",
+    "Es-tu plutôt câlins ou plutôt distance ?",
+    "Quelle partie de ton corps préfères-tu ?",
+    "À qui ici confierais-tu les clés de chez toi ?",
+    "Qui ici a le plus beau sourire, selon toi ?",
+    "Quel parfum attire immédiatement ton attention sur quelqu’un ?",
+    "Raconte un moment où tu as eu l’impression d’être vraiment proche de quelqu’un.",
+    "Avec qui ici danserais-tu un slow ?",
+    "Préfères-tu qu’on te prenne la main ou qu’on te prenne dans les bras ?",
+    "Quelle est la chose la plus douce qu’on t’ait dite à l’oreille ?",
+    "Qui ici aimerais-tu mieux connaître ce soir ?",
+    "Es-tu à l’aise avec le contact physique quand tu connais peu quelqu’un ?",
+    "Quel est ton souvenir le plus tendre avec un ami ou une amie ?",
+    "Quelle personne ici te paraît la plus mystérieuse ?",
+    "Qu’est-ce qui te donne envie de te rapprocher de quelqu’un ?",
+    "À quel moment de la journée as-tu le plus besoin de tendresse ?",
+    "Si tu devais t’asseoir près de quelqu’un ici toute la soirée, qui choisirais-tu ?",
+    "Quelle est la plus longue étreinte dont tu te souviennes ?"
+  ],
+  "dares": [
+    {
+      "text": "Change de place avec le joueur de ton choix pour le reste de la partie.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Fais un massage des mains de trente secondes à la personne à ta gauche.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Assieds-toi dos à dos avec un joueur jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Lance un câlin collectif avec tous les joueurs qui le veulent.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Danse un slow avec la personne de ton choix le temps d’une chanson.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Laisse le joueur de ton choix te dessiner un cœur sur la main.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Approche ton visage de celui de la personne en face jusqu’à ce que vos nez se frôlent, sans rire.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Murmure ton prénom de façon mystérieuse à l’oreille de chaque joueur.",
+      "modes": ["nearby"]
+    },
+    { "text": "Coiffe la personne à ta droite pendant trente secondes.", "modes": ["nearby"] },
+    {
+      "text": "Fais un massage des épaules d’une minute au joueur de ton choix.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Reste épaule contre épaule avec la personne à ta droite jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Partage ta boisson avec la personne de ton choix, une gorgée chacun.",
+      "modes": ["nearby"]
+    },
+    { "text": "Les yeux bandés, devine quel joueur te prend la main.", "modes": ["nearby"] },
+    "Approche-toi de la caméra et fais ton plus beau regard pendant dix secondes.",
+    "Pose la main sur ton cœur et dis ce que tu ressens pour le groupe en ce moment.",
+    "Serre un coussin dans tes bras comme si c’était le joueur de ton choix.",
+    "Décris en détail le câlin parfait que tu aimerais recevoir.",
+    {
+      "text": "Avec la personne de ton choix, jouez un couple de cinéma pendant vingt secondes.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Prends une photo de groupe bien serrée, épaule contre épaule.",
+      "modes": ["nearby"]
+    },
+    "Envoie un vocal de dix secondes au joueur de ton choix pour lui dire ce qui te plaît chez cette personne.",
+    {
+      "text": "Tiens le petit doigt du joueur à ta gauche jusqu’à la fin du tour.",
+      "modes": ["nearby"]
+    }
+  ]
+}

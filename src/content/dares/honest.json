@@ -1,0 +1,66 @@
+{
+  "truths": [
+    "Quelle est la qualité que tu envies le plus à quelqu’un ici ?",
+    { "text": "Quel est le défaut que tu caches le mieux ?", "intensity": 2 },
+    "À qui ici confierais-tu ton plus grand secret ?",
+    { "text": "Quelle est la dernière chose qui t’a fait pleurer ?", "intensity": 2 },
+    { "text": "As-tu déjà ressenti de la jalousie envers quelqu’un ici ?", "intensity": 2 },
+    { "text": "Quelle est la décision que tu regrettes le plus ?", "intensity": 2 },
+    "Sur quoi les gens se trompent-ils le plus souvent à ton sujet ?",
+    "Quel compliment aimerais-tu entendre plus souvent ?",
+    { "text": "Quelle est la chose la plus égoïste que tu aies faite ?", "intensity": 2 },
+    "Quelle première impression as-tu eue de la personne à ta gauche ?",
+    {
+      "text": "Qu’est-ce que tu n’as jamais osé dire à quelqu’un autour de cette table ?",
+      "intensity": 2
+    },
+    { "text": "De quoi as-tu le plus peur pour ton avenir ?", "intensity": 2 },
+    "Quel petit mensonge racontes-tu le plus souvent ?",
+    { "text": "As-tu déjà lu les messages de quelqu’un sans sa permission ?", "intensity": 2 },
+    { "text": "Quelle personne de ton passé aimerais-tu recontacter ?", "intensity": 2 },
+    "Qu’est-ce qui t’agace le plus chez tes amis ?",
+    "De quelle réussite parles-tu le moins alors qu’elle compte beaucoup pour toi ?",
+    {
+      "text": "Si tu devais classer les joueurs du plus au moins fiable, qui serait en dernier ?",
+      "intensity": 2
+    },
+    "Quel conseil aurais-tu aimé recevoir il y a cinq ans ?",
+    "Quelle est la rumeur la plus fausse qui ait circulé sur toi ?",
+    { "text": "Quel est ton plus grand complexe ?", "intensity": 2 }
+  ],
+  "dares": [
+    "Dis à chaque joueur une chose que tu admires chez cette personne.",
+    {
+      "text": "Laisse le groupe te poser trois questions : tu dois répondre à toutes.",
+      "intensity": 2
+    },
+    "Donne une note sur dix à ta semaine et explique-la honnêtement.",
+    { "text": "Révèle la dernière recherche faite sur ton téléphone.", "intensity": 2 },
+    "Montre ton temps d’écran de la semaine et commente-le.",
+    "Dis ce que tu penses vraiment de ta dernière publication sur les réseaux.",
+    { "text": "Raconte en une minute le moment où tu as eu le plus honte.", "intensity": 2 },
+    "Désigne la personne ici qui te connaît le mieux et explique pourquoi.",
+    "Fais une critique bienveillante mais honnête de la tenue de la personne à ta droite.",
+    {
+      "text": "Avoue une chose que tu as faite cette semaine et que personne ne sait.",
+      "intensity": 2
+    },
+    "Montre tes trois emojis les plus utilisés et laisse le groupe les interpréter.",
+    {
+      "text": "Réponds par oui ou par non, sans réfléchir, à cinq questions rapides du groupe.",
+      "intensity": 2
+    },
+    { "text": "Dis une qualité et un défaut de la personne en face de toi.", "intensity": 2 },
+    { "text": "Raconte ton pire rendez-vous en trente secondes.", "intensity": 2 },
+    { "text": "Lis à voix haute la note la plus récente de ton téléphone.", "intensity": 2 },
+    "Imite ta propre réaction quand quelque chose te vexe vraiment.",
+    "Décris ton week-end idéal sans rien embellir.",
+    {
+      "text": "Choisis un joueur et dis-lui gentiment une vérité que tu n’osais pas lui dire.",
+      "intensity": 2
+    },
+    { "text": "Classe les joueurs du plus au moins drôle, et assume.", "intensity": 2 },
+    { "text": "Raconte la chose la plus gênante que tu aies faite sur internet.", "intensity": 2 },
+    { "text": "Dis qui est la dernière personne que tu as appelée et pourquoi.", "intensity": 2 }
+  ]
+}

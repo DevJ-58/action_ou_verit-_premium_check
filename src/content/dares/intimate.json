@@ -1,0 +1,63 @@
+{
+  "truths": [
+    "Quelle zone de ton corps est la plus sensible aux caresses ?",
+    "Quel est ton fantasme le plus secret, en une phrase ?",
+    "Quelle est l’expérience la plus audacieuse de ta vie amoureuse ?",
+    "Qu’est-ce qui te met immédiatement dans l’ambiance ?",
+    "As-tu déjà eu envie de quelqu’un autour de cette table ?",
+    "Quel est ton plus beau souvenir de nuit à deux ?",
+    "Plutôt tendresse ou plutôt passion ?",
+    "Quel est l’endroit le plus fou où tu aies vécu un moment intime ?",
+    "Qu’est-ce que tu n’as jamais osé demander à une personne que tu fréquentais ?",
+    "Quel détail physique te trouble le plus chez quelqu’un ?",
+    "As-tu déjà eu un coup de cœur pour un ami ou une amie ?",
+    "Quelle est la chose la plus sensuelle qu’on t’ait dite ?",
+    "Choisis-tu parfois tes sous-vêtements pour plaire ? Raconte.",
+    "As-tu déjà envoyé une photo osée ?",
+    "Lumière allumée ou éteinte ?",
+    "Quel est ton plus grand tabou ?",
+    "Qu’est-ce qui rend un baiser inoubliable pour toi ?",
+    "As-tu déjà eu un rendez-vous qui est allé beaucoup plus loin que prévu ?",
+    "Quelle est ta plus grande insécurité dans l’intimité ?",
+    "Quelle personne ici imagines-tu la plus passionnée ?",
+    "Quelle scène de film ou de série t’a fait le plus d’effet ?"
+  ],
+  "dares": [
+    {
+      "text": "Murmure quelque chose de très osé à l’oreille d’un joueur volontaire.",
+      "modes": ["nearby"]
+    },
+    "Décris ce qui te rend irrésistible, en détail et sans rougir.",
+    {
+      "text": "Fais un massage d’épaules langoureux d’une minute à un joueur volontaire.",
+      "modes": ["nearby"]
+    },
+    "Partage un secret intime avec le groupe.",
+    "Raconte ton moment le plus gênant dans l’intimité.",
+    { "text": "Effleure la joue d’un joueur volontaire du bout des doigts.", "modes": ["nearby"] },
+    "Danse de façon très sensuelle pour la personne de ton choix pendant trente secondes.",
+    {
+      "text": "Laisse un joueur volontaire déposer un baiser sur ta main ou ta joue.",
+      "modes": ["nearby"]
+    },
+    "Décris le baiser que tu donnerais à la personne de ton choix.",
+    "Retire une pièce de vêtement de ton choix et garde-la retirée jusqu’à ton prochain tour.",
+    {
+      "text": "Joue avec un joueur volontaire un premier rendez-vous qui se termine très bien.",
+      "modes": ["nearby"]
+    },
+    "Fais deviner ton fantasme uniquement par des gestes.",
+    "Lis une scène romantique d’un livre ou d’internet avec toute l’intensité possible.",
+    "Prends la pose la plus séduisante possible pendant dix secondes.",
+    "Écris un message doux et un peu osé, puis montre-le au joueur de ton choix.",
+    { "text": "Embrasse le cou d’un joueur volontaire, une seule fois.", "modes": ["nearby"] },
+    {
+      "text": "Assieds-toi tout contre un joueur volontaire jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    "Avoue à voix haute ce qui te plaît physiquement chez un joueur.",
+    "Laisse le joueur de ton choix te poser une question très intime, et réponds franchement.",
+    "Regarde un joueur volontaire droit dans les yeux et dis-lui ce que tu imagines.",
+    { "text": "Danse un slow joue contre joue avec un joueur volontaire.", "modes": ["nearby"] }
+  ]
+}

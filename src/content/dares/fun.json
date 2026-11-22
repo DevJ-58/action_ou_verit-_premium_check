@@ -1,0 +1,57 @@
+{
+  "truths": [
+    "Quelle est la chose la plus gênante que tu aies faite devant quelqu’un que tu voulais impressionner ?",
+    "Quel est le plus gros mensonge que tu aies raconté à tes parents ?",
+    "Quelle chanson connais-tu par cœur sans jamais l’avouer ?",
+    "Quel est ton plaisir coupable à la télé ou sur les réseaux ?",
+    "Quelle est la pire coupe de cheveux que tu aies jamais eue ?",
+    "Si tu pouvais échanger ta vie avec quelqu’un ici pendant une journée, qui choisirais-tu ?",
+    "Quelle est la chose la plus bizarre que tu aies mangée ?",
+    "Quel surnom aimerais-tu qu’on arrête de te donner ?",
+    "Quel est le dernier message que tu as regretté d’avoir envoyé ?",
+    "Quelle appli ouvres-tu en premier le matin, et pourquoi ?",
+    "Quel talent caché personne ici ne te connaît ?",
+    "Quelle est ta pire honte à l’école ?",
+    "Qui ici serait le premier éliminé dans une émission de survie ?",
+    "Quelle célébrité as-tu déjà défendue alors que tu savais qu’elle avait tort ?",
+    "Quelle excuse bidon as-tu déjà utilisée pour annuler un rendez-vous ?",
+    "Quel est le cadeau le plus nul que tu aies offert ?",
+    "As-tu déjà fait semblant de reconnaître quelqu’un pour ne pas le vexer ?",
+    "Quelle photo de toi espères-tu que personne ne retrouve jamais ?",
+    "Quel est ton plus grand échec en cuisine ?",
+    "Si ta vie était un film, quel en serait le titre ?",
+    "Quelle est la plus grosse bêtise que tu aies faite enfant ?"
+  ],
+  "dares": [
+    {
+      "text": "Imite la démarche de la personne à ta droite jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    "Parle avec l’accent de ton choix jusqu’à ton prochain tour.",
+    "Fais dix pompes en chantant l’alphabet.",
+    "Danse trente secondes sur une musique que les autres fredonnent.",
+    "Raconte une blague ; si personne ne rit, refais-en une.",
+    "Fais une déclaration d’amour passionnée à un objet de la pièce.",
+    "Imite un animal choisi par le groupe pendant vingt secondes.",
+    "Mime ton film préféré ; les autres doivent deviner le titre.",
+    "Fais un discours de remerciement comme si tu venais de gagner un prix.",
+    {
+      "text": "Échange un accessoire (veste, casquette, bijou) avec la personne à ta gauche jusqu’à la fin du tour.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Laisse la personne en face de toi te faire une coiffure improvisée.",
+      "modes": ["nearby"]
+    },
+    "Montre la dernière photo de ta galerie (tu peux en passer une seule).",
+    "Lis à voix haute le dernier message que tu as envoyé, sans dire à qui.",
+    "Tiens en équilibre un objet sur ta tête pendant trente secondes.",
+    "Chante le refrain d’une chanson en remplaçant toutes les paroles par « miaou ».",
+    "Fais le tour de la pièce à reculons sans rien toucher.",
+    "Raconte ta journée comme un commentateur de match de foot.",
+    "Prends la pose d’une statue jusqu’à ce que quelqu’un te fasse rire.",
+    "Fais un compliment exagéré à chaque joueur.",
+    "Invente un slogan publicitaire pour la personne à ta gauche.",
+    "Parle uniquement en chuchotant jusqu’à ton prochain tour."
+  ]
+}

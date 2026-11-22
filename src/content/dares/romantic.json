@@ -1,0 +1,57 @@
+{
+  "truths": [
+    "Quel est ton plus beau souvenir amoureux ?",
+    "Raconte ton premier baiser en trois mots.",
+    "Quel geste romantique te fait craquer à coup sûr ?",
+    "Qu’est-ce qui t’attire en premier chez quelqu’un ?",
+    "Crois-tu au coup de foudre ? Raconte.",
+    "Quelle est la chose la plus romantique qu’on ait faite pour toi ?",
+    "Quelle chanson te rappelle une histoire d’amour ?",
+    "Préfères-tu les déclarations écrites ou dites en face ?",
+    "Décris ton rendez-vous idéal, du début à la fin.",
+    "As-tu déjà eu un faible pour quelqu’un autour de cette table ?",
+    "Quelle est la plus grande folie que tu ferais par amour ?",
+    "Quel est ton langage de l’amour : mots, gestes, cadeaux, temps passé ensemble ou attentions ?",
+    "Qu’est-ce qui te fait fuir dès le premier rendez-vous ?",
+    "Quel surnom affectueux adores-tu… ou détestes-tu recevoir ?",
+    "As-tu déjà écrit une lettre d’amour que tu n’as jamais envoyée ?",
+    "Quel couple célèbre te fait rêver, et pourquoi ?",
+    "Qu’est-ce que tu ne pardonnerais jamais dans une relation ?",
+    "Quelle est ta plus grande peur en amour ?",
+    "Que préfères-tu : le début d’une histoire, ou quand on se connaît par cœur ?",
+    "Quel compliment t’a le plus touché dans ta vie ?",
+    "Si tu devais te décrire comme partenaire en trois mots, lesquels choisirais-tu ?"
+  ],
+  "dares": [
+    "Regarde la personne en face de toi dans les yeux pendant trente secondes sans rire.",
+    "Écris un court poème pour le joueur de ton choix et lis-le.",
+    "Fais un compliment sincère à chaque joueur, en le regardant.",
+    "Raconte ton rendez-vous idéal comme la bande-annonce d’un film.",
+    "Chante quelques lignes d’une chanson d’amour à la personne de ton choix.",
+    "Fais une demande de rendez-vous très théâtrale au joueur à ta gauche.",
+    "Offre une fleur imaginaire au joueur de ton choix, avec un discours.",
+    {
+      "text": "Tiens la main de la personne à ta droite jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    "Écris un message doux en trois mots et montre-le au joueur de ton choix.",
+    "Joue la demande en mariage la plus romantique possible.",
+    { "text": "Danse un slow d’une minute avec la personne de ton choix.", "modes": ["nearby"] },
+    "Décris ce que tu trouves charmant chez la personne à ta gauche.",
+    { "text": "Murmure un compliment à l’oreille du joueur de ton choix.", "modes": ["nearby"] },
+    "Raconte comment tu draguerais la personne en face de toi.",
+    "Dessine un cœur et offre-le au joueur de ton choix avec une dédicace.",
+    "Improvise une sérénade d’au moins quatre lignes.",
+    "Imagine à voix haute votre premier rendez-vous avec la personne à ta droite.",
+    {
+      "text": "Fais un câlin d’au moins cinq secondes à la personne de ton choix.",
+      "modes": ["nearby"]
+    },
+    "Récite une réplique d’amour de film ou de chanson avec toute ton émotion.",
+    "Dis « je t’aime » dans trois langues différentes au joueur de ton choix.",
+    {
+      "text": "Pose ta tête sur l’épaule de la personne à ta gauche jusqu’à la fin du tour.",
+      "modes": ["nearby"]
+    }
+  ]
+}

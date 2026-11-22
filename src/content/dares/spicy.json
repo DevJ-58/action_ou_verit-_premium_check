@@ -1,0 +1,63 @@
+{
+  "truths": [
+    "Quel serait ton rendez-vous le plus fou, sans aucune limite ?",
+    "Où aimerais-tu qu’on t’embrasse, à part sur la bouche ?",
+    "Quel est le compliment le plus osé qu’on t’ait fait ?",
+    "As-tu déjà fait un rêve troublant sur quelqu’un ici ?",
+    "Quelle tenue te donne l’impression d’être irrésistible ?",
+    "Qu’est-ce qui te fait craquer physiquement chez quelqu’un ?",
+    "As-tu déjà envoyé un message qui t’a fait rougir juste après ?",
+    "Quel est l’endroit le plus inattendu où tu as embrassé quelqu’un ?",
+    "Préfères-tu séduire, ou être la personne qu’on séduit ?",
+    "Quel est ton plus grand talent de séduction ?",
+    "Qui ici a, selon toi, le regard le plus envoûtant ?",
+    "As-tu déjà dragué quelqu’un sans t’en rendre compte ?",
+    "Quelle est la chose la plus audacieuse que tu aies faite pour plaire ?",
+    "Quelle célébrité représente ton fantasme absolu ?",
+    "Quel mot doux te fait fondre instantanément ?",
+    "As-tu déjà ressenti une attirance pour quelqu’un qui t’était interdit ?",
+    "Quel est ton plus beau souvenir de baiser ?",
+    "Qu’est-ce qui te trouble le plus : la voix, le regard ou le parfum ?",
+    "As-tu déjà enjolivé ton expérience amoureuse pour impressionner ?",
+    "Quelle personne ici, à l’instinct, embrasse le mieux ?",
+    "Quel est le texto le plus chaud que tu aies reçu, en version censurée ?"
+  ],
+  "dares": [
+    "Lance ton regard le plus séducteur à la personne de ton choix pendant dix secondes.",
+    "Fais un compliment osé, mais élégant, au joueur à ta gauche.",
+    {
+      "text": "Rejoue une scène de séduction de film avec la personne de ton choix.",
+      "modes": ["nearby"]
+    },
+    "Danse de façon sensuelle pendant trente secondes.",
+    "Décris ton baiser idéal sans utiliser le mot « baiser ».",
+    "Fais un clin d’œil appuyé à chaque joueur, un par un.",
+    {
+      "text": "Murmure quelque chose de troublant à l’oreille du joueur de ton choix.",
+      "modes": ["nearby"]
+    },
+    "Lis une phrase au hasard avec la voix la plus sensuelle possible.",
+    "Retire un accessoire (bijou, montre, chaussette) de façon théâtrale.",
+    "Fais une déclaration enflammée à la personne en face, les yeux dans les yeux.",
+    "Laisse la personne à ta droite choisir une pose de mannequin que tu tiens dix secondes.",
+    {
+      "text": "Fais un baisemain au joueur de ton choix, comme dans un film d’époque.",
+      "modes": ["nearby"]
+    },
+    "Montre ta technique de drague en soirée sur un joueur volontaire.",
+    "Décris la tenue que tu aimerais voir sur la personne de ton choix ce soir.",
+    "Mords-toi la lèvre en regardant quelqu’un ici, sans rire.",
+    "Écris un texto séducteur et lis-le au joueur de ton choix.",
+    {
+      "text": "Fais un massage de la nuque de trente secondes à un joueur volontaire.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Assieds-toi sur les genoux d’un joueur volontaire jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    "Raconte ton rendez-vous fantasmé en trente secondes, sans rougir.",
+    { "text": "Danse un slow très serré avec un joueur volontaire.", "modes": ["nearby"] },
+    "Fais deviner un mot sensuel uniquement avec ton regard et tes mains."
+  ]
+}

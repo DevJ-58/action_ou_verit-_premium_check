@@ -1,0 +1,71 @@
+{
+  "truths": [
+    "Quelle est la chose que tu n’as jamais avouée à personne ?",
+    "Avec qui ici aimerais-tu vivre une aventure, si tu étais libre ?",
+    "Quel est ton plus grand regret en amour ?",
+    "As-tu déjà trompé quelqu’un, ou eu très envie de le faire ?",
+    "Quel secret pourrait changer l’image que les autres ont de toi ?",
+    "Quel est le message le plus osé que tu aies envoyé ?",
+    "As-tu déjà menti à quelqu’un ici sur un sujet important ?",
+    "Quelle est ta plus grande transgression ?",
+    "Qui ici te plaît le plus, si tu devais absolument choisir ?",
+    "Quelle limite as-tu déjà franchie sans jamais le regretter ?",
+    "Quelle personne de ton passé n’as-tu jamais oubliée ?",
+    "As-tu déjà vécu une relation que tu as gardée secrète ?",
+    "Que ferais-tu ce soir si personne ne devait jamais le savoir ?",
+    "Quel est ton désir le plus inavouable, sans entrer dans les détails ?",
+    "As-tu déjà eu des sentiments pour le ou la partenaire d’un proche ?",
+    "Qu’est-ce que tu attends d’une nuit inoubliable ?",
+    "Quelle est la pire chose que tu aies pensée de quelqu’un ici ?",
+    "Quelle question de ce jeu te terrifie le plus ?",
+    "Devant qui as-tu montré le plus de vulnérabilité, et à quel moment ?",
+    "Si tu pouvais effacer un souvenir intime, lequel serait-ce ?"
+  ],
+  "dares": [
+    "Laisse la personne à ta gauche choisir ta prochaine Vérité, et réponds-y.",
+    {
+      "text": "Fais un bisou à un joueur volontaire, à l’endroit que cette personne choisit.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Échange un vêtement avec un joueur volontaire jusqu’à la fin de la partie.",
+      "modes": ["nearby"]
+    },
+    "Dis droit dans les yeux à quelqu’un ici ce que cette personne te fait ressentir.",
+    "Laisse le groupe choisir ton prochain défi : impossible de le passer.",
+    "Avoue à voix haute ton crush le plus récent.",
+    {
+      "text": "Danse collé-serré avec un joueur volontaire le temps d’une chanson.",
+      "modes": ["nearby"]
+    },
+    "Révèle la question que tu redoutais le plus ce soir, et réponds-y.",
+    "Décris le scénario de ta nuit idéale en trente secondes.",
+    "Raconte ton dernier rêve où apparaissait quelqu’un ici, sans rien censurer.",
+    {
+      "text": "Laisse un joueur volontaire te caresser les cheveux jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    "Retire une pièce de vêtement de ton choix jusqu’à la fin de la partie.",
+    "Fais une déclaration sincère et sans filtre au joueur de ton choix.",
+    {
+      "text": "Laisse un joueur volontaire te chuchoter un gage, et fais-le s’il reste raisonnable.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Enlace un joueur volontaire pendant trente secondes, en silence.",
+      "modes": ["nearby"]
+    },
+    "Avoue la pensée la plus audacieuse que tu aies eue ce soir.",
+    "Mime ton fantasme : le groupe doit le deviner.",
+    "Envoie au joueur de ton choix un vocal de quinze secondes avec ta voix la plus troublante.",
+    {
+      "text": "Assieds-toi sur les genoux d’un joueur volontaire et réponds à sa question.",
+      "modes": ["nearby"]
+    },
+    {
+      "text": "Fixe un joueur volontaire, visages très proches, pendant une minute sans rire.",
+      "modes": ["nearby"]
+    },
+    "Raconte ta première fois… celle où tu as eu le cœur brisé."
+  ]
+}

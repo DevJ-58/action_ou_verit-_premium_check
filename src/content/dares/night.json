@@ -1,0 +1,56 @@
+{
+  "truths": [
+    "Quelle a été ta soirée la plus folle à ce jour ?",
+    "Que fais-tu la nuit quand personne ne te voit ?",
+    "As-tu déjà passé la nuit dehors sans prévenir personne ?",
+    "Quel est ton plus beau souvenir de nuit blanche ?",
+    "Que portes-tu vraiment pour dormir ?",
+    "As-tu déjà envoyé à 3 h du matin un message que tu as regretté ?",
+    "Quel est le rêve le plus étrange dont tu te souviennes ?",
+    "Avec qui ici passerais-tu une nuit entière à refaire le monde ?",
+    "Quelle est la chose la plus imprudente que tu aies faite après minuit ?",
+    "As-tu déjà eu un fou rire à un moment totalement inapproprié, en pleine nuit ?",
+    "Quel rituel avant de dormir personne ne connaît chez toi ?",
+    "As-tu déjà fait le mur ?",
+    "Quel est le lieu le plus insolite où le sommeil t’a emporté ?",
+    "Qu’est-ce qui t’empêche de dormir la nuit ?",
+    "As-tu déjà regardé quelqu’un dormir en pensant à cette personne ?",
+    "Quelle est la plus grosse bêtise que tu aies faite en rentrant de soirée ?",
+    "Quel secret ne raconterais-tu qu’à la lumière d’une bougie ?",
+    "Si cette nuit ne devait jamais finir, que voudrais-tu qu’il s’y passe ?",
+    "Quelle est la confidence la plus intime qu’on t’ait faite la nuit ?",
+    "As-tu déjà eu un rendez-vous qui s’est terminé au lever du soleil ?"
+  ],
+  "dares": [
+    "Baisse la lumière et raconte une histoire troublante en une minute.",
+    "Chuchote jusqu’à ton prochain tour, comme si tout le monde dormait.",
+    "Raconte ton rêve le plus fou, éclairé par la lampe de ton téléphone.",
+    "Décris la nuit parfaite avec la personne de ton choix, sans la nommer.",
+    "Danse une minute dans le noir.",
+    { "text": "Fais une confidence à voix basse au joueur à ta droite.", "modes": ["nearby"] },
+    "Prends la voix d’une radio de nuit et dédie une chanson à quelqu’un ici.",
+    "Mime ce que tu fais en rentrant de soirée, de la porte jusqu’à ton lit.",
+    "Fais trois « Je n’ai jamais » sur le thème de la nuit.",
+    "Allonge-toi et décris le plafond comme un ciel étoilé, de façon romantique.",
+    {
+      "text": "Laisse le joueur de ton choix te bander les yeux jusqu’à ton prochain tour.",
+      "modes": ["nearby"]
+    },
+    "Fais une déclaration à la lune, ou à la lampe, au nom de la personne à ta gauche.",
+    "Raconte en trente secondes ton pire lendemain de soirée.",
+    "Montre la position dans laquelle tu dors vraiment.",
+    { "text": "Murmure une phrase mystérieuse à l’oreille de chaque joueur.", "modes": ["nearby"] },
+    "Envoie un vocal chuchoté de dix secondes au joueur de ton choix.",
+    "Lis le dernier message que tu as envoyé après minuit.",
+    "Éclaire ton visage par en dessous avec ton téléphone et raconte un secret.",
+    {
+      "text": "Joue une rencontre au clair de lune avec un joueur volontaire.",
+      "modes": ["nearby"]
+    },
+    "Garde les yeux fermés jusqu’à ton prochain tour.",
+    {
+      "text": "Fais un câlin de dix secondes à la personne de ton choix, lumière éteinte.",
+      "modes": ["nearby"]
+    }
+  ]
+}
