@@ -1,4 +1,4 @@
-import { MAX_PLAYERS, MIN_PLAYERS, type GameState } from '@/engine'
+import { MAX_PLAYERS, MIN_PLAYERS, type GameState } from '@/engine/state'
 
 const PHASES = new Set([
   'ready',

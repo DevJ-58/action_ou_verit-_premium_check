@@ -51,6 +51,12 @@ export const routes: RouteObject[] = [
               Component: (await import('@/features/game/RecapScreen')).RecapScreen,
             }),
           },
+          {
+            path: 'compte',
+            lazy: async () => ({
+              Component: (await import('@/features/account/AuthScreen')).AuthScreen,
+            }),
+          },
           { path: '*', element: <HomeScreen /> },
         ],
       },

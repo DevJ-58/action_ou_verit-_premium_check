@@ -26,6 +26,10 @@ export const BASE_PATH =
 
 export default defineConfig({
   base: BASE_PATH,
+  build: {
+    // Keep avatar/emoji images as files fetched on display, never inlined into the JS bundle.
+    assetsInlineLimit: (file: string) => (file.endsWith('.webp') ? false : undefined),
+  },
   plugins: [
     react(),
     tailwindcss(),
