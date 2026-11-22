@@ -1,7 +1,16 @@
 import { MAX_PLAYERS, MIN_PLAYERS, type GameState } from '@/engine'
 
-const PHASES = new Set(['ready', 'spinning', 'choosing', 'asking', 'challenge', 'finished'])
-const NEEDS_TURN = new Set(['spinning', 'choosing', 'asking', 'challenge'])
+const PHASES = new Set([
+  'ready',
+  'spinning',
+  'choosing',
+  'asking',
+  'proposing',
+  'picking',
+  'challenge',
+  'finished',
+])
+const NEEDS_TURN = new Set(['spinning', 'choosing', 'asking', 'proposing', 'picking', 'challenge'])
 
 const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null
 

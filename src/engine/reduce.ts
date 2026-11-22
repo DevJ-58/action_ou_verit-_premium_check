@@ -1,6 +1,7 @@
 import { drawDare, isAllowedFor, validateWrittenDare } from './dares'
 import { GameRuleError } from './errors'
 import { askerIndexFor, computeSpin, seatAngle } from './geometry'
+import { closeProposals, pickProposal, propose } from './proposals'
 import { pickIndex } from './rng'
 import { pointsFor, type Outcome } from './scoring'
 import {
@@ -129,6 +130,9 @@ export function reduce(state: GameState, action: GameAction, ctx: ReduceContext)
     case 'CHOOSE_KIND': {
       expectPhase(state, 'choosing')
       const turn = currentTurn(state)
+      if (state.settings.flow === 'everyone') {
+        return { ...state, phase: 'proposing', turn: { ...turn, kind: action.kind, proposals: [] } }
+      }
       if (state.settings.source === 'system') return withSystemDare(state, turn, action.kind, ctx)
       return { ...state, phase: 'asking', turn: { ...turn, kind: action.kind } }
     }
@@ -185,6 +189,24 @@ export function reduce(state: GameState, action: GameAction, ctx: ReduceContext)
       }
       if (skipsLeft(state, turn.answererId) === 0) throw new GameRuleError('noSkipsLeft')
       return endTurn(state, turn, 'skipped')
+    }
+
+    case 'PROPOSE':
+      expectPhase(state, 'proposing')
+      return propose(state, currentTurn(state), action.playerId, action.dare)
+
+    case 'CLOSE_PROPOSALS':
+      expectPhase(state, 'proposing')
+      return closeProposals(state, currentTurn(state), ctx)
+
+    case 'PICK_PROPOSAL':
+      expectPhase(state, 'picking')
+      return pickProposal(state, currentTurn(state), action.index)
+
+    case 'TIMEOUT_PICK': {
+      expectPhase(state, 'picking')
+      const turn = currentTurn(state)
+      return pickProposal(state, turn, pickIndex(turn.proposals!.length, ctx.rng))
     }
 
     case 'RESTART': {

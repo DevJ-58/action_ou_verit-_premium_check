@@ -15,9 +15,14 @@ export interface GameSettings {
   maxSkips: number
   /** Only changes the animation; the draw is the same. */
   picker: 'bottle' | 'random'
+  /** 'asker' (one phone): one player sets the dare. 'everyone' (rooms): every other player proposes one. */
+  flow?: 'asker' | 'everyone'
+  /** Time given to propose in the 'everyone' flow. */
+  proposeSeconds?: 30 | 60 | 90
 }
 
-export type Phase = 'ready' | 'spinning' | 'choosing' | 'asking' | 'challenge' | 'finished'
+export type Phase =
+  'ready' | 'spinning' | 'choosing' | 'asking' | 'proposing' | 'picking' | 'challenge' | 'finished'
 
 export interface Turn {
   answererId: string
@@ -25,6 +30,13 @@ export interface Turn {
   kind: ChallengeKind | null
   dare: Dare | null
   noDareAvailable: boolean
+  /** 'everyone' flow: one proposal per other player (shuffled when proposals close). */
+  proposals?: Proposal[]
+}
+
+export interface Proposal {
+  playerId: string
+  dare: Dare
 }
 
 export interface PlayerScore {
@@ -67,6 +79,10 @@ export type GameAction =
   | { type: 'COMPLETE' }
   | { type: 'SKIP' }
   | { type: 'RESTART' }
+  | { type: 'PROPOSE'; playerId: string; dare: Dare }
+  | { type: 'CLOSE_PROPOSALS' }
+  | { type: 'PICK_PROPOSAL'; index: number }
+  | { type: 'TIMEOUT_PICK' }
 
 export const EMPTY_SCORE: PlayerScore = { done: 0, skipped: 0, points: 0, truths: 0, dares: 0 }
 
