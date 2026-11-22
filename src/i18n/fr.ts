@@ -28,6 +28,17 @@ export const fr = {
   },
   profile: {
     title: 'Profil',
+    avatar: 'Avatar',
+    bio: 'Bio',
+    bioPlaceholder: 'Une phrase pour te présenter…',
+    myDares: 'Mes défis',
+    myDaresHint: 'Tu pourras les poser aux autres pendant les parties.',
+    appearance: 'Apparence',
+    feedback: 'Sons et vibrations',
+    signedOutTitle: 'Ton espace joueur',
+    signedOutBody:
+      'Crée ton compte pour jouer à distance, choisir ton avatar 3D et garder tes défis.',
+    signedOutCta: 'Créer un compte ou se connecter',
     theme: 'Thème',
     themes: { nuit: 'Nuit', ivoire: 'Ivoire', terre: 'Terre' },
     language: 'Langue',
