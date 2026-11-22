@@ -100,7 +100,7 @@ export function GameScreen() {
               {game.phase === 'choosing' && turn ? (
                 <KindChooser
                   answerer={nameOf(turn.answererId)}
-                  asker={nameOf(turn.askerId)}
+                  subtitle={format(t.game.askerWillAsk, { name: nameOf(turn.askerId) })}
                   onChoose={(kind) => dispatch({ type: 'CHOOSE_KIND', kind })}
                 />
               ) : (

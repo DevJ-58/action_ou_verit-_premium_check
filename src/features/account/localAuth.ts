@@ -1,6 +1,6 @@
 import { AVATARS } from '@/content/avatars'
 import { newId } from '@/lib/id'
-import { safeStorage } from '@/lib/safeStorage'
+import { safeSessionStorage, safeStorage } from '@/lib/safeStorage'
 import {
   AuthError,
   checkCredentials,
@@ -45,6 +45,21 @@ async function hash(password: string, salt: string): Promise<string> {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('')
 }
 
+/** The tab's own session first (two tabs = two phones), else the last account used on the device. */
+function readSessionId(): string | null {
+  return (
+    (safeSessionStorage.getItem(SESSION) as string | null) ??
+    (safeStorage.getItem(SESSION) as string | null)
+  )
+}
+
+function writeSessionId(id: string | null) {
+  for (const store of [safeSessionStorage, safeStorage]) {
+    if (id) store.setItem(SESSION, id)
+    else store.removeItem(SESSION)
+  }
+}
+
 const toSession = (a: StoredAccount): Session => ({
   account: { id: a.id, email: a.email },
   profile: a.profile,
@@ -53,7 +68,7 @@ const toSession = (a: StoredAccount): Session => ({
 export function createLocalAuth(): AuthService {
   return {
     async current() {
-      const id = safeStorage.getItem(SESSION)
+      const id = readSessionId()
       const account = readAccounts().find((a) => a.id === id)
       return account ? toSession(account) : null
     },
@@ -73,7 +88,7 @@ export function createLocalAuth(): AuthService {
         profile: defaultProfile(id, pseudo, avatar),
       }
       writeAccounts([...accounts, stored])
-      safeStorage.setItem(SESSION, id)
+      writeSessionId(id)
       return toSession(stored)
     },
     async signIn(email, password) {
@@ -81,11 +96,11 @@ export function createLocalAuth(): AuthService {
       if (!account || (await hash(password, account.salt)) !== account.hash) {
         throw new AuthError('badCredentials')
       }
-      safeStorage.setItem(SESSION, account.id)
+      writeSessionId(account.id)
       return toSession(account)
     },
     async signOut() {
-      safeStorage.removeItem(SESSION)
+      writeSessionId(null)
     },
     async saveProfile(profile) {
       writeAccounts(readAccounts().map((a) => (a.id === profile.id ? { ...a, profile } : a)))

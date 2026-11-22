@@ -27,3 +27,28 @@ export const safeStorage: StateStorage = {
     }
   },
 }
+
+/** Same guarantees for sessionStorage (per tab). */
+export const safeSessionStorage: StateStorage = {
+  getItem(name) {
+    try {
+      return window.sessionStorage.getItem(name)
+    } catch {
+      return null
+    }
+  },
+  setItem(name, value) {
+    try {
+      window.sessionStorage.setItem(name, value)
+    } catch {
+      // Ignore.
+    }
+  },
+  removeItem(name) {
+    try {
+      window.sessionStorage.removeItem(name)
+    } catch {
+      // Ignore.
+    }
+  },
+}

@@ -3,13 +3,14 @@ import { cn } from '@/lib/cn'
 
 export interface SeatProps {
   name: string
+  avatarId?: string
   angle: number
   role: AvatarRole
   lit: boolean
 }
 
 /** A player's place around the table, positioned by its angle. */
-export function Seat({ name, angle, role, lit }: SeatProps) {
+export function Seat({ name, avatarId, angle, role, lit }: SeatProps) {
   const rad = (angle * Math.PI) / 180
   const highlighted = role !== 'none' || lit
   return (
@@ -23,7 +24,11 @@ export function Seat({ name, angle, role, lit }: SeatProps) {
           (role === 'answerer' || lit) && 'scale-115',
         )}
       >
-        <Avatar name={name} highlight={lit && role === 'none' ? 'answerer' : role} />
+        <Avatar
+          name={name}
+          avatarId={avatarId}
+          highlight={lit && role === 'none' ? 'answerer' : role}
+        />
       </span>
       <span
         className={cn(

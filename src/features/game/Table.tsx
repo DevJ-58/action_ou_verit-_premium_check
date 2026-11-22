@@ -27,12 +27,13 @@ export function Table({ game, animate }: TableProps) {
         <Seat
           key={player.id}
           name={player.name}
+          avatarId={player.avatar}
           angle={seatAngle(index, players.length)}
           lit={sweep === index}
           role={
             revealed && player.id === turn.answererId
               ? 'answerer'
-              : revealed && player.id === turn.askerId
+              : revealed && settings.flow !== 'everyone' && player.id === turn.askerId
                 ? 'asker'
                 : 'none'
           }

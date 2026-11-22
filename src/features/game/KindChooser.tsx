@@ -4,12 +4,13 @@ import { useT } from '@/i18n/useT'
 
 export interface KindChooserProps {
   answerer: string
-  asker: string
+  /** Line under the title, e.g. who will set the dare. */
+  subtitle: string
   onChoose(kind: ChallengeKind): void
 }
 
 /** The designated player picks Vérité or Action from two cards. */
-export function KindChooser({ answerer, asker, onChoose }: KindChooserProps) {
+export function KindChooser({ answerer, subtitle, onChoose }: KindChooserProps) {
   const t = useT()
   return (
     <div className="flex flex-col gap-6">
@@ -17,9 +18,7 @@ export function KindChooser({ answerer, asker, onChoose }: KindChooserProps) {
         <p className="text-[26px] font-extrabold tracking-[-0.02em]">
           {format(t.game.drawTitle, { name: answerer })}
         </p>
-        <p className="mt-1.5 text-[15px] text-muted">
-          {format(t.game.askerWillAsk, { name: asker })}
-        </p>
+        <p className="mt-1.5 text-[15px] text-muted">{subtitle}</p>
       </div>
       <div className="flex gap-3.5">
         <button

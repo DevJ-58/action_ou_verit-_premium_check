@@ -56,3 +56,16 @@ test('saveProfile persists profile changes', async () => {
     avatarId: '1f981',
   })
 })
+
+test('each tab keeps its own signed-in account (two phones simulated in one browser)', async () => {
+  const auth = createLocalAuth()
+  await auth.signUp('awa@example.com', 'motdepasse', 'Awa')
+  const tabOneSession = sessionStorage.getItem('av:session')
+  await auth.signUp('kofi@example.com', 'motdepasse', 'Kofi')
+  // Tab one still sees Awa once its own session id is restored.
+  sessionStorage.setItem('av:session', tabOneSession!)
+  expect((await createLocalAuth().current())?.profile.pseudo).toBe('Awa')
+  // A brand-new tab (empty sessionStorage) falls back to the last account used on the device.
+  sessionStorage.clear()
+  expect((await createLocalAuth().current())?.profile.pseudo).toBe('Kofi')
+})
