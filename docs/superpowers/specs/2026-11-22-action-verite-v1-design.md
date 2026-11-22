@@ -124,6 +124,49 @@ En V1, tout passe par une **vérification de droits** (`canUse(feature)`) centra
 - **Qualité** : ESLint + Prettier, Vitest + Testing Library (moteur et composants), Playwright (parcours clés, dont une partie à 2 téléphones simulés), CI GitHub Actions.
 - **Hébergement** : front sur GitHub Pages via GitHub Actions ; Supabase et LiveKit en services hébergés.
 
+### 9.1 Catégories retenues (validées par le porteur du projet)
+
+| Catégorie | Intensité | Gratuit |
+|---|---|---|
+| Juste pour rire | 1 | oui |
+| Limite franchise | 1–2 | oui |
+| Romantique | 2 | oui |
+| Rapproche-toi | 2 | non |
+| Osé (absorbe « Vague de chaleur ») | 3 | non |
+| Après la tombée de la nuit (absorbe « Nuit blanche ») | 3 | non |
+| Très intime (absorbe « Plaisir coquin ») | 4 | non |
+| Pas de retour en arrière | 4 | non |
+
+≥ 20 vérités + ≥ 20 actions par catégorie (≈ 320 textes FR), rédigés par le constructeur, relus par le porteur du projet avant mise en ligne.
+
+### 9.2 Organisation du code (exigence : bonnes pratiques, jamais de fichier fourre-tout)
+
+Organisation par fonctionnalité ; un composant par fichier ; fichiers courts (≈ 200 lignes max, au-delà on découpe) ; logique métier hors des composants ; aucun composant défini à l'intérieur d'un autre.
+
+```
+src/
+  app/            routeur, providers, layout racine
+  design-system/  tokens, primitives (Button, Sheet, Avatar, Card…)
+  features/
+    onboarding/   porte 18+, pseudo/avatar
+    game-setup/   création de partie, catégories, réglages, limites
+    game/         écran de jeu, bouteille, carte défi, récap
+    rooms/        salon, code/QR, présence
+    chat/         panneau, messages, vocaux, réactions
+    video/        appel de défi
+    dares/        défis perso (CRUD)
+    profile/      profil, stats, badges
+    premium/      droits (canUse), écran Premium
+  engine/         moteur de jeu pur TS (partagé avec le serveur)
+  content/        défis système (JSON par catégorie)
+  i18n/           dictionnaires FR/EN typés
+  lib/            client Supabase, stockage, utilitaires
+supabase/
+  migrations/     schéma SQL + RLS
+  functions/      game-action, video-token, cleanup
+tests/e2e/        parcours Playwright
+```
+
 ## 10. Design
 
 - Direction à finaliser avec les skills design (ui-ux-pro-max, awwwards) et une maquette validée par le porteur du projet avant d'écrire les écrans.
