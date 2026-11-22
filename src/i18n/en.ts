@@ -185,6 +185,7 @@ export const en: Dictionary = {
       weakPassword: 'The password must be at least 8 characters.',
       invalidEmail: 'This e-mail does not look valid.',
       network: 'Cannot connect. Check your network and try again.',
+      confirmEmail: 'Confirm your address with the link sent by e-mail, then sign in.',
     },
   },
   room: {

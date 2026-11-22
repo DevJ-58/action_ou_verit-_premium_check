@@ -27,7 +27,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run build && npx vite preview --port 4173 --strictPort',
+    // End-to-end tests run on the local backends (two tabs = two phones), never on the real server.
+    command: 'VITE_BACKEND=local npm run build && npx vite preview --port 4173 --strictPort',
     url: BASE,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

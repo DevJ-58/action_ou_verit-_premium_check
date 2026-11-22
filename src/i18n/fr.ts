@@ -187,6 +187,7 @@ export const fr = {
       weakPassword: 'Le mot de passe doit faire au moins 8 caractères.',
       invalidEmail: 'Cet e-mail ne semble pas valide.',
       network: 'Connexion impossible. Vérifie ton réseau et réessaie.',
+      confirmEmail: 'Confirme ton adresse avec le lien reçu par e-mail, puis connecte-toi.',
     },
   },
   room: {

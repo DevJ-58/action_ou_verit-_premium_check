@@ -2,15 +2,22 @@ import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import type { Profile } from '@/features/account/authService'
 import { createBroadcastBus } from './bus'
+import { getSupabase, supabaseConfig } from '@/lib/backend'
 import { createLocalTransport, type RoomTransport } from './localTransport'
+import { createSupabaseTransport } from './supabaseTransport'
 import { createRoomStore, type RoomStore, type RoomStoreState } from './roomStore'
 import type { Member } from './types'
 
 let transport: RoomTransport | null = null
 
-/** The room network: tabs of this browser until Supabase is configured (see supabaseTransport). */
+/** The room network: Supabase Realtime when configured; otherwise tabs of this browser. */
 export function getRoomTransport(): RoomTransport {
-  transport ??= createLocalTransport(createBroadcastBus())
+  if (!transport) {
+    const config = supabaseConfig()
+    transport = config
+      ? createSupabaseTransport(() => getSupabase(config))
+      : createLocalTransport(createBroadcastBus())
+  }
   return transport
 }
 
