@@ -1,0 +1,16 @@
+import { AVATARS, avatarById } from './avatars'
+
+test('offers 36 avatars with unique ids and resolved images', () => {
+  expect(AVATARS).toHaveLength(36)
+  expect(new Set(AVATARS.map((a) => a.id)).size).toBe(36)
+  for (const avatar of AVATARS) {
+    expect(avatar.src, avatar.id).toMatch(/\.webp|^data:image/)
+    expect(avatar.label.length, avatar.id).toBeGreaterThan(0)
+  }
+})
+
+test('looks avatars up by id', () => {
+  const first = AVATARS[0]!
+  expect(avatarById(first.id)).toBe(first)
+  expect(avatarById('nope')).toBeUndefined()
+})

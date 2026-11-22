@@ -33,3 +33,8 @@ src/
   i18n/           traductions FR / EN
   lib/            utilitaires partagés
 ```
+
+## Crédits
+
+Avatars et emojis 3D : [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licence MIT),
+via le paquet `@lobehub/fluent-emoji-3d`. Les fichiers retenus sont dans `src/assets/fluent/`.
