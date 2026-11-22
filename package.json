@@ -12,7 +12,9 @@
     "test:e2e": "playwright test",
     "lint": "oxlint --deny-warnings",
     "typecheck": "tsc -b",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check:bundle": "node scripts/check-bundle-size.mjs dist 200",
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
@@ -41,6 +43,7 @@
     "tailwindcss": "^4.3.5",
     "typescript": "~7.0.2",
     "vite": "^8.3.6",
+    "vite-plugin-pwa": "^2.0.0",
     "vitest": "^5.1.1"
   },
   "engines": {
