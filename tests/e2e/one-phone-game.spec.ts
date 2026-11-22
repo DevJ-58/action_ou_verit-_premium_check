@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test'
 async function confirmAge(page: Page) {
   await page.goto('./')
   await page.getByRole('button', { name: /J’ai 18 ans ou plus/ }).click()
-  await expect(page.getByRole('button', { name: /Nouvelle partie/ })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Jouer sur ce téléphone/ })).toBeVisible()
 }
 
 async function addPlayers(page: Page, names: string[]) {
@@ -30,7 +30,7 @@ async function addCustomDare(page: Page, player: string, text: string) {
 
 async function startGame(page: Page) {
   await page.getByRole('link', { name: 'Jouer' }).click()
-  await page.getByRole('button', { name: /Nouvelle partie/ }).click()
+  await page.getByRole('link', { name: /Jouer sur ce téléphone/ }).click()
   await page.getByRole('button', { name: /Juste pour rire/ }).click()
   await page.getByRole('button', { name: /Limite franchise/ }).click()
   await page.getByRole('radio', { name: '1', exact: true }).first().check({ force: true })

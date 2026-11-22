@@ -35,6 +35,6 @@ test('offers to resume a game in progress', async () => {
 test('does not offer to resume when there is no game or it is finished', async () => {
   act(() => gameStore.setState({ game: { ...game, phase: 'finished' }, error: null }))
   renderHome()
-  await screen.findByRole('button', { name: /nouvelle partie/i })
+  await screen.findByRole('link', { name: /jouer sur ce téléphone/i })
   expect(screen.queryByRole('button', { name: /reprendre/i })).not.toBeInTheDocument()
 })

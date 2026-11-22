@@ -26,7 +26,7 @@ test('without age confirmation, home redirects to the age gate', async () => {
 test('confirming the age leads to home', async () => {
   renderAt('/')
   await userEvent.click(await screen.findByRole('button', { name: /j’ai 18 ans ou plus/i }))
-  expect(await screen.findByRole('button', { name: /nouvelle partie/i })).toBeInTheDocument()
+  expect(await screen.findByRole('link', { name: /jouer sur ce téléphone/i })).toBeInTheDocument()
   expect(settingsStore.getState().ageConfirmedAt).not.toBeNull()
 })
 
@@ -34,7 +34,7 @@ test('declaring under 18 shows an exit message and no access', async () => {
   renderAt('/')
   await userEvent.click(await screen.findByRole('button', { name: /j’ai moins de 18 ans/i }))
   expect(await screen.findByText(/réservée aux adultes/i)).toBeInTheDocument()
-  expect(screen.queryByRole('button', { name: /nouvelle partie/i })).not.toBeInTheDocument()
+  expect(screen.queryByRole('link', { name: /jouer sur ce téléphone/i })).not.toBeInTheDocument()
   expect(settingsStore.getState().ageConfirmedAt).toBeNull()
 })
 

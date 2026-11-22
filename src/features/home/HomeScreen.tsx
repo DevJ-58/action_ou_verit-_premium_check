@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router'
-import { ArrowRight } from 'lucide-react'
 import { Button, KenteBand } from '@/design-system'
 import { hasResumableGame } from '@/features/game/resumable'
 import { useT } from '@/i18n/useT'
 import { CardFan } from './CardFan'
+import { EntryLink } from './EntryLink'
 
 export function HomeScreen() {
   const t = useT()
@@ -29,31 +29,31 @@ export function HomeScreen() {
           </h1>
           <p className="mt-2.5 text-base leading-normal text-muted">{t.home.tagline}</p>
         </div>
-        <div className="mt-auto flex flex-col gap-2.5 px-5 pt-6 pb-5">
+        <div className="mt-auto flex flex-col gap-3 px-5 pt-6 pb-5">
           {canResume ? (
             <Button variant="truth" size="lg" onClick={() => navigate('/partie')}>
               {t.home.resume}
             </Button>
           ) : null}
-          <Button
-            size="lg"
-            className="justify-between"
-            onClick={() => navigate('/partie/nouvelle')}
-          >
-            {t.home.newGame}
-            <ArrowRight aria-hidden="true" size={22} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="lg"
-            className="justify-between normal-case tracking-normal"
-            disabled
-          >
-            {t.home.joinRoom}
-            <span className="text-xs font-extrabold tracking-[0.14em] text-gold-text uppercase">
-              {t.home.soon}
-            </span>
-          </Button>
+          <EntryLink
+            to="/salon/nouveau"
+            emoji="phone"
+            title={t.room.create}
+            hint={t.room.createHint}
+            primary
+          />
+          <EntryLink
+            to="/salon/rejoindre"
+            emoji="link"
+            title={t.room.join}
+            hint={t.room.joinHint}
+          />
+          <EntryLink
+            to="/partie/nouvelle"
+            emoji="dice"
+            title={t.room.playHere}
+            hint={t.room.playHereHint}
+          />
         </div>
       </main>
     </div>

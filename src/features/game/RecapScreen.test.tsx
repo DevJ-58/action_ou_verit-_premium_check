@@ -74,5 +74,5 @@ test('“Rejouer” restarts with the same players', async () => {
 test('without a finished game the recap goes home', async () => {
   act(() => gameStore.setState({ game: null, error: null }))
   renderAt('/partie/recap')
-  expect(await screen.findByRole('button', { name: /nouvelle partie/i })).toBeInTheDocument()
+  expect(await screen.findByRole('link', { name: /jouer sur ce téléphone/i })).toBeInTheDocument()
 })

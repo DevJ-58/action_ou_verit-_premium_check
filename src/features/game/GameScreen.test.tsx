@@ -212,5 +212,5 @@ test('completing a challenge scores and returns to the bottle', async () => {
 test('without a game, the table sends back home', async () => {
   act(() => gameStore.setState({ game: null, error: null }))
   render(<RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/partie'] })} />)
-  expect(await screen.findByRole('button', { name: /nouvelle partie/i })).toBeInTheDocument()
+  expect(await screen.findByRole('link', { name: /jouer sur ce téléphone/i })).toBeInTheDocument()
 })

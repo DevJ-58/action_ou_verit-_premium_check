@@ -52,6 +52,31 @@ export const routes: RouteObject[] = [
             }),
           },
           {
+            lazy: async () => ({
+              Component: (await import('@/features/account/RequireAccount')).RequireAccount,
+            }),
+            children: [
+              {
+                path: 'salon/nouveau',
+                lazy: async () => ({
+                  Component: (await import('@/features/room/CreateRoomScreen')).CreateRoomScreen,
+                }),
+              },
+              {
+                path: 'salon/rejoindre',
+                lazy: async () => ({
+                  Component: (await import('@/features/room/JoinRoomScreen')).JoinRoomScreen,
+                }),
+              },
+              {
+                path: 'salon/:code',
+                lazy: async () => ({
+                  Component: (await import('@/features/room/RoomScreen')).RoomScreen,
+                }),
+              },
+            ],
+          },
+          {
             path: 'compte',
             lazy: async () => ({
               Component: (await import('@/features/account/AuthScreen')).AuthScreen,
