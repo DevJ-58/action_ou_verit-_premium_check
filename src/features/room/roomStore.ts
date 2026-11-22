@@ -8,6 +8,7 @@ import { generateRoomCode } from './roomCode'
 import {
   ROOM_MAX_MEMBERS,
   type Intent,
+  type IntentBody,
   type Member,
   type RoomError,
   type RoomSetup,
@@ -68,7 +69,7 @@ export function createRoomStore(deps: {
       }
     }
 
-    function send(intent: Omit<Intent, 'id' | 'from'>) {
+    function send(intent: IntentBody) {
       const full = { ...intent, id: newId('intent'), from: self.id } as Intent
       const { room, role } = get()
       if (!room) return

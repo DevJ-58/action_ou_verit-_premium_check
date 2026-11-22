@@ -39,6 +39,13 @@ export type Intent = { id: string; from: string } & (
   | { type: 'react'; emoji: EmojiName }
 )
 
+/** An intent without the id and sender, which the room store fills in. */
+export type IntentBody = Intent extends infer I
+  ? I extends Intent
+    ? Omit<I, 'id' | 'from'>
+    : never
+  : never
+
 export type BusMessage =
   | { kind: 'state'; code: string; state: RoomState; origin?: string }
   | { kind: 'intent'; code: string; intent: Intent; origin?: string }
