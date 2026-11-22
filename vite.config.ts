@@ -17,7 +17,12 @@ function spaFallback(): Plugin {
   }
 }
 
-export const BASE_PATH = '/action_ou_verit-_premium_check/'
+/**
+ * URL prefix of the app: the repository sub-path on GitHub Pages, the root on
+ * Vercel (which sets VERCEL=1), or whatever BASE_PATH says.
+ */
+export const BASE_PATH =
+  process.env.BASE_PATH ?? (process.env.VERCEL ? '/' : '/action_ou_verit-_premium_check/')
 
 export default defineConfig({
   base: BASE_PATH,

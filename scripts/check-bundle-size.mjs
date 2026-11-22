@@ -12,10 +12,11 @@ export function initialScripts(html) {
   return [...new Set(srcs.map((m) => m[1]))].filter((src) => src.endsWith('.js'))
 }
 
-export function measure(distDir, basePath) {
+export function measure(distDir) {
   const html = readFileSync(join(distDir, 'index.html'), 'utf8')
   return initialScripts(html).map((src) => {
-    const file = join(distDir, src.startsWith(basePath) ? src.slice(basePath.length) : src)
+    // Scripts live under the base path, whatever it is: keep the part from the file name's folder.
+    const file = join(distDir, src.replace(/^.*?\/(assets\/|registerSW)/, '$1'))
     return { src, gzip: gzipSync(readFileSync(file)).length }
   })
 }
@@ -23,7 +24,7 @@ export function measure(distDir, basePath) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const distDir = process.argv[2] ?? 'dist'
   const budget = Number(process.argv[3] ?? 200) * 1024
-  const files = measure(distDir, '/action_ou_verit-_premium_check/')
+  const files = measure(distDir)
   const total = files.reduce((sum, f) => sum + f.gzip, 0)
   for (const f of files) console.log(`${(f.gzip / 1024).toFixed(1).padStart(7)} KB  ${f.src}`)
   console.log(`${(total / 1024).toFixed(1).padStart(7)} KB  total (budget ${budget / 1024} KB)`)
