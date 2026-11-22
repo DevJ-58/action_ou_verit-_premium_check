@@ -1,0 +1,111 @@
+/*
+ * Design tokens — direction « Wax & Or » (spec §10).
+ * Fixed game-object colours live on :root; themeable surfaces live on [data-theme].
+ * No gradients anywhere: depth comes from flat facets, borders and shadows.
+ */
+
+:root {
+  --gold: #e3b23c;
+  --dare: #e05a2b;
+  --dare-ink: #c2441a;
+  --truth: #4757e8;
+  --card-ivory: #fffcf5;
+  --card-rim: #c99a2e;
+  --ink: #0f0e1a;
+  --ivory: #f4ecdd;
+  --glass-1: #46b98a;
+  --glass-2: #3aa57a;
+  --glass-3: #2e8c66;
+  --glass-4: #24785a;
+  --glass-5: #1c5e45;
+}
+
+:root,
+[data-theme='nuit'] {
+  color-scheme: dark;
+  --bg: #0f0e1a;
+  --text: #f4ecdd;
+  --muted: #cfc7b8;
+  --gold: #e3b23c;
+  --gold-text: #e3b23c;
+  --on-gold: #0f0e1a;
+  --seat: #2a2742;
+  --facet-1: #24213a;
+  --facet-2: #1b1930;
+  --facet-3: #2a2742;
+  --facet-4: #1f1d35;
+  --kente-dark: #0f0e1a;
+  --line: rgb(227 178 60 / 0.45);
+  --shadow: rgb(0 0 0 / 0.55);
+}
+
+[data-theme='ivoire'] {
+  color-scheme: light;
+  --bg: #f4ecdd;
+  --text: #1a1726;
+  --muted: #544c60;
+  --gold: #c9971f;
+  --gold-text: #7e5b0c;
+  --on-gold: #1a1726;
+  --seat: #fffcf5;
+  --facet-1: #e7dcc7;
+  --facet-2: #dccdb3;
+  --facet-3: #efe6d5;
+  --facet-4: #e1d4bd;
+  --kente-dark: #1a1726;
+  --line: rgb(138 100 16 / 0.4);
+  --shadow: rgb(70 45 10 / 0.25);
+}
+
+[data-theme='terre'] {
+  color-scheme: dark;
+  --bg: #3a1e14;
+  --text: #f7e9d7;
+  --muted: #e0c9b0;
+  --gold: #e3b23c;
+  --gold-text: #e3b23c;
+  --on-gold: #2a140c;
+  --seat: #5a3324;
+  --facet-1: #4c2a1d;
+  --facet-2: #43251a;
+  --facet-3: #58321f;
+  --facet-4: #3f2218;
+  --kente-dark: #2a140c;
+  --line: rgb(227 178 60 / 0.5);
+  --shadow: rgb(0 0 0 / 0.45);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-gold-text: var(--gold-text);
+  --color-on-gold: var(--on-gold);
+  --color-seat: var(--seat);
+  --color-dare: var(--dare);
+  --color-dare-ink: var(--dare-ink);
+  --color-truth: var(--truth);
+  --color-card-ivory: var(--card-ivory);
+  --color-card-rim: var(--card-rim);
+  --color-ink: var(--ink);
+  --color-ivory: var(--ivory);
+
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  --shadow-card: 0 24px 44px var(--shadow);
+  --shadow-soft: 0 16px 30px var(--shadow);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+}

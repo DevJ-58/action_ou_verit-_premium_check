@@ -170,11 +170,18 @@ supabase/
 tests/e2e/        parcours Playwright
 ```
 
-## 10. Design
+## 10. Design (validé le 2026-11-22)
 
-- Direction à finaliser avec les skills design (ui-ux-pro-max, awwwards) et une maquette validée par le porteur du projet avant d'écrire les écrans.
-- Piste proposée : **« Nuit de fête »** : fond encre profond, un accent chaud pour Action et un accent froid pour Vérité, typographie d'affichage expressive, bouteille travaillée au centre, micro-animations et retours haptiques, aucune donnée fictive affichée.
-- Accessibilité : contrastes AA, zones tactiles ≥ 44 px, respect de « réduire les animations ».
+Maquette validée : https://claude.ai/artifact/6Cz7dYpSgQFWCr5KE89W2m
+
+- **Direction « Wax & Or »** : motifs africains modernes (bandes kente, chevrons bogolan, motif wax en losanges), cartes de jeu de luxe (cartes à coins « A » / « V », liseré or), table et bouteille en facettes « taillées » (3D), **aucun dégradé**.
+- **Couleurs fixes des objets du jeu** : or `#E3B23C`, Action = terracotta `#E05A2B` (texte `#C2441A` sur ivoire), Vérité = indigo `#4757E8`, carte Action ivoire `#FFFCF5`, bouteille verre vert en facettes.
+- **Thèmes au choix du joueur** (réglés dans l'onglet Profil) : **Nuit** (fond `#0F0E1A`, texte `#F4ECDD`), **Ivoire** (fond `#F4ECDD`, texte `#1A1726`, or texte `#7E5B0C`), **Terre** (fond `#3A1E14`, texte `#F7E9D7`). Les cartes et la bouteille sont identiques dans tous les thèmes.
+- **Typographie par usage** : DM Serif Display pour les mots courts d'apparat (titre d'accueil 46, mots de carte 54, initiales des joueurs) ; Plus Jakarta Sans pour tout le reste — texte du défi 600 · 22/1.4, titre d'écran 800 · 26, boutons 800 · 16 capitales espacées, corps 400 · 16/1.5, étiquettes 800 · 12 capitales très espacées, chiffres 800 tabulaires.
+- **Avatars** : initiales en DM Serif Display dans un médaillon cerclé d'or (joueur désigné : terracotta + double anneau or ; poseur : indigo + anneau clair).
+- **Navigation** : Jouer · Joueurs · Mes défis · Profil (le Profil regroupe thème, langue, son, vibrations).
+- **3D** : table et bouteille en vraie 3D sur l'écran de jeu, chargées uniquement sur cet écran ; repli en facettes 2D (SVG) si WebGL est indisponible ou si les animations sont réduites.
+- Accessibilité : contrastes AA dans les 3 thèmes, zones tactiles ≥ 44 px, respect de « réduire les animations ».
 
 ## 11. Étapes de livraison V1
 

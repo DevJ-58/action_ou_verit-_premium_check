@@ -18,6 +18,7 @@
 - Interface FR (par défaut) + EN ; contenu des défis en FR uniquement en V1.
 - JS initial ≤ 200 Ko gzip ; premier affichage < 2,5 s en 4G moyenne ; mobile d'abord, utilisable sur ordinateur.
 - Accessibilité : contrastes AA, zones tactiles ≥ 44 px, respect de `prefers-reduced-motion`.
+- Design validé « Wax & Or » (spec §10) : 3 thèmes `nuit` | `ivoire` | `terre` (choix dans Profil), aucun dégradé, polices DM Serif Display (mots d'apparat) + Plus Jakarta Sans (tout le reste, chiffres tabulaires), auto-hébergées (`@fontsource`) pour le hors-ligne.
 - Organisation : un composant par fichier, fichiers ≈ 200 lignes max, logique métier hors des composants, **aucun composant défini dans un autre**, rangement par fonctionnalité (arborescence du spec §9.2).
 - Aucune donnée fictive affichée comme réelle (pas de faux joueurs, fausses stats).
 - 8 catégories (spec §9.1) : `fun` Juste pour rire (1), `honest` Limite franchise (1–2), `romantic` Romantique (2), `closer` Rapproche-toi (2), `spicy` Osé (3), `night` Après la tombée de la nuit (3), `intimate` Très intime (4), `noreturn` Pas de retour en arrière (4). Gratuites : `fun`, `honest`, `romantic`.
@@ -102,11 +103,11 @@
 **Interfaces:**
 - Produces:
   - `safeStorage: StateStorage` (interface Zustand `persist`) — `getItem`/`setItem`/`removeItem` qui ne lèvent jamais ; JSON invalide → `null`.
-  - `useSettingsStore` : `{ language: 'fr'|'en', sound: boolean, haptics: boolean, ageConfirmedAt: string|null, setLanguage, setSound, setHaptics, confirmAge(): void }` persisté sous la clé `av:settings` version `1`.
+  - `useSettingsStore` : `{ language: 'fr'|'en', theme: 'nuit'|'ivoire'|'terre', sound: boolean, haptics: boolean, ageConfirmedAt: string|null, setLanguage, setTheme, setSound, setHaptics, confirmAge(): void }` persisté sous la clé `av:settings` version `1`.
   - `fr` est la source de vérité ; `type Dictionary = typeof fr` ; `en: Dictionary` (le compilateur refuse une clé manquante).
   - `useT(): Dictionary` (langue courante) ; `format(template: string, vars: Record<string, string|number>): string` remplace `{name}`.
 
-- [ ] **Step 1: Tests qui échouent** — `safeStorage.getItem` renvoie `null` quand `localStorage.getItem` lève ; `setItem` ne lève pas quand le quota est dépassé ; `useSettingsStore` réhydraté depuis une valeur corrompue (`"{oops"`) donne les défauts (`language: 'fr'`, `sound: true`, `haptics: true`, `ageConfirmedAt: null`) ; `format('Salut {name}', { name: 'Awa' }) === 'Salut Awa'` et une variable absente laisse `{name}` intact.
+- [ ] **Step 1: Tests qui échouent** — `safeStorage.getItem` renvoie `null` quand `localStorage.getItem` lève ; `setItem` ne lève pas quand le quota est dépassé ; `useSettingsStore` réhydraté depuis une valeur corrompue (`"{oops"`) donne les défauts (`language: 'fr'`, `theme: 'nuit'`, `sound: true`, `haptics: true`, `ageConfirmedAt: null`) ; `format('Salut {name}', { name: 'Awa' }) === 'Salut Awa'` et une variable absente laisse `{name}` intact.
 - [ ] **Step 2:** `npm test -- safeStorage settingsStore format` → FAIL.
 - [ ] **Step 3:** Implémenter ; `persist` avec `version: 1` et `migrate` qui renvoie les défauts pour toute version inconnue.
 - [ ] **Step 4:** Tests → PASS.
@@ -225,19 +226,19 @@
 ### Task 9: Coquille de l'app, routage et porte 18+
 
 **Files:**
-- Create: `src/app/router.tsx`, `src/app/RootLayout.tsx`, `src/app/BottomNav.tsx`, `src/app/RequireAge.tsx`, `src/features/onboarding/AgeGateScreen.tsx`, `src/features/home/HomeScreen.tsx`, `src/features/settings/SettingsScreen.tsx`, `public/404.html` (généré au build)
+- Create: `src/app/router.tsx`, `src/app/RootLayout.tsx`, `src/app/BottomNav.tsx`, `src/app/RequireAge.tsx`, `src/features/onboarding/AgeGateScreen.tsx`, `src/features/home/HomeScreen.tsx`, `src/features/profile/ProfileScreen.tsx`, `src/features/dares/MyDaresScreen.tsx`, `public/404.html` (généré au build)
 - Modify: `src/app/App.tsx`
 - Test: `src/app/router.test.tsx`, `src/features/onboarding/AgeGateScreen.test.tsx`
 
 **Interfaces:**
 - Consumes: Tasks 3 et 4.
-- Produces — routes (basename `import.meta.env.BASE_URL`) : `/bienvenue`, `/` (accueil), `/joueurs`, `/joueurs/:playerId`, `/partie/nouvelle`, `/partie`, `/partie/recap`, `/reglages`. Barre du bas sur `/`, `/joueurs`, `/reglages` uniquement. Écrans lourds chargés en `lazy`.
+- Produces — routes (basename `import.meta.env.BASE_URL`) : `/bienvenue`, `/` (accueil), `/joueurs`, `/joueurs/:playerId`, `/partie/nouvelle`, `/partie`, `/partie/recap`, `/defis`, `/profil`. Barre du bas (Jouer · Joueurs · Mes défis · Profil) sur `/`, `/joueurs`, `/defis`, `/profil` uniquement. Le thème choisi est appliqué via `data-theme` sur `<html>`. Écrans lourds chargés en `lazy`.
 
-- [ ] **Step 1: Tests qui échouent** — sans `ageConfirmedAt`, `/` redirige vers `/bienvenue` ; « J'ai 18 ans ou plus » appelle `confirmAge` et mène à `/` ; « J'ai moins de 18 ans » affiche un message de sortie, sans accès ; la barre du bas n'apparaît pas sur `/partie` ; le changement de langue dans Réglages traduit l'accueil.
+- [ ] **Step 1: Tests qui échouent** — sans `ageConfirmedAt`, `/` redirige vers `/bienvenue` ; « J'ai 18 ans ou plus » appelle `confirmAge` et mène à `/` ; « J'ai moins de 18 ans » affiche un message de sortie, sans accès ; la barre du bas n'apparaît pas sur `/partie` ; le changement de langue dans Profil traduit l'accueil ; le choix du thème Ivoire pose `data-theme="ivoire"` sur `<html>`.
 - [ ] **Step 2:** Tests → FAIL.
 - [ ] **Step 3:** Implémenter ; l'accueil montre « Nouvelle partie », « Reprendre la partie » (seulement si une partie est en cours, cf. Task 12) et aucune statistique fictive. Étape de build qui copie `index.html` vers `404.html`.
 - [ ] **Step 4:** Tests → PASS ; `npm run build` OK.
-- [ ] **Step 5: Commit** `feat(app): routing, age gate, home and settings`
+- [ ] **Step 5: Commit** `feat(app): routing, age gate, home, my dares and profile`
 
 ### Task 10: Joueurs inscrits sur le téléphone et leurs défis perso
 
@@ -295,7 +296,7 @@
   - avec `timerSeconds: 30`, l'anneau de décompte s'affiche et annonce « Temps écoulé » à 0 sans changer la phase ;
   - « Passer » est désactivé quand `skipsLeft === 0`.
 - [ ] **Step 2:** Tests → FAIL.
-- [ ] **Step 3:** Implémenter : places réparties sur le cercle avec `seatAngle` ; bouteille animée avec Motion jusqu'à `bottleRotation` (≈ 4 s, courbe qui ralentit ; instantané si animations réduites) puis `SPIN_SETTLED` à la fin de l'animation ; avec `picker: 'random'`, un balayage lumineux de place en place remplace la bouteille ; répondant et poseur mis en évidence (couleurs Vérité/Action) ; carte défi orientée vers le répondant ; quitter la partie via un `Sheet` de confirmation.
+- [ ] **Step 3:** Implémenter : places réparties sur le cercle avec `seatAngle` ; table et bouteille en facettes : rendu 3D (three.js, chargé en `lazy` uniquement sur l'écran de jeu, hors budget JS initial) avec repli SVG en facettes si WebGL indisponible ou animations réduites ; bouteille animée avec Motion jusqu'à `bottleRotation` (≈ 4 s, courbe qui ralentit ; instantané si animations réduites) puis `SPIN_SETTLED` à la fin de l'animation ; avec `picker: 'random'`, un balayage lumineux de place en place remplace la bouteille ; répondant et poseur mis en évidence (couleurs Vérité/Action) ; carte défi orientée vers le répondant ; quitter la partie via un `Sheet` de confirmation.
 - [ ] **Step 4:** Tests → PASS ; vérification manuelle sur 390×844 et 1280×800, avec 2, 5 et 12 joueurs (captures dans la PR).
 - [ ] **Step 5: Commit** `feat(game): table, bottle, asker panel and challenge card`
 

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Accueil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#C9971F}a:hover{color:#E3B23C}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.text}}; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column;">
+  <div aria-hidden="true" style="display: flex; margin-top: 46px; height: 26px; overflow: hidden;">
+    <sc-for list="{{kente}}" as="k" hint-placeholder-count="7">
+      <div style="display: flex; width: 65px; height: 26px; flex-shrink: 0;">
+        <div style="width: 22px; background: #E3B23C; display: flex; flex-direction: column; justify-content: space-around; align-items: center;"><span style="width: 12px; height: 4px; background: {{t.kente}};"></span><span style="width: 12px; height: 4px; background: {{t.kente}};"></span></div>
+        <div style="width: 5px; background: #E05A2B;"></div>
+        <div style="width: 3px; background: {{t.kente}};"></div>
+        <div style="width: 20px; background: #4757E8; display: flex; flex-direction: column; justify-content: space-around; padding: 2px 0; box-sizing: border-box;"><span style="width: 8px; height: 3px; background: #E3B23C; margin-left: 2px;"></span><span style="width: 8px; height: 3px; background: #E3B23C; margin-left: 10px;"></span><span style="width: 8px; height: 3px; background: #E3B23C; margin-left: 2px;"></span><span style="width: 8px; height: 3px; background: #E3B23C; margin-left: 10px;"></span></div>
+        <div style="width: 5px; background: #E05A2B;"></div>
+        <div style="width: 10px; background: {{t.kente}}; display: flex; align-items: center; justify-content: center;"><span style="width: 6px; height: 6px; background: #E3B23C; transform: rotate(45deg);"></span></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 16px 22px 0;">
+    <span style="font-family: 'DM Serif Display', serif; font-size: 20px; color: {{t.goldText}};">A <span style="font-size: 12px; vertical-align: 3px;">◆</span> V</span>
+    <span style="border: 1.5px solid {{t.goldText}}; color: {{t.goldText}}; border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.14em;">18+</span>
+  </header>
+
+  <div aria-hidden="true" style="position: relative; height: 316px; margin-top: 14px; perspective: 900px;">
+    <div style="position: absolute; left: 105px; top: 4px; width: 180px; height: 256px; border-radius: 18px; background: #0F0E1A; border: 1.5px solid #E3B23C; transform: rotate(-1deg) translateY(-8px); box-shadow: 0 20px 40px {{t.shadow}}; overflow: hidden;">
+      <svg width="180" height="256" viewBox="0 0 180 256">
+        <defs><pattern id="wax" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M12 2 L22 12 L12 22 L2 12 Z" fill="none" stroke="#E3B23C" stroke-width="1.2"></path><circle cx="12" cy="12" r="2.4" fill="#E05A2B"></circle></pattern></defs>
+        <rect x="10" y="10" width="160" height="236" rx="10" fill="url(#wax)"></rect>
+      </svg>
+    </div>
+    <div style="position: absolute; left: 34px; top: 44px; width: 180px; height: 256px; border-radius: 18px; background: #4757E8; transform: rotateY(14deg) rotate(-12deg); box-shadow: 0 24px 44px {{t.shadow}}; display: flex; flex-direction: column; justify-content: space-between; padding: 14px; box-sizing: border-box;">
+      <div style="position: absolute; left: 7px; top: 7px; right: 7px; bottom: 7px; border: 1.2px solid #E3B23C; border-radius: 12px;"></div>
+      <span style="font-family: 'DM Serif Display', serif; font-size: 24px; color: #F4ECDD; line-height: 0.9;">V<br><span style="font-size: 12px; color: #E3B23C;">◆</span></span>
+      <span style="align-self: center; font-family: 'DM Serif Display', serif; font-size: 38px; color: #F4ECDD;">Vérité</span>
+      <span style="align-self: flex-end; transform: rotate(180deg); font-family: 'DM Serif Display', serif; font-size: 24px; color: #F4ECDD; line-height: 0.9;">V<br><span style="font-size: 12px; color: #E3B23C;">◆</span></span>
+    </div>
+    <div style="position: absolute; left: 176px; top: 56px; width: 180px; height: 256px; border-radius: 18px; background: #FFFCF5; transform: rotateY(-14deg) rotate(10deg); box-shadow: 0 28px 50px {{t.shadow}}; display: flex; flex-direction: column; justify-content: space-between; padding: 14px; box-sizing: border-box;">
+      <div style="position: absolute; left: 7px; top: 7px; right: 7px; bottom: 7px; border: 1.2px solid #C99A2E; border-radius: 12px;"></div>
+      <span style="font-family: 'DM Serif Display', serif; font-size: 24px; color: #C2441A; line-height: 0.9;">A<br><span style="font-size: 12px; color: #C99A2E;">◆</span></span>
+      <div style="align-self: center; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <svg width="90" height="14" viewBox="0 0 90 14"><path d="M0 12 L7.5 2 L15 12 L22.5 2 L30 12 L37.5 2 L45 12 L52.5 2 L60 12 L67.5 2 L75 12 L82.5 2 L90 12" fill="none" stroke="#0F0E1A" stroke-width="2"></path></svg>
+        <span style="font-family: 'DM Serif Display', serif; font-size: 38px; color: #0F0E1A; line-height: 1;">Action</span>
+        <svg width="90" height="14" viewBox="0 0 90 14"><path d="M0 2 L7.5 12 L15 2 L22.5 12 L30 2 L37.5 12 L45 2 L52.5 12 L60 2 L67.5 12 L75 2 L82.5 12 L90 2" fill="none" stroke="#E05A2B" stroke-width="2"></path></svg>
+      </div>
+      <span style="align-self: flex-end; transform: rotate(180deg); font-family: 'DM Serif Display', serif; font-size: 24px; color: #C2441A; line-height: 0.9;">A<br><span style="font-size: 12px; color: #C99A2E;">◆</span></span>
+    </div>
+  </div>
+
+  <div style="padding: 0 22px;">
+    <h1 style="margin: 0; font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 46px; line-height: 1; letter-spacing: -0.01em;">Action <span style="font-style: italic; color: {{t.goldText}};">ou</span> Vérité</h1>
+    <p style="margin: 10px 0 0; font-size: 16px; line-height: 1.5; color: {{t.muted}};">Le téléphone au centre, chacun à sa place. Tirez la carte, assumez-la.</p>
+  </div>
+
+  <div style="margin-top: auto; padding: 0 22px 20px; display: flex; flex-direction: column; gap: 10px;">
+    <button style="height: 60px; border: 0; border-radius: 16px; background: {{t.gold}}; color: {{t.onGold}}; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.06em; display: flex; align-items: center; justify-content: space-between; padding: 0 22px;">
+      NOUVELLE PARTIE
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M4 12h15M13 5l7 7-7 7"></path></svg>
+    </button>
+    <button style="height: 54px; border: 1.5px solid {{t.line}}; border-radius: 16px; background: transparent; color: {{t.text}}; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 16px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px;">
+      Rejoindre un salon
+      <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: {{t.goldText}};">BIENTÔT</span>
+    </button>
+  </div>
+
+  <nav aria-label="Navigation principale" style="display: flex; justify-content: space-around; padding: 10px 12px 28px; border-top: 1px solid {{t.line}};">
+    <a href="#" aria-current="page" style="min-width: 76px; min-height: 48px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {{t.goldText}}; text-decoration: none; font-size: 12px; font-weight: 800;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="5" y="3" width="11" height="16" rx="2" transform="rotate(-8 10 11)"></rect><rect x="9" y="5" width="11" height="16" rx="2" transform="rotate(8 14 13)"></rect></svg>
+      Jouer
+    </a>
+    <a href="#" style="min-width: 76px; min-height: 48px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {{t.muted}}; text-decoration: none; font-size: 12px; font-weight: 600;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"></circle><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6"></path><path d="M16 5.5a3 3 0 0 1 0 5.6M17 14.6c2 .4 3.3 1.8 3.8 4.4"></path></svg>
+      Joueurs
+    </a>
+    <a href="#" style="min-width: 76px; min-height: 48px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {{t.muted}}; text-decoration: none; font-size: 12px; font-weight: 600;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 10l6-1z"></path></svg>
+      Mes défis
+    </a>
+    <a href="#" style="min-width: 76px; min-height: 48px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {{t.muted}}; text-decoration: none; font-size: 12px; font-weight: 600;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8.5" r="3.8"></circle><path d="M4.5 20c1-3.6 3.9-5.6 7.5-5.6s6.5 2 7.5 5.6"></path></svg>
+      Profil
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nuit","ivoire","terre"],"default":"nuit"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const THEMES = {
+      nuit: { bg: '#0F0E1A', text: '#F4ECDD', muted: '#CFC7B8', line: 'rgba(227,178,60,0.45)', gold: '#E3B23C', onGold: '#0F0E1A', goldText: '#E3B23C', kente: '#0F0E1A', shadow: 'rgba(0,0,0,0.6)' },
+      ivoire: { bg: '#F4ECDD', text: '#1A1726', muted: '#544C60', line: 'rgba(138,100,16,0.4)', gold: '#C9971F', onGold: '#1A1726', goldText: '#7E5B0C', kente: '#1A1726', shadow: 'rgba(70,45,10,0.25)' },
+      terre: { bg: '#3A1E14', text: '#F7E9D7', muted: '#E0C9B0', line: 'rgba(227,178,60,0.5)', gold: '#E3B23C', onGold: '#2A140C', goldText: '#E3B23C', kente: '#2A140C', shadow: 'rgba(0,0,0,0.5)' },
+    };
+    return { t: THEMES[this.props.theme ?? 'nuit'] ?? THEMES.nuit, kente: [0, 1, 2, 3, 4, 5, 6].map((i) => ({ i })) };
+  }
+}
+</script>
+</body>
+</html>
