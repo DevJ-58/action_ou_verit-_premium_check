@@ -1,6 +1,8 @@
 import type { Dare } from '@/engine'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
+import { motion } from 'motion/react'
+import { springs } from '@/design-system/motion'
 import { cn } from '@/lib/cn'
 import { dareTextSize } from './dareTextSize'
 
@@ -26,7 +28,11 @@ export function ChallengeCard({ dare, rotation, byline }: ChallengeCardProps) {
   const sideways = rotation === 90 || rotation === 270
   return (
     <div data-sideways={sideways} className={sideways ? SIDEWAYS_FRAME : UPRIGHT_FRAME}>
-      <article
+      <motion.article
+        key={dare.id}
+        initial={{ opacity: 0, rotateY: -80, scale: 0.9 }}
+        animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+        transition={springs.bouncy}
         data-rotation={rotation}
         style={{ rotate: `${rotation}deg` }}
         className={cn(
@@ -106,7 +112,7 @@ export function ChallengeCard({ dare, rotation, byline }: ChallengeCardProps) {
           </span>
           <span className="text-xs font-semibold opacity-80">{byline}</span>
         </div>
-      </article>
+      </motion.article>
     </div>
   )
 }

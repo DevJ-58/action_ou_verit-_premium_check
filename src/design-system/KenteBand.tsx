@@ -1,4 +1,5 @@
-const UNITS = Array.from({ length: 8 }, (_, i) => i)
+// Enough units to cover wide desktops; the band clips the rest.
+const UNITS = Array.from({ length: 40 }, (_, i) => i)
 
 /** Decorative kente-inspired band (flat colours, no gradients). */
 export function KenteBand() {

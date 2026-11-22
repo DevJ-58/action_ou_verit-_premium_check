@@ -1,3 +1,4 @@
+import { Emoji } from '@/design-system'
 import type { ChallengeKind } from '@/engine'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
@@ -24,24 +25,30 @@ export function KindChooser({ answerer, subtitle, onChoose }: KindChooserProps) 
         <button
           type="button"
           onClick={() => onChoose('truth')}
-          className="relative h-30 flex-1 -rotate-3 rounded-2xl bg-truth font-display text-[32px] text-ivory shadow-soft active:scale-95"
+          className="relative h-36 flex-1 -rotate-3 rounded-[26px] bg-truth font-display text-[32px] text-ivory shadow-soft active:scale-95"
         >
           <span
             aria-hidden="true"
             className="absolute inset-1.5 rounded-[11px] border border-[#e3b23c]"
           />
-          {t.game.truth}
+          <span className="flex flex-col items-center gap-1">
+            <Emoji name="thinking" size={34} />
+            {t.game.truth}
+          </span>
         </button>
         <button
           type="button"
           onClick={() => onChoose('dare')}
-          className="relative h-30 flex-1 rotate-3 rounded-2xl bg-card-ivory font-display text-[32px] text-ink shadow-soft active:scale-95"
+          className="relative h-36 flex-1 rotate-3 rounded-[26px] bg-card-ivory font-display text-[32px] text-ink shadow-soft active:scale-95"
         >
           <span
             aria-hidden="true"
             className="absolute inset-1.5 rounded-[11px] border border-card-rim"
           />
-          {t.game.dare}
+          <span className="flex flex-col items-center gap-1">
+            <Emoji name="fire" size={34} />
+            {t.game.dare}
+          </span>
         </button>
       </div>
     </div>

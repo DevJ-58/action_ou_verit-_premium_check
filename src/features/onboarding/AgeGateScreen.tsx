@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router'
-import { Button, KenteBand } from '@/design-system'
+import { Button, Emoji, KenteBand } from '@/design-system'
 import { settingsStore, useSettings } from '@/features/settings/settingsStore'
 import { useT } from '@/i18n/useT'
 
@@ -16,7 +16,8 @@ export function AgeGateScreen() {
     <div className="flex min-h-dvh flex-col pt-[env(safe-area-inset-top)]">
       <KenteBand />
       <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-6 pt-14 pb-8">
-        <p className="text-xs font-extrabold tracking-[0.18em] text-gold-text uppercase">
+        <Emoji name="champagne" size={64} />
+        <p className="mt-4 text-xs font-extrabold tracking-[0.18em] text-gold-text uppercase">
           {t.ageGate.eyebrow}
         </p>
         <h1 className="mt-3 font-display text-5xl leading-none">{t.ageGate.title}</h1>

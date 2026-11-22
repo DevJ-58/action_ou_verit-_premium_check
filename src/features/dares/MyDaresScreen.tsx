@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
-import { Avatar, Screen } from '@/design-system'
+import { Avatar, Emoji, Screen } from '@/design-system'
 import { usePlayers } from '@/features/players/playersStore'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
@@ -14,7 +14,8 @@ export function MyDaresScreen() {
   if (authors.length === 0) {
     return (
       <Screen title={t.myDares.title}>
-        <div className="m-auto max-w-xs text-center">
+        <div className="m-auto flex max-w-xs flex-col items-center text-center">
+          <Emoji name="loveLetter" size={72} />
           <p className="text-lg font-semibold">{t.myDares.empty}</p>
           <p className="mt-2 text-muted">{t.myDares.emptyHint}</p>
         </div>

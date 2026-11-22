@@ -73,6 +73,7 @@ export function TurnStage({ state, game }: TurnStageProps) {
           {isAnswerer ? <p className="text-muted">{t.roomGame.pickHint}</p> : null}
           <FaceDownCards
             count={turn.proposals?.length ?? 0}
+            faces={isAnswerer ? turn.proposals?.map((p) => p.dare.text) : undefined}
             onPick={isAnswerer ? (index) => state.act({ type: 'PICK_PROPOSAL', index }) : undefined}
           />
         </div>

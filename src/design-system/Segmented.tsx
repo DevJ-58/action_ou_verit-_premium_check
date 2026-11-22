@@ -1,5 +1,7 @@
 import { useId } from 'react'
+import { motion } from 'motion/react'
 import { cn } from '@/lib/cn'
+import { springs } from './motion'
 
 export interface SegmentedProps<T extends string> {
   label: string
@@ -23,15 +25,15 @@ export function Segmented<T extends string>({
       <div
         role="radiogroup"
         aria-label={label}
-        className="flex gap-1.5 rounded-lg border border-line p-1"
+        className="flex gap-1 rounded-full border border-line p-1"
       >
         {options.map((option) => (
           <label
             key={option.value}
             className={cn(
-              'flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-md px-2 text-sm font-bold',
+              'relative flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full px-2 text-sm font-bold',
               'has-focus-visible:outline-2 has-focus-visible:outline-gold',
-              option.value === value ? 'bg-gold text-on-gold' : 'text-text',
+              option.value === value ? 'text-on-gold' : 'text-text',
             )}
           >
             <input
@@ -42,7 +44,15 @@ export function Segmented<T extends string>({
               checked={option.value === value}
               onChange={() => onChange(option.value)}
             />
-            {option.label}
+            {option.value === value ? (
+              <motion.span
+                layoutId={`seg-${name}`}
+                transition={springs.snappy}
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full bg-gold"
+              />
+            ) : null}
+            <span className="relative">{option.label}</span>
           </label>
         ))}
       </div>

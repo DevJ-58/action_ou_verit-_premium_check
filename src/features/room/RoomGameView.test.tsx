@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { systemDares } from '@/content/systemDares'
@@ -121,7 +121,7 @@ test('the answerer turns over one face-down card', async () => {
   const cards = screen.getAllByRole('button', { name: /carte \d/i })
   expect(cards).toHaveLength(2)
   await userEvent.click(cards[1]!)
-  expect(s.act).toHaveBeenCalledWith({ type: 'PICK_PROPOSAL', index: 1 })
+  await waitFor(() => expect(s.act).toHaveBeenCalledWith({ type: 'PICK_PROPOSAL', index: 1 }))
 })
 
 test('in the challenge, everyone sees the card and its author; the answerer can say it is done', async () => {

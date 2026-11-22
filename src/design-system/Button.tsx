@@ -1,4 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react'
+import { motion } from 'motion/react'
+import { springs } from './motion'
 import { cn } from '@/lib/cn'
 
 export type ButtonVariant = 'primary' | 'truth' | 'dare' | 'ghost' | 'danger'
@@ -28,19 +30,21 @@ export function Button({
   ...rest
 }: ButtonProps) {
   return (
-    <button
+    <motion.button
       type={type}
+      whileTap={disabled || loading ? undefined : { scale: 0.96 }}
+      transition={springs.snappy}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        'inline-flex select-none items-center justify-center gap-2.5 rounded-lg px-5 font-extrabold tracking-[0.06em] uppercase',
-        'transition-[transform,opacity] duration-(--dur-fast) ease-(--ease-out-expo) active:scale-[0.97]',
+        'inline-flex select-none items-center justify-center gap-2.5 rounded-full px-6 font-extrabold tracking-[0.06em] uppercase',
+        'transition-[opacity,background-color] duration-(--dur-fast)',
         'disabled:cursor-not-allowed disabled:opacity-50',
         size === 'lg' ? 'min-h-15 text-base' : 'min-h-12 text-sm',
         variants[variant],
         className,
       )}
-      {...rest}
+      {...(rest as object)}
     >
       {loading ? (
         <span
@@ -49,6 +53,6 @@ export function Button({
         />
       ) : null}
       {children}
-    </button>
+    </motion.button>
   )
 }

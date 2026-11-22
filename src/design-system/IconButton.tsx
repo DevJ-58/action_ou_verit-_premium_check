@@ -13,7 +13,7 @@ export function IconButton({ label, icon, className, type = 'button', ...rest }:
       aria-label={label}
       title={label}
       className={cn(
-        'inline-flex size-12 items-center justify-center rounded-md border-[1.5px] border-line text-text',
+        'inline-flex size-12 items-center justify-center rounded-full border-[1.5px] border-line text-text',
         'transition-transform duration-(--dur-fast) active:scale-95',
         className,
       )}

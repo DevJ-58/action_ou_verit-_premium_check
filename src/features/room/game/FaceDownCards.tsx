@@ -1,16 +1,21 @@
+import { useState } from 'react'
 import { motion } from 'motion/react'
+import { FlipCard } from '@/design-system'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 
 export interface FaceDownCardsProps {
   count: number
+  /** Texts revealed when a card turns over (answerer only). */
+  faces?: string[]
   /** When given, cards can be turned over (the answerer); otherwise they are shown only. */
   onPick?: (index: number) => void
 }
 
 /** The proposals as face-down wax cards, fanned out. */
-export function FaceDownCards({ count, onPick }: FaceDownCardsProps) {
+export function FaceDownCards({ count, faces, onPick }: FaceDownCardsProps) {
   const t = useT()
+  const [turned, setTurned] = useState<number | null>(null)
   const spread = Math.min(14, 40 / Math.max(1, count))
   return (
     <div className="flex flex-wrap justify-center gap-3 py-4">
@@ -46,16 +51,22 @@ export function FaceDownCards({ count, onPick }: FaceDownCardsProps) {
             transition={{ delay: i * 0.08, type: 'spring', stiffness: 260, damping: 18 }}
           >
             {onPick ? (
-              <motion.button
-                type="button"
-                aria-label={label}
-                whileHover={{ y: -10 }}
-                whileTap={{ scale: 0.92, rotateY: 90 }}
-                onClick={() => onPick(i)}
-                className="block rounded-[18px]"
-              >
-                {face}
-              </motion.button>
+              <FlipCard
+                label={label}
+                flipped={turned === i}
+                className="h-40 w-28"
+                back={face}
+                front={
+                  <span className="flex size-full items-center rounded-[18px] bg-card-ivory p-3 text-left text-sm leading-snug font-semibold text-ink shadow-card">
+                    {faces?.[i] ?? ''}
+                  </span>
+                }
+                onFlip={() => {
+                  if (turned !== null) return
+                  setTurned(i)
+                  setTimeout(() => onPick(i), 650)
+                }}
+              />
             ) : (
               <span role="img" aria-label={label} className="block">
                 {face}

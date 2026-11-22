@@ -1,4 +1,5 @@
 import { CATEGORIES } from '@/content/categories'
+import { Emoji } from '@/design-system'
 import type { CategoryId } from '@/engine'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
@@ -24,12 +25,19 @@ export function CategoryGrid({ selected, onChange }: CategoryGridProps) {
               onChange(on ? selected.filter((id) => id !== c.id) : [...selected, c.id])
             }
             className={cn(
-              'flex min-h-28 flex-col justify-between rounded-xl border-[1.5px] p-3.5 text-left transition-colors',
+              'flex min-h-32 flex-col justify-between gap-2 rounded-[24px] border-[1.5px] p-4 text-left transition-colors active:scale-[0.98]',
               on ? 'border-gold bg-gold text-on-gold' : 'border-line text-text',
             )}
           >
-            <span className="text-base leading-tight font-extrabold">
-              {t.categories[c.id].name}
+            <span className="flex items-start justify-between gap-2">
+              <span className="text-base leading-tight font-extrabold">
+                {t.categories[c.id].name}
+              </span>
+              <Emoji
+                name={c.emoji}
+                size={30}
+                className={on ? 'scale-110 transition-transform' : 'transition-transform'}
+              />
             </span>
             <span className={cn('text-xs leading-snug', on ? 'text-on-gold' : 'text-muted')}>
               {t.categories[c.id].description}

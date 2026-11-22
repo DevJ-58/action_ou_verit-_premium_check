@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { ChevronRight, UserPlus } from 'lucide-react'
-import { Avatar, Button, Screen, Sheet } from '@/design-system'
+import { Avatar, Button, Emoji, Screen, Sheet } from '@/design-system'
 import { useT } from '@/i18n/useT'
 import { format } from '@/i18n/format'
 import { AddPlayerForm } from './AddPlayerForm'
@@ -15,7 +15,8 @@ export function PlayersScreen() {
   return (
     <Screen title={t.players.title}>
       {players.length === 0 ? (
-        <div className="my-auto text-center">
+        <div className="my-auto flex flex-col items-center text-center">
+          <Emoji name="people" size={72} />
           <p className="text-lg font-semibold">{t.players.empty}</p>
           <p className="mt-2 text-muted">{t.players.emptyHint}</p>
         </div>
