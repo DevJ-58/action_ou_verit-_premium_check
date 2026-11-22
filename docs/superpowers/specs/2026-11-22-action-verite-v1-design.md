@@ -1,6 +1,6 @@
 # Action ou Vérité — Refonte V1 : document de conception
 
-Date : 2026-11-22 · Statut : en attente de validation
+Date : 2026-11-22 · Statut : validé par le porteur du projet
 
 ## 1. Intention
 
@@ -11,7 +11,7 @@ L'objectif est de **tout reconstruire selon les bonnes pratiques, de la logique 
 ## 2. Objectifs V1
 
 1. **Trois façons de jouer**
-   - **Un seul téléphone** (« pass-and-play ») : le téléphone passe de main en main, fonctionne hors ligne.
+   - **Un seul téléphone, posé au centre** : tous les joueurs s'inscrivent sur le même téléphone (pseudo + avatar) et prennent place autour, chacun à sa position sur le cercle affiché à l'écran ; inutile de se passer le téléphone. Fonctionne hors ligne.
    - **Plusieurs téléphones, même lieu** : un hôte crée un salon, les autres rejoignent par code à 6 caractères, lien ou QR code ; la bouteille tourne en même temps sur tous les écrans.
    - **À distance** : même salon, plus chat et appel vidéo.
 2. **Chat de salon** (uniquement pendant une partie) : messages texte, messages vocaux courts (≤ 30 s), réactions emoji en direct.
@@ -61,7 +61,9 @@ L'objectif est de **tout reconstruire selon les bonnes pratiques, de la logique 
 ### 6.3 Déroulé d'une partie (machine à états)
 `lobby → spinning → choosing (Action / Vérité) → challenge → resolved → (tour suivant | finished)`
 - **Bouteille** : la cible est tirée d'abord, l'animation s'arrête exactement sur le joueur tiré (tours entiers + angle de la cible). Alternative « tirage aléatoire » pour les grands groupes.
-- **Défi** : tiré selon catégories, type, mode (sur place / à distance), limites du joueur, sans répétition dans la partie.
+- **Qui pose, qui répond** : le goulot de la bouteille désigne le joueur qui relève le défi ; le cul de la bouteille désigne le joueur qui pose le défi (si les deux tombent sur le même joueur, le poseur est le voisin suivant).
+- **Choix du défi par le poseur** (après que le joueur désigné a choisi Action ou Vérité) : « Défi système » (tiré au sort selon catégories, mode, limites du joueur, sans répétition), « Un de mes défis » (dans sa liste de défis perso du bon type), ou « J'écris maintenant » (saisie libre). En salon, le poseur fait ce choix sur son propre téléphone ; en mode un téléphone, il touche l'écran depuis sa place. Si l'hôte a réglé la source sur « système uniquement », l'étape est sautée.
+- **Mode un téléphone** : les joueurs sont placés sur le cercle dans l'ordre où ils sont assis (réordonnables par glisser) ; la carte du défi s'oriente vers le joueur concerné pour qu'il la lise depuis sa place.
 - **Résolution** : « Fait » (+points), « Passer » (gage ou −points, nombre de passes limité), en multi-téléphones les autres joueurs peuvent valider d'un tap.
 - **Fin** : après le dernier tour → récap (classement, titres : « Le plus courageux », « Le roi de la vérité »…), bouton « Rejouer ».
 
@@ -80,6 +82,7 @@ L'objectif est de **tout reconstruire selon les bonnes pratiques, de la logique 
 - Qualité adaptative pour économiser la data ; possibilité de refuser la caméra (le défi passe alors en mode « sur parole »).
 
 ### 6.7 Défis personnalisés
+- Utilisés en jeu par le poseur (voir §6.3) ; en mode un téléphone, chaque joueur inscrit peut avoir ses propres défis perso.
 - Créer / modifier / supprimer : type (Action / Vérité), catégorie, intensité, mode (sur place / à distance / les deux), texte.
 - Dans un salon, les défis perso de chaque joueur peuvent être mis en commun (choix de l'hôte).
 
