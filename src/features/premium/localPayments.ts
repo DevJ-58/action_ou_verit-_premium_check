@@ -12,5 +12,8 @@ export function createLocalPayments(): PaymentService {
       grantLocalPremium(id, extendPremium(localPremiumUntil(id), plan))
       return { kind: 'granted' }
     },
+    async verify() {
+      // Test payments are granted at once: nothing to check.
+    },
   }
 }

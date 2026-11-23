@@ -111,6 +111,7 @@ export const fr = {
     extend: 'Prolonger',
     signIn: 'Connecte-toi pour passer Premium',
     unavailable: 'Le paiement n’est pas encore ouvert. Reviens très bientôt !',
+    cancelled: 'Le paiement n’a pas abouti. Aucun montant n’a été prélevé ; tu peux réessayer.',
     failed: 'Le paiement n’a pas pu démarrer. Vérifie ta connexion et réessaie.',
     granted: 'Paiement de test accepté : tu es Premium.',
     thanksTitle: 'Merci !',

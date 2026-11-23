@@ -1,20 +1,19 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { PaymentService } from './payments'
 
-const CHECKOUT_HOST = /^https:\/\/([a-z0-9-]+\.)*cinetpay\.com\//
+const CHECKOUT_HOST = /^https:\/\/([a-z0-9-]+\.)*geniuspay\.ci\//
 
 /**
- * Payments through the Supabase Edge Function `create-payment`
- * (supabase/functions/create-payment): it opens a CinetPay transaction and returns its page.
+ * Payments through the Supabase Edge Function `geniuspay` (supabase/functions/geniuspay):
+ * it opens a GeniusPay checkout page, and checks payments when the player comes back.
  */
 export function createSupabasePayments(getClient: () => Promise<SupabaseClient>): PaymentService {
   return {
     async checkout(plan) {
       try {
         const client = await getClient()
-        const returnUrl = `${window.location.origin}${import.meta.env.BASE_URL}premium/merci`
-        const { data, error } = await client.functions.invoke('create-payment', {
-          body: { plan, returnUrl },
+        const { data, error } = await client.functions.invoke('geniuspay', {
+          body: { action: 'create', plan },
         })
         if (error) {
           const status = (error as { context?: { status?: number } }).context?.status
@@ -26,6 +25,14 @@ export function createSupabasePayments(getClient: () => Promise<SupabaseClient>)
           : { kind: 'failed' }
       } catch {
         return { kind: 'failed' }
+      }
+    },
+    async verify() {
+      try {
+        const client = await getClient()
+        await client.functions.invoke('geniuspay', { body: { action: 'verify' } })
+      } catch {
+        // The thank-you screen keeps polling; the webhook may also grant it.
       }
     },
   }

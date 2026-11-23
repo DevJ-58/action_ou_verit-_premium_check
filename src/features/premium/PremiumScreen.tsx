@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import { Check } from 'lucide-react'
 import { Emoji, LogoMark, Screen } from '@/design-system'
 import type { EmojiName } from '@/content/emoji'
@@ -31,7 +31,10 @@ export function PremiumScreen() {
   const trial = useAccount((s) => s.session?.premiumTrial === true)
   const signedIn = status === 'signedIn'
   const [busy, setBusy] = useState<PlanId | null>(null)
-  const [problem, setProblem] = useState<'unavailable' | 'failed' | null>(null)
+  const [params] = useSearchParams()
+  const [problem, setProblem] = useState<'unavailable' | 'failed' | 'cancelled' | null>(
+    params.get('paiement') === 'echec' ? 'cancelled' : null,
+  )
 
   useEffect(() => {
     if (status === 'loading') void accountStore.getState().init()
@@ -100,7 +103,11 @@ export function PremiumScreen() {
         </div>
         {problem ? (
           <p role="alert" className="text-center font-semibold text-dare">
-            {problem === 'unavailable' ? t.premium.unavailable : t.premium.failed}
+            {problem === 'unavailable'
+              ? t.premium.unavailable
+              : problem === 'cancelled'
+                ? t.premium.cancelled
+                : t.premium.failed}
           </p>
         ) : null}
         {!signedIn && status !== 'loading' ? (

@@ -49,17 +49,18 @@ describe('signed in', () => {
     const assign = vi.fn()
     vi.stubGlobal('location', { ...window.location, assign })
     const redirect: PaymentService = {
-      checkout: async () => ({ kind: 'redirect', url: 'https://checkout.cinetpay.com/payment/x' }),
+      checkout: async () => ({ kind: 'redirect', url: 'https://geniuspay.ci/checkout/MTX-X' }),
+      verify: async () => {},
     }
     setPaymentService(redirect)
     renderAt('/premium')
     await userEvent.click(await screen.findByRole('button', { name: /payer 1\s?645 fcfa/i }))
-    expect(assign).toHaveBeenCalledWith('https://checkout.cinetpay.com/payment/x')
+    expect(assign).toHaveBeenCalledWith('https://geniuspay.ci/checkout/MTX-X')
     vi.unstubAllGlobals()
   })
 
   test('when payment is not open yet, it says so', async () => {
-    setPaymentService({ checkout: async () => ({ kind: 'unavailable' }) })
+    setPaymentService({ checkout: async () => ({ kind: 'unavailable' }), verify: async () => {} })
     renderAt('/premium')
     await userEvent.click(await screen.findByRole('button', { name: /payer 415 fcfa/i }))
     expect(await screen.findByRole('alert')).toHaveTextContent(/pas encore ouvert/i)
@@ -74,4 +75,9 @@ describe('signed in', () => {
       await screen.findByText(/c’est bon, tu es premium/i, {}, { timeout: 4000 }),
     ).toBeInTheDocument()
   })
+})
+
+test('back from a failed payment, the Premium page says so', async () => {
+  renderAt('/premium?paiement=echec')
+  expect(await screen.findByRole('alert')).toHaveTextContent(/paiement n’a pas abouti/i)
 })

@@ -112,6 +112,7 @@ export const en: Dictionary = {
     extend: 'Extend',
     signIn: 'Sign in to go Premium',
     unavailable: 'Payment isn’t open yet. Come back very soon!',
+    cancelled: 'The payment didn’t go through. Nothing was charged; you can try again.',
     failed: 'The payment couldn’t start. Check your connection and try again.',
     granted: 'Test payment accepted: you are Premium.',
     thanksTitle: 'Thank you!',

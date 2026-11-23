@@ -5,9 +5,10 @@ import { accountStore, useAccount } from '@/features/account/accountStore'
 import { useSettings } from '@/features/settings/settingsStore'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
+import { getPaymentService } from './getPaymentService'
 import { isPremium } from './premium'
 
-const POLL_MS = 1500
+const POLL_MS = 3000
 const GIVE_UP_MS = 90_000
 
 /** Back from the payment page: waits until the server has confirmed the payment. */
@@ -25,7 +26,12 @@ export function PremiumThanksScreen() {
 
   useEffect(() => {
     if (premium || status !== 'signedIn') return
-    const poll = setInterval(() => void accountStore.getState().refreshPremium(), POLL_MS)
+    const check = async () => {
+      await getPaymentService().verify()
+      await accountStore.getState().refreshPremium()
+    }
+    void check()
+    const poll = setInterval(() => void check(), POLL_MS)
     const stop = setTimeout(() => setGaveUp(true), GIVE_UP_MS)
     return () => {
       clearInterval(poll)

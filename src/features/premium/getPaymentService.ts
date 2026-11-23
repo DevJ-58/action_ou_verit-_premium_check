@@ -5,7 +5,7 @@ import { createSupabasePayments } from './supabasePayments'
 
 let service: PaymentService | null = null
 
-/** Payments: CinetPay through Supabase when configured; otherwise test payments on this device. */
+/** Payments: GeniusPay through Supabase when configured; otherwise test payments on this device. */
 export function getPaymentService(): PaymentService {
   if (!service) {
     const config = supabaseConfig()
