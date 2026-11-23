@@ -26,9 +26,12 @@ const KEPT_IDS = 50
 const COUNTERS = ['games', 'wins', 'truths', 'dares', 'skipped', 'points'] as const
 
 /** Adds a finished game to the stats of one player (unchanged if already counted). */
+/** Just what is needed to count a finished game. */
+export type FinishedGame = Pick<GameState, 'id' | 'phase' | 'scores'>
+
 export function recordAccountGame(
   stats: AccountStats,
-  game: GameState,
+  game: FinishedGame,
   playerId: string,
 ): AccountStats {
   const score = game.scores[playerId]

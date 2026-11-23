@@ -1,5 +1,5 @@
 import { safeStorage } from '@/lib/safeStorage'
-import type { BusMessage, RoomState } from './types'
+import type { BusMessage, Intent, RoomState } from './types'
 
 /** Messages between the phones of a room, plus the last known room state (for joining and resuming). */
 export interface Bus {
@@ -7,12 +7,19 @@ export interface Bus {
   subscribe(listener: (message: BusMessage) => void): () => void
   readSnapshot(code: string): RoomState | null
   writeSnapshot(state: RoomState): void
+  /** Keeps sent intents for a while, so a host that missed one live can still apply it. */
+  logIntent(code: string, intent: Intent): void
+  readIntents(code: string, since: number): Intent[]
 }
+
+const INTENTS_KEPT = 50
+type Logged = { at: number; intent: Intent }
 
 /** In one process (tests): asynchronous delivery to every subscriber. */
 export function createInMemoryBus(): Bus {
   const listeners = new Set<(message: BusMessage) => void>()
   const snapshots = new Map<string, RoomState>()
+  const intents = new Map<string, Logged[]>()
   return {
     publish: (message) => {
       const copy = structuredClone(message)
@@ -24,6 +31,24 @@ export function createInMemoryBus(): Bus {
     },
     readSnapshot: (code) => structuredClone(snapshots.get(code) ?? null),
     writeSnapshot: (state) => snapshots.set(state.code, structuredClone(state)),
+    logIntent: (code, intent) =>
+      intents.set(
+        code,
+        [...(intents.get(code) ?? []), { at: Date.now(), intent: structuredClone(intent) }].slice(
+          -INTENTS_KEPT,
+        ),
+      ),
+    readIntents: (code, since) =>
+      (intents.get(code) ?? []).filter((l) => l.at >= since).map((l) => structuredClone(l.intent)),
+  }
+}
+
+function readLog(code: string): Logged[] {
+  try {
+    const list = JSON.parse((safeStorage.getItem(`av:intents:${code}`) as string | null) ?? '[]')
+    return Array.isArray(list) ? (list as Logged[]) : []
+  } catch {
+    return []
   }
 }
 
@@ -46,5 +71,14 @@ export function createBroadcastBus(): Bus {
       }
     },
     writeSnapshot: (state) => safeStorage.setItem(key(state.code), JSON.stringify(state)),
+    logIntent: (code, intent) =>
+      safeStorage.setItem(
+        `av:intents:${code}`,
+        JSON.stringify([...readLog(code), { at: Date.now(), intent }].slice(-INTENTS_KEPT)),
+      ),
+    readIntents: (code, since) =>
+      readLog(code)
+        .filter((l) => l.at >= since)
+        .map((l) => l.intent),
   }
 }

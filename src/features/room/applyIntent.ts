@@ -138,7 +138,12 @@ export function applyIntent(room: RoomState, intent: Intent, rng: Rng): RoomStat
       const { game } = room
       if (!game || !mayAct(game, room.hostId, intent.from, intent.action)) return null
       try {
-        return withLiveChecked({ ...room, game: reduce(game, intent.action, { rng, systemDares }) })
+        const next = reduce(game, intent.action, { rng, systemDares })
+        const lastGame =
+          intent.action.type === 'RESTART'
+            ? { id: game.id, phase: game.phase, scores: game.scores }
+            : room.lastGame
+        return withLiveChecked({ ...room, game: next, ...(lastGame ? { lastGame } : {}) })
       } catch (error) {
         if (error instanceof GameRuleError) return null
         throw error

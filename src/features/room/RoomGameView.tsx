@@ -35,9 +35,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useGameMusic(game.phase !== 'finished')
   const finished = game.phase === 'finished' ? game : null
 
+  const lastGame = room.lastGame ?? null
   useEffect(() => {
+    // Counted once per game id (also when this phone missed the end and only sees the replay).
     if (finished) void accountStore.getState().recordGame(finished)
-  }, [finished])
+    if (lastGame) void accountStore.getState().recordGame(lastGame)
+  }, [finished, lastGame])
 
   const tableVisible = ['ready', 'spinning', 'choosing'].includes(game.phase)
 

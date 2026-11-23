@@ -2,8 +2,7 @@ import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { AuthError, type AuthErrorCode, type Profile, type Session } from './authService'
 import { getAuthService } from './getAuthService'
-import { recordAccountGame } from './accountStats'
-import type { GameState } from '@/engine'
+import { recordAccountGame, type FinishedGame } from './accountStats'
 import { withFriend, type Friend } from '@/features/friends/friends'
 
 export interface AccountState {
@@ -15,7 +14,8 @@ export interface AccountState {
   signOut(): Promise<void>
   updateProfile(patch: Partial<Omit<Profile, 'id'>>): Promise<void>
   /** Adds a finished game to the signed-in player's stats (once per game). */
-  recordGame(game: GameState): Promise<void>
+  /** `asPlayer`: the player id this account had in that game (its own id in rooms). */
+  recordGame(game: FinishedGame, asPlayer?: string): Promise<void>
   /** Re-reads the Premium end date (after a purchase). */
   refreshPremium(): Promise<void>
   addFriend(friend: Friend): Promise<void>
@@ -54,10 +54,10 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
     set({ session: { ...session, profile } })
     await getAuthService().saveProfile(profile)
   },
-  recordGame: async (game) => {
+  recordGame: async (game, asPlayer) => {
     const profile = get().session?.profile
     if (!profile) return
-    const stats = recordAccountGame(profile.stats, game, profile.id)
+    const stats = recordAccountGame(profile.stats, game, asPlayer ?? profile.id)
     if (stats !== profile.stats) await get().updateProfile({ stats })
   },
   refreshPremium: async () => {

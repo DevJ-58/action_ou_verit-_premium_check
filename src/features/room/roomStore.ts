@@ -19,9 +19,18 @@ export interface RoomTiming {
   hostAbsentMs: number
   /** How long a guest waits for the host to accept them. */
   joinTimeoutMs: number
+  /** Guests re-read the room this often, in case they missed an update. */
+  resyncMs: number
+  /** The host re-reads recent intents this often, in case it missed one. */
+  pullIntentsMs: number
 }
 
-export const DEFAULT_TIMING: RoomTiming = { hostAbsentMs: 8000, joinTimeoutMs: 8000 }
+export const DEFAULT_TIMING: RoomTiming = {
+  hostAbsentMs: 8000,
+  joinTimeoutMs: 8000,
+  resyncMs: 4000,
+  pullIntentsMs: 3000,
+}
 
 export interface RoomStoreState {
   self: Member
@@ -56,9 +65,20 @@ export function createRoomStore(deps: {
   let cleanup: (() => void) | null = null
   let stopTracking: ((silent?: boolean) => void) | null = null
   let hostWatch: ReturnType<typeof setTimeout> | null = null
+  // When this phone became host: older intents were handled by the previous host.
+  let hostSince = Date.now()
 
   return createStore<RoomStoreState>()((set, get, storeApi) => {
     const roleFor = (room: RoomState) => (room.hostId === self.id ? 'host' : 'guest')
+
+    /** Takes a newer room state (live, or re-read after a missed update). */
+    function receive(state: RoomState) {
+      const current = get().room
+      if (current && state.version <= current.version) return
+      if (state.hostId === self.id && current?.hostId !== self.id) hostSince = Date.now()
+      set({ room: state, role: roleFor(state) })
+      watchHost()
+    }
 
     function commit(next: RoomState) {
       const room = { ...next, version: next.version + 1 }
@@ -88,6 +108,7 @@ export function createRoomStore(deps: {
         if (successor?.id !== self.id) return
         // Jump the version so no late state from the old host can win.
         const taken = { ...r, hostId: self.id, version: r.version + 10 }
+        hostSince = Date.now()
         set({ room: taken, role: 'host' })
         void transport.claimHost(taken)
       }, timing.hostAbsentMs)
@@ -95,12 +116,7 @@ export function createRoomStore(deps: {
 
     function listen(code: string) {
       cleanup?.()
-      const offState = transport.onState(code, (state) => {
-        const current = get().room
-        if (current && state.version <= current.version) return
-        set({ room: state, role: roleFor(state) })
-        watchHost()
-      })
+      const offState = transport.onState(code, receive)
       const offIntent = transport.onIntent(code, handle)
       const offPresence = transport.onPresence(code, (online) => {
         set({ online })
@@ -110,8 +126,36 @@ export function createRoomStore(deps: {
       const heartbeat = setInterval(() => {
         if (get().role === 'host') transport.touch(code)
       }, 5000)
+      // Safety nets: live messages can be lost (phone asleep, network blink).
+      const resync = () => {
+        if (get().role !== 'guest') return
+        void transport
+          .readSnapshot(code)
+          .then((state) => state && receive(state))
+          .catch(() => {})
+      }
+      const pull = () => {
+        if (get().role !== 'host') return
+        void transport
+          .recentIntents(code, hostSince - 2000)
+          .then((intents) => intents.forEach(handle))
+          .catch(() => {})
+      }
+      const resyncTimer = setInterval(resync, timing.resyncMs)
+      const pullTimer = setInterval(pull, timing.pullIntentsMs)
+      const onVisible = () => {
+        if (document.visibilityState === 'visible') {
+          resync()
+          pull()
+        }
+      }
+      if (typeof document !== 'undefined') document.addEventListener('visibilitychange', onVisible)
       cleanup = () => {
         clearInterval(heartbeat)
+        clearInterval(resyncTimer)
+        clearInterval(pullTimer)
+        if (typeof document !== 'undefined')
+          document.removeEventListener('visibilitychange', onVisible)
         offState()
         offIntent()
         offPresence()
@@ -159,6 +203,7 @@ export function createRoomStore(deps: {
       createRoom: async () => {
         let code = generateRoomCode(rng)
         while (await transport.readSnapshot(code)) code = generateRoomCode(rng)
+        hostSince = Date.now()
         listen(code)
         commit({
           code,

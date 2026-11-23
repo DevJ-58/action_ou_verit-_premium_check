@@ -123,3 +123,13 @@ test('a finished game is added to the player’s account stats', () => {
   expect(record).toHaveBeenCalledWith(g)
   record.mockRestore()
 })
+
+test('a phone that missed the end of the game still counts it once the next one starts', () => {
+  const record = vi.spyOn(accountStore.getState(), 'recordGame').mockResolvedValue()
+  const g = proposing()
+  const last = { id: 'old-game', phase: 'finished' as const, scores: g.scores }
+  const state = stateFor('k', g)
+  show({ ...state, room: { ...state.room!, lastGame: last } })
+  expect(record).toHaveBeenCalledWith(last)
+  record.mockRestore()
+})

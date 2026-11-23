@@ -34,6 +34,8 @@ export interface RoomState {
   reactions: Reaction[]
   /** The designated player is filming the challenge, live. */
   live?: Live | null
+  /** Result of the previous game (kept on replay, so phones that missed its end still count it). */
+  lastGame?: Pick<GameState, 'id' | 'phase' | 'scores'> | null
 }
 
 export interface Live {

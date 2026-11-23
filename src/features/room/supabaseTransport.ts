@@ -116,9 +116,28 @@ export function createSupabaseTransport(getClient: () => Promise<SupabaseClient>
     },
     sendIntent: (code, intent) => {
       void getClient().then(async (client) => {
-        const { error } = await client.from('room_intents').insert({ code, intent })
-        if (error) console.error('Intent failed', error)
+        // A tap must not be lost to a network blink: try again a few times.
+        for (let attempt = 0; attempt < 4; attempt++) {
+          const { error } = await client.from('room_intents').insert({ code, intent })
+          if (!error) return
+          if (attempt === 3) console.error('Intent failed', error)
+          else await new Promise((r) => setTimeout(r, 400 * 2 ** attempt))
+        }
       })
+    },
+    recentIntents: async (code, since) => {
+      const client = await getClient()
+      const { data, error } = await client
+        .from('room_intents')
+        .select('intent, from_id, created_at')
+        .eq('code', code)
+        .gte('created_at', new Date(since).toISOString())
+        .order('created_at', { ascending: true })
+        .limit(100)
+      if (error || !data) return []
+      return (data as { intent: Intent; from_id: string }[]).map(
+        (row) => ({ ...row.intent, from: row.from_id }) as Intent,
+      )
     },
     onState: (code, listener) => subscribe(room(code).states, listener),
     onIntent: (code, listener) => subscribe(room(code).intents, listener),

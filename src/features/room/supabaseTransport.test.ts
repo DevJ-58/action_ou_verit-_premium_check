@@ -136,3 +136,37 @@ test('presence lists who is online; taking over hosting calls claim_host', async
   expect(await t.claimHost(state(12, 'b'))).toBe(true)
   expect(f.ops).toContain('rpc claim_host ABCDEF')
 })
+
+test('recent intents are read back for the host, with the server-stamped sender', async () => {
+  const rows = [
+    {
+      intent: { id: 'i1', from: 'forged', type: 'react', emoji: 'fire' },
+      from_id: 'b',
+      created_at: 'x',
+    },
+  ]
+  const query = {
+    eq: () => query,
+    gte: () => query,
+    order: () => query,
+    limit: async () => ({ data: rows, error: null }),
+  }
+  const client = { from: () => ({ select: () => query }) } as unknown as SupabaseClient
+  const t = createSupabaseTransport(async () => client)
+  expect(await t.recentIntents('ABCDEF', Date.now() - 5000)).toEqual([
+    { id: 'i1', from: 'b', type: 'react', emoji: 'fire' },
+  ])
+})
+
+test('a failed intent is sent again', async () => {
+  let tries = 0
+  const client = {
+    from: () => ({
+      insert: async () => (++tries < 2 ? { error: { message: 'offline' } } : { error: null }),
+    }),
+  } as unknown as SupabaseClient
+  const t = createSupabaseTransport(async () => client)
+  t.sendIntent('ABCDEF', { id: 'i2', from: 'b', type: 'leave' })
+  await new Promise((r) => setTimeout(r, 600))
+  expect(tries).toBe(2)
+})

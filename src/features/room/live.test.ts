@@ -62,3 +62,20 @@ test('a live video is over once its time has passed', () => {
   expect(liveExpired(on.live!, on.live!.startedAt + 59_000)).toBe(false)
   expect(liveExpired(on.live!, on.live!.startedAt + 60_000)).toBe(true)
 })
+
+test('replaying keeps the finished game’s result, so every phone can count it', () => {
+  const g = inChallenge()
+  const finished = { ...g, phase: 'finished' as const, turn: null }
+  const r = room(finished)
+  const replay = applyIntent(
+    r,
+    { id: 'rs', from: 'a', type: 'action', action: { type: 'RESTART' } },
+    rng,
+  )!
+  expect(replay.game!.phase).toBe('ready')
+  expect(replay.lastGame).toMatchObject({
+    id: finished.id,
+    phase: 'finished',
+    scores: finished.scores,
+  })
+})

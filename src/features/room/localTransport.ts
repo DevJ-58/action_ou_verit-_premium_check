@@ -11,6 +11,8 @@ export interface RoomTransport {
   /** Host only: says "still here" so nobody may take over while the host is idle. */
   touch(code: string): void
   sendIntent(code: string, intent: Intent): void
+  /** Intents sent since `since` (ms): the host's safety net for ones it missed live. */
+  recentIntents(code: string, since: number): Promise<Intent[]>
   onState(code: string, listener: (state: RoomState) => void): () => void
   onIntent(code: string, listener: (intent: Intent) => void): () => void
   /** Announces this member as online until the returned function is called (with a goodbye unless `silent`). */
@@ -41,7 +43,11 @@ export function createLocalTransport(
       return true
     },
     touch: () => {},
-    sendIntent: (code, intent) => bus.publish({ kind: 'intent', code, intent, origin }),
+    sendIntent: (code, intent) => {
+      bus.logIntent(code, intent)
+      bus.publish({ kind: 'intent', code, intent, origin })
+    },
+    recentIntents: async (code, since) => bus.readIntents(code, since),
     onState: (code, listener) =>
       bus.subscribe((m) => {
         if (m.kind === 'state' && m.code === code && m.origin !== origin) listener(m.state)

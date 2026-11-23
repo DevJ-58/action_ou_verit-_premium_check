@@ -1,18 +1,16 @@
 {
   "entries": [
     {
-      "version": "2026-11-23.5",
+      "version": "2026-11-24.1",
       "fr": [
-        "Nouveau : 7 jours de Premium offerts à chaque compte",
-        "Premium : catégories osées, vidéo en direct, salons de 12, messages vocaux",
-        "12 avatars et 2 thèmes exclusifs (Kente, Indigo)",
-        "Quand l’hôte est Premium, tout le salon en profite"
+        "Correctif : un téléphone qui rate une étape de la partie la rattrape tout seul",
+        "Correctif : un choix d’Action ou Vérité n’est plus jamais perdu",
+        "Correctif : les parties sont bien comptées dans les statistiques du profil"
       ],
       "en": [
-        "New: 7 days of free Premium for every account",
-        "Premium: daring categories, live video, rooms of 12, voice messages",
-        "12 exclusive avatars and 2 exclusive themes (Kente, Indigo)",
-        "When the host is Premium, the whole room enjoys it"
+        "Fix: a phone that misses a step of the game catches up by itself",
+        "Fix: a Truth or Dare choice is never lost anymore",
+        "Fix: games are correctly counted in the profile stats"
       ]
     }
   ]

@@ -76,3 +76,20 @@ test('without a finished game the recap goes home', async () => {
   renderAt('/partie/recap')
   expect(await screen.findByRole('link', { name: /jouer sur ce téléphone/i })).toBeInTheDocument()
 })
+
+test('on one phone, the game counts in the profile of the account that played under its own nickname', async () => {
+  const { accountStore } = await import('@/features/account/accountStore')
+  await act(() =>
+    accountStore.getState().signUp(`one-${Date.now()}@example.com`, 'motdepasse', 'kofi'),
+  )
+  renderAt('/partie/recap')
+  await waitFor(() =>
+    expect(accountStore.getState().session!.profile.stats).toMatchObject({
+      games: 1,
+      wins: 1,
+      dares: 2,
+      points: 4,
+    }),
+  )
+  await act(() => accountStore.getState().signOut())
+})
