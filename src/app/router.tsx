@@ -77,6 +77,19 @@ export const routes: RouteObject[] = [
             ],
           },
           {
+            path: 'premium',
+            lazy: async () => ({
+              Component: (await import('@/features/premium/PremiumScreen')).PremiumScreen,
+            }),
+          },
+          {
+            path: 'premium/merci',
+            lazy: async () => ({
+              Component: (await import('@/features/premium/PremiumThanksScreen'))
+                .PremiumThanksScreen,
+            }),
+          },
+          {
             path: 'reglages',
             lazy: async () => ({
               Component: (await import('@/features/settings/SettingsScreen')).SettingsScreen,

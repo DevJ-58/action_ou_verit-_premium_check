@@ -2,27 +2,35 @@ import { CATEGORIES } from '@/content/categories'
 import { Emoji } from '@/design-system'
 import type { CategoryId } from '@/engine'
 import { useT } from '@/i18n/useT'
+import { Lock } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export interface CategoryGridProps {
   selected: CategoryId[]
   onChange(selected: CategoryId[]): void
+  /** Premium categories this player cannot use; tapping one calls onLocked. */
+  locked?: readonly CategoryId[]
+  onLocked?(id: CategoryId): void
 }
 
-export function CategoryGrid({ selected, onChange }: CategoryGridProps) {
+export function CategoryGrid({ selected, onChange, locked = [], onLocked }: CategoryGridProps) {
   const t = useT()
   return (
     <div className="grid grid-cols-2 gap-3">
       {CATEGORIES.map((c) => {
-        const on = selected.includes(c.id)
+        const isLocked = locked.includes(c.id)
+        const on = !isLocked && selected.includes(c.id)
         const max = c.intensity[1]
         return (
           <button
             key={c.id}
             type="button"
             aria-pressed={on}
+            aria-describedby={isLocked ? `${c.id}-locked` : undefined}
             onClick={() =>
-              onChange(on ? selected.filter((id) => id !== c.id) : [...selected, c.id])
+              isLocked
+                ? onLocked?.(c.id)
+                : onChange(on ? selected.filter((id) => id !== c.id) : [...selected, c.id])
             }
             className={cn(
               'flex min-h-32 flex-col justify-between gap-2 rounded-[24px] border-[1.5px] p-4 text-left transition-colors active:scale-[0.98]',
@@ -42,6 +50,15 @@ export function CategoryGrid({ selected, onChange }: CategoryGridProps) {
             <span className={cn('text-xs leading-snug', on ? 'text-on-gold' : 'text-muted')}>
               {t.categories[c.id].description}
             </span>
+            {isLocked ? (
+              <span
+                id={`${c.id}-locked`}
+                className="flex items-center gap-1 self-start rounded-full bg-gold px-2 py-0.5 text-[10px] font-extrabold tracking-[0.12em] text-on-gold uppercase"
+              >
+                <Lock aria-hidden="true" size={10} />
+                {t.premium.locked}
+              </span>
+            ) : null}
             <span aria-hidden="true" className="flex gap-1.5 pt-1">
               {[1, 2, 3, 4].map((level) => (
                 <span
