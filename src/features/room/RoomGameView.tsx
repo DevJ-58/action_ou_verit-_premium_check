@@ -56,11 +56,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   const finished = game.phase === 'finished' ? game : null
 
   const lastGame = room.lastGame ?? null
+  const code = room.code
   useEffect(() => {
     // Counted once per game id (also when this phone missed the end and only sees the replay).
-    if (finished) void accountStore.getState().recordGame(finished)
-    if (lastGame) void accountStore.getState().recordGame(lastGame)
-  }, [finished, lastGame])
+    if (finished) void accountStore.getState().recordRoomGame(code, finished)
+    if (lastGame) void accountStore.getState().recordRoomGame(code, lastGame)
+  }, [code, finished, lastGame])
 
   const tableVisible = ['ready', 'spinning', 'choosing'].includes(game.phase)
   const chooserHere = game.phase === 'choosing' && game.turn?.answererId === state.self.id

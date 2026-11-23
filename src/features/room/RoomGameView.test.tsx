@@ -118,20 +118,20 @@ test('the host can skip the turn of an answerer who went offline', async () => {
 })
 
 test('a finished game is added to the player’s account stats', () => {
-  const record = vi.spyOn(accountStore.getState(), 'recordGame').mockResolvedValue()
+  const record = vi.spyOn(accountStore.getState(), 'recordRoomGame').mockResolvedValue()
   const g = { ...proposing(), phase: 'finished' as const, turn: null }
   show(stateFor('k', g))
-  expect(record).toHaveBeenCalledWith(g)
+  expect(record).toHaveBeenCalledWith('ABCDEF', g)
   record.mockRestore()
 })
 
 test('a phone that missed the end of the game still counts it once the next one starts', () => {
-  const record = vi.spyOn(accountStore.getState(), 'recordGame').mockResolvedValue()
+  const record = vi.spyOn(accountStore.getState(), 'recordRoomGame').mockResolvedValue()
   const g = proposing()
   const last = { id: 'old-game', phase: 'finished' as const, scores: g.scores }
   const state = stateFor('k', g)
   show({ ...state, room: { ...state.room!, lastGame: last } })
-  expect(record).toHaveBeenCalledWith(last)
+  expect(record).toHaveBeenCalledWith('ABCDEF', last)
   record.mockRestore()
 })
 

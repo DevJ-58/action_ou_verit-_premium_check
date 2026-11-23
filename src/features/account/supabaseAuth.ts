@@ -25,15 +25,17 @@ interface ProfileRow {
   friends?: unknown
 }
 
-const toRow = (p: Profile): ProfileRow => ({
+/**
+ * What the player edits themselves. Stats and friends are never sent: the server keeps them
+ * (record_room_game, befriend…), and a stale copy on a phone must not overwrite them.
+ */
+const toRow = (p: Profile) => ({
   id: p.id,
   pseudo: p.pseudo,
   avatar_id: p.avatarId,
   bio: p.bio,
   limits: p.limits,
   custom_dares: p.customDares,
-  stats: p.stats,
-  friends: p.friends,
 })
 
 const fromRow = (r: ProfileRow): Profile => ({
@@ -143,6 +145,19 @@ export function createSupabaseAuth(getClient: () => Promise<SupabaseClient>): Au
         .upsert({ ...toRow(profile), updated_at: new Date().toISOString() })
       if (error) fail(error)
       return profile
+    },
+    async saveStats(id, stats) {
+      const client = await getClient()
+      const { error } = await client
+        .from('profiles')
+        .update({ stats, updated_at: new Date().toISOString() })
+        .eq('id', id)
+      if (error) fail(error)
+    },
+    async recordRoomGame(code, gameId) {
+      const client = await getClient()
+      const { error } = await client.rpc('record_room_game', { p_code: code, p_game_id: gameId })
+      return !error
     },
   }
 }

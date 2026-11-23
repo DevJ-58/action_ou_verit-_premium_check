@@ -16,6 +16,8 @@ export interface AccountState {
   /** Adds a finished game to the signed-in player's stats (once per game). */
   /** `asPlayer`: the player id this account had in that game (its own id in rooms). */
   recordGame(game: FinishedGame, asPlayer?: string): Promise<void>
+  /** A room game: counted by the server when it can, else on this phone. */
+  recordRoomGame(code: string, game: FinishedGame): Promise<void>
   /** Re-reads the Premium end date (after a purchase). */
   refreshPremium(): Promise<void>
   /** Re-reads the profile (friends changed on the server side). */
@@ -60,7 +62,21 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
     const profile = get().session?.profile
     if (!profile) return
     const stats = recordAccountGame(profile.stats, game, asPlayer ?? profile.id)
-    if (stats !== profile.stats) await get().updateProfile({ stats })
+    if (stats === profile.stats) return
+    const session = get().session!
+    set({ session: { ...session, profile: { ...session.profile, stats } } })
+    const service = getAuthService()
+    if (service.saveStats) await service.saveStats(profile.id, stats)
+    else await service.saveProfile({ ...get().session!.profile })
+  },
+  recordRoomGame: async (code, game) => {
+    const profile = get().session?.profile
+    if (!profile || game.phase !== 'finished' || profile.stats.gameIds.includes(game.id)) return
+    const counted = await getAuthService()
+      .recordRoomGame?.(code, game.id)
+      .catch(() => false)
+    if (counted) return get().reloadProfile()
+    return get().recordGame(game)
   },
   refreshPremium: async () => {
     const fresh = await getAuthService().current()

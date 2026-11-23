@@ -47,6 +47,10 @@ export interface AuthService {
   signIn(email: string, password: string): Promise<Session>
   signOut(): Promise<void>
   saveProfile(profile: Profile): Promise<Profile>
+  /** Writes only the stats (a game counted on this phone). */
+  saveStats?(id: string, stats: AccountStats): Promise<void>
+  /** Has the server count a finished room game for every player in it (true if done). */
+  recordRoomGame?(code: string, gameId: string): Promise<boolean>
 }
 
 export const PASSWORD_MIN = 8

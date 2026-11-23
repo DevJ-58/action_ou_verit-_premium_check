@@ -57,3 +57,27 @@ test('saved stats of any shape are read safely', () => {
     gameIds: ['a'],
   })
 })
+
+test('without a server, a room game is counted on this phone, once', async () => {
+  const { act } = await import('@testing-library/react')
+  const { accountStore } = await import('./accountStore')
+  await act(() => accountStore.getState().signOut())
+  await act(() =>
+    accountStore.getState().signUp(`rg-${Date.now()}@example.com`, 'motdepasse', 'Awa'),
+  )
+  const id = accountStore.getState().session!.profile.id
+  const game = {
+    id: 'room-game',
+    phase: 'finished' as const,
+    scores: { [id]: { done: 1, skipped: 0, points: 2, truths: 0, dares: 1 } },
+  }
+  await act(() => accountStore.getState().recordRoomGame('ABCDEF', game))
+  await act(() => accountStore.getState().recordRoomGame('ABCDEF', game))
+  expect(accountStore.getState().session!.profile.stats).toMatchObject({
+    games: 1,
+    wins: 1,
+    dares: 1,
+  })
+  await act(() => accountStore.getState().init())
+  expect(accountStore.getState().session!.profile.stats).toMatchObject({ games: 1 })
+})
