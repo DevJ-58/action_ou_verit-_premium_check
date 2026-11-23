@@ -2,6 +2,8 @@ import { motion } from 'motion/react'
 import type { Answer } from '@/engine'
 import { springs } from '@/design-system'
 import { format } from '@/i18n/format'
+import { getChatTransport } from '@/features/chat/getChatTransport'
+import { VoicePlayer } from '@/features/chat/VoicePlayer'
 import { useT } from '@/i18n/useT'
 
 export interface AnswerBubbleProps {
@@ -27,6 +29,19 @@ export function AnswerBubble({ answer, name }: AnswerBubbleProps) {
         <blockquote className="mt-1.5 text-lg leading-snug font-semibold break-words">
           {answer.text}
         </blockquote>
+      ) : null}
+      {answer.voiceId ? (
+        <div className="mt-2 text-text">
+          <VoicePlayer
+            path={answer.voiceId}
+            ms={answer.voiceMs ?? 1000}
+            resolve={(path) => getChatTransport().voiceUrl(path)}
+            label={format(t.chat.listen, {
+              name,
+              seconds: Math.max(1, Math.round((answer.voiceMs ?? 1000) / 1000)),
+            })}
+          />
+        </div>
       ) : null}
     </motion.figure>
   )

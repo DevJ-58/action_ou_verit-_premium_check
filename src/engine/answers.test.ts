@@ -51,10 +51,14 @@ test('the designated player answers in writing; the answer is trimmed and can be
   expect(g.state.turn!.answer).toEqual({ text: 'Deux fois.' })
 })
 
-test('a voice answer is kept by its id', () => {
+test('a voice answer is kept by its id, with its length', () => {
   const g = inChallenge()
-  g.run({ type: 'ANSWER', playerId: g.answerer, voiceId: 'v-123' })
-  expect(g.state.turn!.answer).toEqual({ voiceId: 'v-123' })
+  g.run({ type: 'ANSWER', playerId: g.answerer, voiceId: 'v-123', voiceMs: 4200 })
+  expect(g.state.turn!.answer).toEqual({ voiceId: 'v-123', voiceMs: 4200 })
+  expectRule(
+    () => g.run({ type: 'ANSWER', playerId: g.answerer, voiceId: 'v', voiceMs: 60_000 }),
+    'answerInvalid',
+  )
 })
 
 test('only the designated player answers, with text of 1 to 500 characters or a voice note', () => {

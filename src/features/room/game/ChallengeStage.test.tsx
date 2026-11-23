@@ -59,3 +59,13 @@ test('for a dare, the answerer can describe how it went before finishing', async
   show(stateFor(g.turn!.answererId, g))
   expect(screen.getByLabelText(/raconte|preuve/i)).toBeInTheDocument()
 })
+
+test('the answerer can answer with a voice note, and everyone can play it', async () => {
+  const g = inChallenge('truth')
+  show(stateFor(g.turn!.answererId, g))
+  expect(screen.getByRole('button', { name: /message vocal/i })).toBeInTheDocument()
+
+  const answered = withTurn(g, { answer: { voiceId: 'ABCDEF/v.webm', voiceMs: 5000 } })
+  show(stateFor(notAnswerer(g), answered))
+  expect(screen.getByRole('button', { name: /écouter le vocal.*\(5 s\)/i })).toBeInTheDocument()
+})

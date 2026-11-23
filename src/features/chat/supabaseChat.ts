@@ -82,7 +82,7 @@ export function createSupabaseChat(getClient: () => Promise<SupabaseClient>): Ch
       const path = `${code}/${newId('voice')}.${EXTENSIONS[type] ?? 'webm'}`
       const { error } = await client.storage
         .from('voice')
-        .upload(path, blob, { contentType: blob.type || 'audio/webm' })
+        .upload(path, blob, { contentType: type || 'audio/webm' })
       if (error) throw error
       return path
     },

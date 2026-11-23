@@ -1,16 +1,19 @@
 import { useId, useState, type FormEvent } from 'react'
 import { Button } from '@/design-system'
 import { ANSWER_MAX, type ChallengeKind } from '@/engine'
+import { VoiceRecorderBar } from '@/features/chat/VoiceRecorderBar'
+import type { VoiceNote } from '@/features/chat/useVoiceRecorder'
 import { useT } from '@/i18n/useT'
 
 export interface AnswerFormProps {
   kind: ChallengeKind
   answered: boolean
   onAnswer(text: string): void
+  onVoice(note: VoiceNote): void
 }
 
 /** The designated player answers the truth, or tells how the dare went. */
-export function AnswerForm({ kind, answered, onAnswer }: AnswerFormProps) {
+export function AnswerForm({ kind, answered, onAnswer, onVoice }: AnswerFormProps) {
   const t = useT()
   const id = useId()
   const [text, setText] = useState('')
@@ -47,9 +50,11 @@ export function AnswerForm({ kind, answered, onAnswer }: AnswerFormProps) {
           {t.roomGame.answerError}
         </p>
       ) : null}
-      <Button type="submit" variant={kind === 'truth' ? 'truth' : 'dare'}>
-        {answered ? t.roomGame.updateAnswer : t.roomGame.sendAnswer}
-      </Button>
+      <VoiceRecorderBar onNote={onVoice}>
+        <Button type="submit" variant={kind === 'truth' ? 'truth' : 'dare'} className="flex-1">
+          {answered ? t.roomGame.updateAnswer : t.roomGame.sendAnswer}
+        </Button>
+      </VoiceRecorderBar>
     </form>
   )
 }

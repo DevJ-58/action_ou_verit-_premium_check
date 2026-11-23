@@ -2,12 +2,13 @@ import { GameRuleError } from './errors'
 import type { Answer, GameState, Turn } from './state'
 
 export const ANSWER_MAX = 500
+export const VOICE_ANSWER_MAX_MS = 31_000
 
 /** The designated player answers (in writing or with a voice note); a new answer replaces the old. */
 export function answer(
   state: GameState,
   turn: Turn,
-  input: { playerId: string; text?: string; voiceId?: string },
+  input: { playerId: string; text?: string; voiceId?: string; voiceMs?: number },
 ): GameState {
   if (input.playerId !== turn.answererId) throw new GameRuleError('notYourTurn')
   const text = input.text?.trim()
@@ -16,7 +17,11 @@ export function answer(
     if (text.length > ANSWER_MAX) throw new GameRuleError('answerInvalid')
     value = { text }
   } else if (input.voiceId && input.text === undefined) {
-    value = { voiceId: input.voiceId }
+    const ms = input.voiceMs
+    if (ms !== undefined && !(Number.isFinite(ms) && ms > 0 && ms <= VOICE_ANSWER_MAX_MS)) {
+      throw new GameRuleError('answerInvalid')
+    }
+    value = ms === undefined ? { voiceId: input.voiceId } : { voiceId: input.voiceId, voiceMs: ms }
   } else {
     throw new GameRuleError('answerInvalid')
   }

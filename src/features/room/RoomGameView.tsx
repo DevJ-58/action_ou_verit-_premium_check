@@ -3,6 +3,8 @@ import { X } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { Button, IconButton } from '@/design-system'
 import { accountStore } from '@/features/account/accountStore'
+import { RoomChat } from '@/features/chat/RoomChat'
+import { useRoomChat } from '@/features/chat/useRoomChat'
 import { RecapBody } from '@/features/game/RecapBody'
 import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
@@ -27,6 +29,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   const room = state.room!
   const game = room.game!
   useRoomFeedback(room, state.self.id)
+  const chat = useRoomChat(room.code, state.self.id)
   useGameMusic(game.phase !== 'finished')
   const finished = game.phase === 'finished' ? game : null
 
@@ -44,8 +47,11 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           {t.game.round} <span className="text-lg text-text tabular-nums">{game.round}</span> /{' '}
           {game.settings.rounds}
         </span>
-        <span className="font-mono text-sm font-bold tracking-[0.2em] text-gold-text">
-          {room.code}
+        <span className="flex items-center gap-2">
+          <span className="hidden font-mono text-sm font-bold tracking-[0.2em] text-gold-text min-[380px]:inline">
+            {room.code}
+          </span>
+          <RoomChat store={chat} members={room.members} selfId={state.self.id} />
         </span>
       </header>
 

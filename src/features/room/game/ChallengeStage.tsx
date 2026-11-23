@@ -6,6 +6,7 @@ import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import type { RoomStoreState } from '../roomStore'
 import { AnswerBubble } from './AnswerBubble'
+import { getChatTransport } from '@/features/chat/getChatTransport'
 import { AnswerForm } from './AnswerForm'
 import { VoteBar } from './VoteBar'
 
@@ -64,6 +65,14 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
             kind={kind}
             answered={Boolean(turn.answer)}
             onAnswer={(text) => state.act({ type: 'ANSWER', playerId: selfId, text })}
+            onVoice={(note) =>
+              void getChatTransport()
+                .uploadVoice(state.room!.code, note.blob)
+                .then((voiceId) =>
+                  state.act({ type: 'ANSWER', playerId: selfId, voiceId, voiceMs: note.ms }),
+                )
+                .catch(() => {})
+            }
           />
           <Button size="lg" onClick={() => state.act({ type: 'COMPLETE' })}>
             {format(t.game.done, { points: `+${pointsFor(kind, 'done')}` })}

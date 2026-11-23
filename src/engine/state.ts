@@ -41,6 +41,8 @@ export interface Turn {
 export interface Answer {
   text?: string
   voiceId?: string
+  /** Length of the voice answer in milliseconds. */
+  voiceMs?: number
 }
 
 export interface Proposal {
@@ -96,7 +98,7 @@ export type GameAction =
   | { type: 'TIMEOUT_PICK' }
   | { type: 'REMOVE_PLAYER'; playerId: string }
   | { type: 'TIMEOUT_CHOOSE' }
-  | { type: 'ANSWER'; playerId: string; text?: string; voiceId?: string }
+  | { type: 'ANSWER'; playerId: string; text?: string; voiceId?: string; voiceMs?: number }
   | { type: 'VOTE'; playerId: string; ok: boolean }
 
 export const EMPTY_SCORE: PlayerScore = { done: 0, skipped: 0, points: 0, truths: 0, dares: 0 }
