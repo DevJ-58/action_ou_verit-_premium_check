@@ -1,47 +1,43 @@
-import { settingsStore } from '@/features/settings/settingsStore'
+import { vibrate } from './audio/haptics'
+import { sfx } from './audio/sfx'
 
-let audio: AudioContext | null = null
-
-function tone(frequency: number, durationMs: number, gain = 0.06) {
-  if (!settingsStore.getState().sound) return
-  try {
-    audio ??= new AudioContext()
-    const osc = audio.createOscillator()
-    const amp = audio.createGain()
-    osc.frequency.value = frequency
-    osc.type = 'triangle'
-    amp.gain.setValueAtTime(gain, audio.currentTime)
-    amp.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + durationMs / 1000)
-    osc.connect(amp).connect(audio.destination)
-    osc.start()
-    osc.stop(audio.currentTime + durationMs / 1000)
-  } catch {
-    // Audio unavailable: stay silent.
-  }
-}
-
-function vibrate(pattern: number | number[]) {
-  if (!settingsStore.getState().haptics) return
-  try {
-    navigator.vibrate?.(pattern)
-  } catch {
-    // Vibration unsupported.
-  }
-}
-
-/** Short sounds and vibrations, respecting the player's settings. */
+/** Game sounds and vibrations, respecting the player's settings. */
 export const feedback = {
   spinTick() {
-    tone(660, 60, 0.03)
+    sfx.play('tick')
     vibrate(8)
   },
   reveal() {
-    tone(520, 120)
-    tone(780, 180)
+    sfx.play('reveal')
     vibrate([20, 40, 20])
   },
   success() {
-    tone(880, 160)
+    sfx.play('success')
     vibrate(30)
   },
+  yourTurn() {
+    sfx.play('yourTurn')
+    vibrate([40, 60, 40])
+  },
+  proposal() {
+    sfx.play('proposal')
+    vibrate(10)
+  },
+  message() {
+    sfx.play('message')
+    vibrate(15)
+  },
+  reaction() {
+    sfx.play('reaction')
+  },
+  vote() {
+    sfx.play('vote')
+    vibrate(10)
+  },
+  finish() {
+    sfx.play('finish')
+    vibrate([30, 50, 30, 50, 60])
+  },
 }
+
+export type FeedbackName = keyof typeof feedback

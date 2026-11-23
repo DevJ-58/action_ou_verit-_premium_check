@@ -4,6 +4,7 @@ import { useReducedMotion } from 'motion/react'
 import { Button } from '@/design-system'
 import { cardRotationFor, pointsFor, seatAngle, skipsLeft, type GameAction } from '@/engine'
 import { feedback } from '@/lib/feedback'
+import { useGameMusic } from '@/lib/audio/useGameMusic'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { AskerPanel } from './AskerPanel'
@@ -24,6 +25,7 @@ export function GameScreen() {
   // A game reloaded while spinning lands at once on the already-drawn player.
   const [resumedSpinning, setResumedSpinning] = useState(phase === 'spinning')
   const dispatch = (action: GameAction) => gameStore.getState().dispatch(action)
+  useGameMusic(Boolean(game) && phase !== 'finished')
 
   useEffect(() => {
     if (phase !== 'spinning') return

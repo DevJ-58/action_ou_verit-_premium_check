@@ -10,6 +10,8 @@ import { FloatingReactions } from './game/FloatingReactions'
 import { ReactionBar } from './game/ReactionBar'
 import { TurnStage } from './game/TurnStage'
 import { useHostTimers } from './game/useHostTimers'
+import { useRoomFeedback } from './game/useRoomFeedback'
+import { useGameMusic } from '@/lib/audio/useGameMusic'
 import type { RoomStoreState } from './roomStore'
 
 export interface RoomGameViewProps {
@@ -24,6 +26,8 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useHostTimers(state)
   const room = state.room!
   const game = room.game!
+  useRoomFeedback(room, state.self.id)
+  useGameMusic(game.phase !== 'finished')
   const finished = game.phase === 'finished' ? game : null
 
   useEffect(() => {

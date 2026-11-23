@@ -2,10 +2,12 @@ import { useLocation, useOutlet } from 'react-router'
 import { motion, useReducedMotion } from 'motion/react'
 import { springs } from '@/design-system'
 import { useApplySettings } from '@/features/settings/useApplySettings'
+import { useAudioUnlock } from '@/lib/audio/useAudioUnlock'
 
 /** Applies settings and fades/slides each new screen in. */
 export function RootLayout() {
   useApplySettings()
+  useAudioUnlock()
   const outlet = useOutlet()
   const { pathname } = useLocation()
   const reduce = useReducedMotion()
