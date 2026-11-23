@@ -26,6 +26,7 @@ export function roomFeedback(
     const votes = Object.keys(turn.votes ?? {}).length
     if (mine && votes > Object.keys(before.turn.votes ?? {}).length) out.push('vote')
   }
+  if (next.live && !prev.live && next.live.by !== selfId) out.push('yourTurn')
   const seen = new Set(prev.reactions.map((r) => r.id))
   if (next.reactions.some((r) => !seen.has(r.id) && r.from !== selfId)) out.push('reaction')
   return out

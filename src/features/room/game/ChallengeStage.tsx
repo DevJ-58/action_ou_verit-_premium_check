@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Video } from 'lucide-react'
 import { Button, Emoji } from '@/design-system'
 import { pointsFor, skipsLeft, type GameState, type Turn } from '@/engine'
 import { ChallengeCard } from '@/features/game/ChallengeCard'
@@ -7,6 +8,8 @@ import { useT } from '@/i18n/useT'
 import type { RoomStoreState } from '../roomStore'
 import { AnswerBubble } from './AnswerBubble'
 import { getChatTransport } from '@/features/chat/getChatTransport'
+import { LiveBroadcastView } from '@/features/live/LiveBroadcastView'
+import { LiveViewerView } from '@/features/live/LiveViewerView'
 import { AnswerForm } from './AnswerForm'
 import { VoteBar } from './VoteBar'
 
@@ -25,9 +28,15 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
   const isAnswerer = turn.answererId === selfId
   const answerer = nameOf(turn.answererId)
   const kind = turn.kind ?? turn.dare.kind
-  const status = turn.answer
-    ? format(t.roomGame.answered, { name: answerer })
-    : format(kind === 'truth' ? t.roomGame.thinking : t.roomGame.doing, { name: answerer })
+  const live = state.room?.live ?? null
+  const liveSeconds = game.settings.liveSeconds ?? 0
+  const code = state.room?.code ?? ''
+  const duration = liveSeconds >= 60 ? `${liveSeconds / 60} min` : `${liveSeconds} s`
+  const status = live
+    ? format(t.live.isLive, { name: nameOf(live.by) })
+    : turn.answer
+      ? format(t.roomGame.answered, { name: answerer })
+      : format(kind === 'truth' ? t.roomGame.thinking : t.roomGame.doing, { name: answerer })
 
   return (
     <div className="flex flex-col items-center gap-5">
@@ -42,6 +51,17 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
         />
         {status}
       </p>
+      {live && live.by === selfId ? (
+        <LiveBroadcastView
+          code={code}
+          selfId={selfId}
+          live={live}
+          onStop={() => state.setLive(false)}
+        />
+      ) : null}
+      {live && live.by !== selfId ? (
+        <LiveViewerView code={code} selfId={selfId} live={live} name={nameOf(live.by)} />
+      ) : null}
       <ChallengeCard
         dare={turn.dare}
         rotation={0}
@@ -58,6 +78,15 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
               : (ok) => state.act({ type: 'VOTE', playerId: selfId, ok })
           }
         />
+      ) : null}
+      {isAnswerer && !live && liveSeconds > 0 ? (
+        <div className="flex w-full max-w-sm flex-col gap-1.5">
+          <Button variant="danger" onClick={() => state.setLive(true)}>
+            <Video aria-hidden="true" size={18} />
+            {format(t.live.start, { duration })}
+          </Button>
+          <p className="text-center text-xs text-muted">{t.live.hint}</p>
+        </div>
       ) : null}
       {isAnswerer ? (
         <div className="flex w-full max-w-sm flex-col gap-2.5">

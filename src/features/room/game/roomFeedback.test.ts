@@ -66,3 +66,12 @@ test('the answerer hears each new proposal arrive', () => {
 test('no previous state (just joined) makes no sound', () => {
   expect(roomFeedback(null, room(proposing()), 'a')).toEqual([])
 })
+
+test('the others hear when someone goes live', () => {
+  const g = inChallenge('dare')
+  const by = g.turn!.answererId
+  const other = members.find((m) => m.id !== by)!.id
+  const live = { by, turnKey: 'k', seconds: 60, startedAt: 1 }
+  expect(roomFeedback(room(g), room(g, { live }), other)).toEqual(['yourTurn'])
+  expect(roomFeedback(room(g), room(g, { live }), by)).toEqual([])
+})

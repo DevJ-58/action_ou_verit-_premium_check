@@ -13,6 +13,7 @@ export interface HostSetupProps {
 
 const ROUNDS = ['1', '3', '5', '10'] as const
 const PROPOSE = ['30', '60', '90'] as const
+const LIVE = ['0', '30', '60', '120'] as const
 
 /** The host chooses categories and pace, then starts the game. */
 export function HostSetup({ memberCount, onStart }: HostSetupProps) {
@@ -21,6 +22,7 @@ export function HostSetup({ memberCount, onStart }: HostSetupProps) {
   const [rounds, setRounds] = useState(3)
   const [proposeSeconds, setProposeSeconds] =
     useState<NonNullable<GameSettings['proposeSeconds']>>(60)
+  const [liveSeconds, setLiveSeconds] = useState<NonNullable<GameSettings['liveSeconds']>>(60)
   const canStart = memberCount >= 2 && categories.length > 0
 
   return (
@@ -39,13 +41,22 @@ export function HostSetup({ memberCount, onStart }: HostSetupProps) {
         options={PROPOSE.map((s) => ({ value: s, label: `${s} s` }))}
         onChange={(v) => setProposeSeconds(Number(v) as 30 | 60 | 90)}
       />
+      <Segmented
+        label={t.live.setting}
+        value={String(liveSeconds)}
+        options={LIVE.map((s) => ({
+          value: s,
+          label: s === '0' ? t.live.off : s === '120' ? '2 min' : s === '60' ? '1 min' : `${s} s`,
+        }))}
+        onChange={(v) => setLiveSeconds(Number(v) as 0 | 30 | 60 | 120)}
+      />
       {memberCount < 2 ? (
         <p className="text-sm font-semibold text-muted">{t.room.needTwo}</p>
       ) : null}
       <Button
         size="lg"
         disabled={!canStart}
-        onClick={() => onStart({ categories, rounds, proposeSeconds })}
+        onClick={() => onStart({ categories, rounds, proposeSeconds, liveSeconds })}
       >
         <Play aria-hidden="true" size={20} />
         {t.setup.launch}

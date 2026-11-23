@@ -69,3 +69,41 @@ test('the answerer can answer with a voice note, and everyone can play it', asyn
   show(stateFor(notAnswerer(g), answered))
   expect(screen.getByRole('button', { name: /écouter le vocal.*\(5 s\)/i })).toBeInTheDocument()
 })
+
+const withLive = (g: GameState, seconds: 0 | 30 | 60 | 120 = 60): GameState => ({
+  ...g,
+  settings: { ...g.settings, liveSeconds: seconds },
+})
+
+test('the answerer can go live when the host allowed video; not otherwise', async () => {
+  const g = withLive(inChallenge('dare'))
+  const s = show(stateFor(g.turn!.answererId, g))
+  await userEvent.click(screen.getByRole('button', { name: /filmer en direct · 1 min/i }))
+  expect(s.setLive).toHaveBeenCalledWith(true)
+})
+
+test('no live button when the host turned video off, nor for the others', () => {
+  const off = withLive(inChallenge('dare'), 0)
+  show(stateFor(off.turn!.answererId, off))
+  expect(screen.queryByRole('button', { name: /filmer en direct/i })).not.toBeInTheDocument()
+  const on = withLive(inChallenge('dare'))
+  show(stateFor(notAnswerer(on), on))
+  expect(screen.queryByRole('button', { name: /filmer en direct/i })).not.toBeInTheDocument()
+})
+
+test('while live, the others watch and the one filming can stop', async () => {
+  const g = withLive(inChallenge('dare'))
+  const by = g.turn!.answererId
+  const live = { by, turnKey: 'k', seconds: 60, startedAt: Date.now() }
+  const name = g.players.find((p) => p.id === by)!.name
+  const viewer = stateFor(notAnswerer(g), g)
+  show({ ...viewer, room: { ...viewer.room!, live } })
+  expect(
+    screen.getByRole('region', { name: new RegExp(`vidéo de ${name}, en direct`, 'i') }),
+  ).toBeInTheDocument()
+
+  const filming = stateFor(by, g)
+  const s = show({ ...filming, room: { ...filming.room!, live } })
+  await userEvent.click(await screen.findByRole('button', { name: /arrêter la vidéo/i }))
+  expect(s.setLive).toHaveBeenCalledWith(false)
+})
