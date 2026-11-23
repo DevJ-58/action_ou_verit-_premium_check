@@ -58,11 +58,23 @@ test('messages from others show who wrote them; voice notes can be played', asyn
   expect(within(log).getByRole('button', { name: /écouter le vocal.*inès/i })).toBeInTheDocument()
 })
 
+test('the photo button offers to take a photo or choose one', async () => {
+  setup()
+  await userEvent.click(screen.getByRole('button', { name: /envoyer une photo/i }))
+  const menu = await screen.findByRole('dialog', { name: /envoyer une photo/i })
+  expect(within(menu).getByLabelText(/prendre une photo/i)).toHaveAttribute(
+    'capture',
+    'environment',
+  )
+  expect(within(menu).getByLabelText(/choisir dans la galerie/i)).not.toHaveAttribute('capture')
+})
+
 test('a photo is previewed, then sent and shown in the conversation', async () => {
   setup()
   const file = new File(['img'], 'soiree.jpg', { type: 'image/jpeg' })
-  await userEvent.upload(screen.getByLabelText(/envoyer une photo/i), file)
-  const preview = await screen.findByRole('dialog', { name: /photo/i })
+  await userEvent.click(screen.getByRole('button', { name: /envoyer une photo/i }))
+  await userEvent.upload(await screen.findByLabelText(/choisir dans la galerie/i), file)
+  const preview = await screen.findByRole('dialog', { name: /^photo$/i })
   await userEvent.click(within(preview).getByRole('button', { name: /envoyer la photo/i }))
   await waitFor(() =>
     expect(

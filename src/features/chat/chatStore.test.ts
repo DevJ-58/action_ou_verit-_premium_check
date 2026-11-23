@@ -92,7 +92,7 @@ test('the same message delivered twice is shown once', async () => {
   expect(kofi.getState().messages).toHaveLength(1)
 })
 
-test('a photo is stored and sent with its size; photos over 3 MB are refused', async () => {
+test('a photo is stored and sent with its size; photos over 1 MB are refused', async () => {
   const { phone } = room()
   const awa = phone('awa')
   const kofi = phone('kofi')
@@ -100,7 +100,7 @@ test('a photo is stored and sent with its size; photos over 3 MB are refused', a
   await kofi.getState().connect()
   const photo = new Blob(['jpeg'], { type: 'image/jpeg' })
   expect(await awa.getState().sendPhoto(photo, 800, 600)).toBe(true)
-  const big = new Blob([new Uint8Array(3 * 1024 * 1024 + 1)], { type: 'image/jpeg' })
+  const big = new Blob([new Uint8Array(1024 * 1024 + 1)], { type: 'image/jpeg' })
   expect(await awa.getState().sendPhoto(big, 800, 600)).toBe(false)
   await flush()
   const [note] = kofi.getState().messages

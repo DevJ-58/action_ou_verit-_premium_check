@@ -5,6 +5,7 @@ import { useT } from '@/i18n/useT'
 import type { ChatStore } from './chatStore'
 import { compressImage } from './compressImage'
 import { PhotoPreview } from './PhotoPreview'
+import { PhotoSource } from './PhotoSource'
 import { RecordingBar } from './RecordingBar'
 import { CHAT_TEXT_MAX } from './types'
 import { useVoiceRecorder, type VoiceNote } from './useVoiceRecorder'
@@ -28,6 +29,7 @@ export function ChatComposer({
   const [photo, setPhoto] = useState<File | null>(null)
   const [sendingPhoto, setSendingPhoto] = useState(false)
   const [photoError, setPhotoError] = useState(false)
+  const [choosing, setChoosing] = useState(false)
   const sendVoice = (note: VoiceNote) =>
     void store
       .getState()
@@ -55,8 +57,10 @@ export function ChatComposer({
   async function sendPhoto() {
     if (!photo) return
     setSendingPhoto(true)
-    const { blob, width, height } = await compressImage(photo)
-    const ok = await store.getState().sendPhoto(blob, width, height)
+    const small = await compressImage(photo)
+    const ok = small
+      ? await store.getState().sendPhoto(small.blob, small.width, small.height)
+      : false
     setSendingPhoto(false)
     if (!ok) return setPhotoError(true)
     setPhoto(null)
@@ -79,39 +83,18 @@ export function ChatComposer({
     <div className="flex flex-col gap-1.5 border-t border-line pt-3">
       <form onSubmit={(e) => void submit(e)} className="flex items-end gap-2">
         <div className="flex min-h-12 min-w-0 flex-1 items-end gap-1 rounded-[24px] border-[1.5px] border-line bg-seat/50 py-1 pr-3 pl-1">
-          {premiumLocked ? (
-            <button
-              type="button"
-              aria-label={t.chat.photo}
-              onClick={() => setLocked(t.chat.lockedPhoto)}
-              className="grid size-10 shrink-0 place-items-center rounded-full text-muted"
-            >
+          <button
+            type="button"
+            aria-label={t.chat.photo}
+            onClick={() => (premiumLocked ? setLocked(t.chat.lockedPhoto) : setChoosing(true))}
+            className="grid size-10 shrink-0 place-items-center rounded-full text-muted"
+          >
+            {premiumLocked ? (
               <Lock aria-hidden="true" size={17} />
-            </button>
-          ) : (
-            <label
-              htmlFor={`${id}-photo`}
-              title={t.chat.photo}
-              className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-full text-muted has-focus-visible:outline-2 has-focus-visible:outline-gold"
-            >
+            ) : (
               <Camera aria-hidden="true" size={20} />
-              <input
-                id={`${id}-photo`}
-                type="file"
-                accept="image/*"
-                aria-label={t.chat.photo}
-                className="sr-only"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  e.target.value = ''
-                  if (file) {
-                    setPhotoError(false)
-                    setPhoto(file)
-                  }
-                }}
-              />
-            </label>
-          )}
+            )}
+          </button>
           <label htmlFor={id} className="sr-only">
             {t.chat.message}
           </label>
@@ -159,6 +142,14 @@ export function ChatComposer({
           {recorder.status === 'denied' ? t.chat.denied : t.chat.unsupported}
         </p>
       ) : null}
+      <PhotoSource
+        open={choosing}
+        onClose={() => setChoosing(false)}
+        onFile={(file) => {
+          setPhotoError(false)
+          setPhoto(file)
+        }}
+      />
       <PhotoPreview
         file={photo}
         busy={sendingPhoto}

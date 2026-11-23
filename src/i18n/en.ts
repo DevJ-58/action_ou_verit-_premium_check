@@ -391,6 +391,9 @@ export const en: Dictionary = {
   },
   chat: {
     photo: 'Send a photo',
+    takePhoto: 'Take a photo',
+    pickPhoto: 'Choose from the gallery',
+    photoLimit: 'Photos up to 1 MB (shrunk automatically).',
     photoTitle: 'Photo',
     sendPhoto: 'Send the photo',
     photoOf: 'Photo from {name}',

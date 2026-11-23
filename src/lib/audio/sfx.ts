@@ -13,7 +13,7 @@ const A4 = 440
 
 /** Each sound: notes as [frequency, delay in seconds, gain]. */
 const SOUNDS = {
-  tick: [[A5, 0, 0.12]],
+  tick: [[A5, 0, 0.3]],
   yourTurn: [
     [D5, 0, 0.5],
     [A5, 0.1, 0.5],

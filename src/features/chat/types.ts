@@ -27,4 +27,4 @@ export interface ChatTransport {
 export const CHAT_TEXT_MAX = 500
 export const VOICE_MAX_MS = 30_000
 export const CHAT_KEPT = 100
-export const PHOTO_MAX_BYTES = 3 * 1024 * 1024
+export const PHOTO_MAX_BYTES = 1024 * 1024

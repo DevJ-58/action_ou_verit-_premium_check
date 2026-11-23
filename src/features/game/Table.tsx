@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { seatAngle, type GameState } from '@/engine'
 import { feedback } from '@/lib/feedback'
-import { Bottle } from './Bottle'
+import { Bottle, SPIN_MS } from './Bottle'
+import { useSpinTicks } from './spinTicks'
 import { FacetTable } from './FacetTable'
 import { Seat } from './Seat'
 
@@ -16,6 +17,7 @@ export function Table({ game, animate }: TableProps) {
   const spinning = phase === 'spinning'
   const revealed = turn !== null && !spinning
   const sweep = useSweep(spinning && settings.picker === 'random' && animate, players.length)
+  useSpinTicks(spinning && settings.picker === 'bottle' && animate, SPIN_MS)
 
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[min(340px,42dvh)] min-[900px]:max-w-[min(420px,62dvh)]">

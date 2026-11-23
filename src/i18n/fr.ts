@@ -398,6 +398,9 @@ export const fr = {
   },
   chat: {
     photo: 'Envoyer une photo',
+    takePhoto: 'Prendre une photo',
+    pickPhoto: 'Choisir dans la galerie',
+    photoLimit: 'Photo de 1 Mo maximum (elle est réduite automatiquement).',
     photoTitle: 'Photo',
     sendPhoto: 'Envoyer la photo',
     photoOf: 'Photo de {name}',

@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { systemDares } from '@/content/systemDares'
 import type { GameAction } from '@/engine'
@@ -132,4 +132,20 @@ test('a phone that missed the end of the game still counts it once the next one 
   show({ ...state, room: { ...state.room!, lastGame: last } })
   expect(record).toHaveBeenCalledWith(last)
   record.mockRestore()
+})
+
+test('the music plays during the game, but not while this player’s mic is on', async () => {
+  const { music } = await import('@/lib/audio/music')
+  const { settingsStore } = await import('@/features/settings/settingsStore')
+  settingsStore.setState({ music: true })
+  const start = vi.spyOn(music, 'start').mockImplementation(() => {})
+  const g = proposing()
+  const quiet = stateFor('k', g)
+  const first = show({ ...quiet, room: { ...quiet.room!, voice: ['k'] } })
+  expect(start).not.toHaveBeenCalled()
+  void first
+  cleanup()
+  show(stateFor('k', g))
+  expect(start).toHaveBeenCalled()
+  start.mockRestore()
 })

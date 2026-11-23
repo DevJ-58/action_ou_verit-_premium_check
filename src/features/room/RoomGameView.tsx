@@ -38,7 +38,9 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useRoomFeedback(room, state.self.id)
   const chat = useRoomChat(room.code, state.self.id)
   const voice = useVoiceRoom(state)
-  useGameMusic(game.phase !== 'finished')
+  // The music stops while this player's mic is on, so voices are heard clearly.
+  const micOn = room.voice?.includes(state.self.id) ?? false
+  useGameMusic(game.phase !== 'finished' && !micOn)
   const finished = game.phase === 'finished' ? game : null
 
   const lastGame = room.lastGame ?? null
