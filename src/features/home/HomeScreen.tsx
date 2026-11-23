@@ -33,15 +33,17 @@ export function HomeScreen() {
           </motion.div>
           <div className="flex flex-1 flex-col gap-5 pb-5">
             <div>
-              <p className="text-xs font-extrabold tracking-[0.18em] text-gold-text uppercase">
+              <p className="text-xs font-extrabold tracking-[0.18em] text-gold-text uppercase [@media(max-height:640px)]:hidden">
                 {t.home.eyebrow}
               </p>
-              <h1 className="mt-2 font-display text-[clamp(44px,13vw,76px)] leading-[0.92]">
+              <h1 className="mt-2 font-display text-[clamp(44px,13vw,76px)] leading-[0.92] [@media(max-height:720px)]:text-[clamp(34px,10vw,48px)]">
                 {t.home.titleBefore} <em className="text-gold-text">{t.home.titleOr}</em>
                 <br />
                 {t.home.titleAfter}
               </h1>
-              <p className="mt-3 max-w-md text-base leading-normal text-muted">{t.home.tagline}</p>
+              <p className="mt-3 max-w-md text-base leading-normal text-muted [@media(max-height:720px)]:text-sm">
+                {t.home.tagline}
+              </p>
             </div>
             <div className="mt-auto flex flex-col gap-3 min-[900px]:mt-2">
               <TrialNotice />

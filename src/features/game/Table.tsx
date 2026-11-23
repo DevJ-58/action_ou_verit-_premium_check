@@ -18,7 +18,7 @@ export function Table({ game, animate }: TableProps) {
   const sweep = useSweep(spinning && settings.picker === 'random' && animate, players.length)
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[340px]">
+    <div className="relative mx-auto aspect-square w-full max-w-[min(340px,42dvh)] min-[900px]:max-w-[min(420px,62dvh)]">
       <FacetTable />
       {settings.picker === 'bottle' ? (
         <Bottle rotation={game.bottleRotation} animate={animate} />

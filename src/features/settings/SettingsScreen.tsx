@@ -29,7 +29,12 @@ export function SettingsScreen() {
   }, [status])
 
   return (
-    <Screen title={t.settings.title} back={() => navigate('/profil')} backLabel={t.common.back}>
+    <Screen
+      wide
+      title={t.settings.title}
+      back={() => navigate('/profil')}
+      backLabel={t.common.back}
+    >
       <div className="grid gap-10 pt-4 min-[900px]:grid-cols-2 min-[900px]:gap-x-12">
         {profile ? (
           <div className="flex flex-col gap-10">

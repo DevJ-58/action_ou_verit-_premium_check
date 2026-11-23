@@ -426,7 +426,7 @@ export const fr = {
   roomGame: {
     chosen: 'Ton défi proposé',
     write: 'Écrire',
-    gameDares: 'Défis du jeu',
+    gameDares: 'Du jeu',
     source: 'D’où vient ton défi',
     noOwn: 'Aucun de tes défis ne convient à ce tour.',
     chooses: '{name} choisit Action ou Vérité…',

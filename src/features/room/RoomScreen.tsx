@@ -51,7 +51,7 @@ export function RoomScreen() {
     return <div role="status" aria-busy="true" className="min-h-dvh" />
 
   return state.room.status === 'lobby' ? (
-    <Screen title={t.room.lobbyTitle} back={leave} backLabel={t.room.leave}>
+    <Screen wide title={t.room.lobbyTitle} back={leave} backLabel={t.room.leave}>
       <div className="pt-4">
         <LobbyView state={state} />
       </div>

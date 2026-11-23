@@ -13,6 +13,7 @@ import { useRoomChat } from '@/features/chat/useRoomChat'
 import { RecapBody } from '@/features/game/RecapBody'
 import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
+import { cn } from '@/lib/cn'
 import { FloatingReactions } from './game/FloatingReactions'
 import { ReactionBar } from './game/ReactionBar'
 import { TurnStage } from './game/TurnStage'
@@ -48,6 +49,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   }, [finished, lastGame])
 
   const tableVisible = ['ready', 'spinning', 'choosing'].includes(game.phase)
+  const chooserHere = game.phase === 'choosing' && game.turn?.answererId === state.self.id
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
@@ -92,8 +94,18 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           </div>
         ) : (
           <>
-            {tableVisible ? <Table game={game} animate={!reduceMotion} /> : null}
-            <div className="flex flex-col justify-center gap-6">
+            {tableVisible ? (
+              // The player choosing needs the Truth / Dare buttons in view on small phones.
+              <div className={chooserHere ? 'max-[899px]:hidden' : undefined}>
+                <Table game={game} animate={!reduceMotion} />
+              </div>
+            ) : null}
+            <div
+              className={cn(
+                'flex flex-col justify-center gap-6',
+                !tableVisible && 'min-[900px]:col-span-2',
+              )}
+            >
               {game.phase === 'ready' || game.phase === 'spinning' ? (
                 <Button
                   size="lg"

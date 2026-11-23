@@ -35,7 +35,7 @@ export function HomeTable() {
   return (
     <div
       aria-hidden="true"
-      className="relative mx-auto aspect-square w-full max-w-[min(420px,68vw,40dvh)] [container-type:inline-size] min-[900px]:max-w-[440px]"
+      className="relative mx-auto aspect-square w-full max-w-[min(420px,68vw,40dvh)] [@media(max-height:720px)]:max-w-[min(68vw,30dvh)] [container-type:inline-size] min-[900px]:max-w-[440px]"
     >
       <div className="absolute inset-[9cqw] rounded-full border-[0.8cqw] border-gold bg-seat shadow-card" />
       <div className="absolute inset-[16cqw] rounded-full border border-dashed border-gold/40" />

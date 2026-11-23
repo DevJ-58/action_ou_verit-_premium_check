@@ -29,10 +29,10 @@ export function ProfileScreen() {
   )
 
   return (
-    <Screen title={t.profile.title} actions={gear}>
+    <Screen wide title={t.profile.title} actions={gear}>
       {profile ? (
         <div className="grid gap-8 pt-4 min-[900px]:grid-cols-2 min-[900px]:gap-x-12">
-          <header className="flex flex-col items-center gap-3 rounded-[32px] border border-line px-6 py-8 text-center">
+          <header className="flex flex-col items-center gap-3 self-start rounded-[32px] border border-line px-6 py-8 text-center">
             <Avatar name={profile.pseudo} avatarId={profile.avatarId} size="xl" />
             <h2 className="font-display text-[40px] leading-none">{profile.pseudo}</h2>
             {profile.bio ? <p className="max-w-xs text-muted">{profile.bio}</p> : null}

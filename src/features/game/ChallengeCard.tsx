@@ -10,6 +10,8 @@ export interface ChallengeCardProps {
   dare: Dare
   rotation: 0 | 90 | 180 | 270
   byline: string
+  /** Rooms: a shorter card so the answer and buttons stay in view. */
+  compact?: boolean
 }
 
 // Sideways cards: long side along the screen height, short side along its width.
@@ -18,9 +20,10 @@ const SIDEWAYS_CARD =
   'absolute top-1/2 left-1/2 h-[min(80vw,330px)] w-[min(54dvh,440px)] -translate-x-1/2 -translate-y-1/2'
 const UPRIGHT_FRAME = 'flex w-full max-w-[340px] justify-center'
 const UPRIGHT_CARD = 'min-h-[min(56dvh,470px)] w-full'
+const COMPACT_CARD = 'min-h-[min(38dvh,340px)] w-full min-[900px]:min-h-[min(60dvh,470px)]'
 
 /** The dare as a luxury playing card, turned to face the player who must answer. */
-export function ChallengeCard({ dare, rotation, byline }: ChallengeCardProps) {
+export function ChallengeCard({ dare, rotation, byline, compact = false }: ChallengeCardProps) {
   const t = useT()
   const truth = dare.kind === 'truth'
   const letter = truth ? 'V' : 'A'
@@ -37,7 +40,9 @@ export function ChallengeCard({ dare, rotation, byline }: ChallengeCardProps) {
         style={{ rotate: `${rotation}deg` }}
         className={cn(
           'flex flex-col rounded-[22px] shadow-card transition-[rotate] duration-(--dur-slow) ease-(--ease-out-expo)',
-          sideways ? `${SIDEWAYS_CARD} p-4.5` : `relative ${UPRIGHT_CARD} p-5.5`,
+          sideways
+            ? `${SIDEWAYS_CARD} p-4.5`
+            : `relative ${compact ? COMPACT_CARD : UPRIGHT_CARD} ${compact ? 'p-4.5' : 'p-5.5'}`,
           truth ? 'bg-truth text-ivory' : 'bg-card-ivory text-ink',
         )}
       >
@@ -76,7 +81,7 @@ export function ChallengeCard({ dare, rotation, byline }: ChallengeCardProps) {
         <h2
           className={cn(
             'relative font-display leading-[0.95] font-normal',
-            sideways ? 'mt-3 text-[38px]' : 'mt-5 text-[54px]',
+            sideways ? 'mt-3 text-[38px]' : compact ? 'mt-3 text-[40px]' : 'mt-5 text-[54px]',
             accent,
           )}
         >

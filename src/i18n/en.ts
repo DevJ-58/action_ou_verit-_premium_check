@@ -419,7 +419,7 @@ export const en: Dictionary = {
   roomGame: {
     chosen: 'Your proposed dare',
     write: 'Write',
-    gameDares: 'Game dares',
+    gameDares: 'Game’s',
     source: 'Where your dare comes from',
     noOwn: 'None of your dares fits this turn.',
     chooses: '{name} is choosing Truth or Dare…',

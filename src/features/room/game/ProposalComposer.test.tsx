@@ -45,7 +45,7 @@ test('with prepared dares, “My dares” opens first and one tap proposes the d
 test('game dares of the right type and categories are one tap away', async () => {
   const game = proposing()
   const onPropose = compose(game)
-  await userEvent.click(screen.getByRole('radio', { name: /défis du jeu/i }))
+  await userEvent.click(screen.getByRole('radio', { name: /^du jeu/i }))
   const buttons = screen.getAllByRole('button', { name: /^choisir :/i })
   expect(buttons.length).toBeGreaterThan(3)
   await userEvent.click(buttons[0]!)
@@ -68,6 +68,6 @@ test('game dares beyond the answerer’s limits are not offered', async () => {
     ),
   }
   compose(game)
-  await userEvent.click(screen.getByRole('radio', { name: /défis du jeu/i }))
+  await userEvent.click(screen.getByRole('radio', { name: /^du jeu/i }))
   expect(screen.queryByRole('button', { name: /osé/i })).not.toBeInTheDocument()
 })

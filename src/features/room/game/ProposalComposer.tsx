@@ -56,7 +56,7 @@ export function ProposalComposer({
         label={t.roomGame.source}
         value={source}
         options={[
-          { value: 'mine', label: `${t.roomGame.myDares} · ${mine.length}` },
+          { value: 'mine', label: `${t.roomGame.myDares} (${mine.length})` },
           { value: 'game', label: t.roomGame.gameDares },
           { value: 'write', label: t.roomGame.write },
         ]}

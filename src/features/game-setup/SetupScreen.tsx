@@ -53,7 +53,7 @@ export function SetupScreen() {
   }
 
   return (
-    <Screen title={t.setup.title} back={() => navigate('/')} backLabel={t.common.back}>
+    <Screen wide title={t.setup.title} back={() => navigate('/')} backLabel={t.common.back}>
       <div className="flex flex-col gap-10 pt-4">
         <section className="flex flex-col gap-3">
           <h2 className="text-lg font-extrabold">{t.setup.players}</h2>

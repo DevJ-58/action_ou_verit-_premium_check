@@ -1,16 +1,18 @@
 {
   "entries": [
     {
-      "version": "2026-11-24.1",
+      "version": "2026-11-24.2",
       "fr": [
-        "Correctif : un téléphone qui rate une étape de la partie la rattrape tout seul",
-        "Correctif : un choix d’Action ou Vérité n’est plus jamais perdu",
-        "Correctif : les parties sont bien comptées dans les statistiques du profil"
+        "Micro en direct : parle avec les autres, avec une voix transformée selon ton avatar",
+        "Envoie des photos dans le chat, et une barre de saisie repensée",
+        "Affichage revu sur petits téléphones, tablettes et ordinateurs",
+        "Correctifs : plus de partie bloquée d’un côté, statistiques bien comptées"
       ],
       "en": [
-        "Fix: a phone that misses a step of the game catches up by itself",
-        "Fix: a Truth or Dare choice is never lost anymore",
-        "Fix: games are correctly counted in the profile stats"
+        "Live mic: talk with the others, with a voice changed to match your avatar",
+        "Send photos in the chat, with a redesigned input bar",
+        "Better layout on small phones, tablets and computers",
+        "Fixes: no more game stuck on one side, stats counted correctly"
       ]
     }
   ]
