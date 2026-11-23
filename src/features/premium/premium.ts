@@ -25,6 +25,18 @@ export function trialDaysLeft(until: string | null | undefined, now = Date.now()
   return Math.max(0, Math.ceil((Date.parse(until) - now) / 86400e3))
 }
 
+/**
+ * Payment fees, paid by the player on top of the price: GeniusPay takes 1 % + 100 FCFA per
+ * successful payment, and the Mobile Money operator about 1.5 % more (e.g. Wave).
+ */
+export const PAYMENT_FEES = { rate: 0.025, fixed: 100 } as const
+
+/** What the player pays for a plan, fees included, rounded up to 5 FCFA. */
+export function totalToPay(plan: PlanId): number {
+  const gross = (PLANS[plan].price + PAYMENT_FEES.fixed) / (1 - PAYMENT_FEES.rate)
+  return Math.ceil(gross / 5) * 5
+}
+
 /** What a free player gets. */
 export const FREE_LIMITS = { customDares: 5, roomMembers: 6 } as const
 
@@ -46,6 +58,10 @@ export function allowedCategories(premium: boolean): CategoryId[] {
   return CATEGORIES.filter((c) => premium || c.free).map((c) => c.id)
 }
 
+export function formatFcfa(amount: number, locale: string): string {
+  return `${amount.toLocaleString(locale)} FCFA`
+}
+
 export function formatPrice(plan: Plan, locale: string): string {
-  return `${plan.price.toLocaleString(locale)} FCFA`
+  return formatFcfa(plan.price, locale)
 }

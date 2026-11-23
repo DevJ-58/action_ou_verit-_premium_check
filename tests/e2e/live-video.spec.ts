@@ -37,7 +37,7 @@ test('the designated player goes live and the other phone sees the video', async
   // Live video is Premium: the host buys an evening pass (test payment without a server)
   // on top of the free trial.
   await awa.goto('./premium')
-  await awa.getByRole('button', { name: /Payer 300 FCFA/ }).click()
+  await awa.getByRole('button', { name: /Payer 415 FCFA/ }).click()
   await expect(awa.getByText(/Tu es Premium jusqu’au/)).toBeVisible()
   await awa.goto('./')
   await awa.getByRole('link', { name: /Créer un salon/ }).click()

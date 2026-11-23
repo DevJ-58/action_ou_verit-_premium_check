@@ -34,7 +34,7 @@ function network(opts: {
         200,
         opts.payment === null
           ? []
-          : [opts.payment ?? { transaction_id: 'T1', amount: 300, status: 'pending' }],
+          : [opts.payment ?? { transaction_id: 'T1', amount: 415, status: 'pending' }],
       )
     }
     if (url.endsWith('/rest/v1/rpc/grant_premium')) return reply(200, '2026-11-24T20:00:00Z')
@@ -47,7 +47,7 @@ function network(opts: {
       return reply(200, {
         data: {
           status: opts.status ?? 'ACCEPTED',
-          amount: String(opts.amount ?? 300),
+          amount: String(opts.amount ?? 415),
           currency: 'XOF',
         },
       })
@@ -73,10 +73,10 @@ describe('create-payment', () => {
     expect(res.status).toBe(200)
     expect(await res.json()).toMatchObject({ url: 'https://checkout.cinetpay.com/payment/abc' })
     expect(n.calls.find((c) => c.startsWith('POST https://db.example/rest/v1/payments'))).toMatch(
-      /"user_id":"user-1","plan":"month","amount":1500/,
+      /"user_id":"user-1","plan":"month","amount":1645/,
     )
     const init = n.calls.find((c) => c.includes('/v2/payment '))!
-    expect(init).toMatch(/"amount":1500,"currency":"XOF"/)
+    expect(init).toMatch(/"amount":1645,"currency":"XOF"/)
     expect(init).toMatch(/"notify_url":"https:\/\/db.example\/functions\/v1\/cinetpay-webhook"/)
   })
 
@@ -133,7 +133,7 @@ describe('cinetpay-webhook', () => {
   })
 
   test('an already counted or unknown transaction is not checked again', async () => {
-    for (const payment of [{ transaction_id: 'T1', amount: 300, status: 'paid' }, null]) {
+    for (const payment of [{ transaction_id: 'T1', amount: 415, status: 'paid' }, null]) {
       const n = network({ payment })
       await webhook(notify('T1'), { env, fetch: n.fetch })
       expect(n.calls.some((c) => c.includes('/v2/payment/check'))).toBe(false)

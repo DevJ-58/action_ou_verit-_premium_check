@@ -10,7 +10,8 @@ export interface Deps {
   fetch: typeof fetch
 }
 
-const PLANS = { pass: 300, month: 1500 } as const
+// What the player pays, payment fees included (price 300 / 1 500 FCFA + fees, see src/features/premium/premium.ts).
+const PLANS = { pass: 415, month: 1645 } as const
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',

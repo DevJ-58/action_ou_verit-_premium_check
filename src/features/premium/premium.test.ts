@@ -6,6 +6,7 @@ import {
   isPremium,
   premiumCategories,
   allowedCategories,
+  totalToPay,
 } from './premium'
 
 const NOW = Date.parse('2026-11-23T20:00:00Z')
@@ -32,4 +33,15 @@ test('free players keep 3 categories and 5 own dares; rooms of 6', () => {
   expect(premiumCategories()).toEqual(['closer', 'spicy', 'night', 'intimate', 'noreturn'])
   expect(allowedCategories(false)).toEqual(['fun', 'honest', 'romantic'])
   expect(allowedCategories(true)).toEqual(CATEGORIES.map((c) => c.id))
+})
+
+test('the player pays the payment fees on top of the price (1 % + 100 F + about 1.5 % operator)', () => {
+  expect(totalToPay('pass')).toBe(415)
+  expect(totalToPay('month')).toBe(1645)
+  for (const plan of ['pass', 'month'] as const) {
+    const total = totalToPay(plan)
+    const fees = total * 0.025 + 100
+    expect(total - fees).toBeGreaterThanOrEqual(PLANS[plan].price)
+    expect(total % 5).toBe(0)
+  }
 })

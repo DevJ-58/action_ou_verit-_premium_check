@@ -104,6 +104,7 @@ export const en: Dictionary = {
       pass: { name: 'Party pass', length: '24 hours' },
       month: { name: 'Premium 1 month', length: '30 days', best: 'Best value' },
     },
+    fees: '+ {fees} payment fees',
     buy: 'Pay {price}',
     payWith: 'Orange Money, MTN, Moov, Wave or card',
     noRenewal: 'No subscription: nothing is charged automatically.',

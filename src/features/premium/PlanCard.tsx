@@ -3,7 +3,7 @@ import { format } from '@/i18n/format'
 import { useSettings } from '@/features/settings/settingsStore'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
-import { formatPrice, PLANS, type PlanId } from './premium'
+import { formatFcfa, formatPrice, PLANS, totalToPay, type PlanId } from './premium'
 
 export interface PlanCardProps {
   plan: PlanId
@@ -17,7 +17,10 @@ export function PlanCard({ plan, busy, disabled, onBuy }: PlanCardProps) {
   const t = useT()
   const language = useSettings((s) => s.language)
   const info = t.premium.plans[plan]
-  const price = formatPrice(PLANS[plan], language === 'fr' ? 'fr-FR' : 'en-GB')
+  const locale = language === 'fr' ? 'fr-FR' : 'en-GB'
+  const price = formatPrice(PLANS[plan], locale)
+  const total = totalToPay(plan)
+  const fees = formatFcfa(total - PLANS[plan].price, locale)
   const best = plan === 'month'
   return (
     <article
@@ -35,7 +38,10 @@ export function PlanCard({ plan, busy, disabled, onBuy }: PlanCardProps) {
         <h3 className="text-lg font-extrabold">{info.name}</h3>
         <p className="text-sm text-muted">{info.length}</p>
       </div>
-      <p className="font-display text-[40px] leading-none">{price}</p>
+      <div>
+        <p className="font-display text-[40px] leading-none">{price}</p>
+        <p className="mt-1 text-sm text-muted">{format(t.premium.fees, { fees })}</p>
+      </div>
       <Button
         size="lg"
         variant={best ? 'primary' : 'ghost'}
@@ -43,7 +49,7 @@ export function PlanCard({ plan, busy, disabled, onBuy }: PlanCardProps) {
         disabled={disabled}
         onClick={onBuy}
       >
-        {format(t.premium.buy, { price })}
+        {format(t.premium.buy, { price: formatFcfa(total, locale) })}
       </Button>
     </article>
   )

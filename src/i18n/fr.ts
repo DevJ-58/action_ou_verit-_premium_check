@@ -103,6 +103,7 @@ export const fr = {
       pass: { name: 'Pass soirée', length: '24 heures' },
       month: { name: 'Premium 1 mois', length: '30 jours', best: 'Le plus avantageux' },
     },
+    fees: '+ {fees} de frais de paiement',
     buy: 'Payer {price}',
     payWith: 'Orange Money, MTN, Moov, Wave ou carte bancaire',
     noRenewal: 'Pas d’abonnement : rien n’est prélevé automatiquement.',

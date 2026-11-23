@@ -25,8 +25,8 @@ test('signed out, the Premium page lists what it unlocks and asks to sign in', a
   renderAt('/premium')
   expect(await screen.findByRole('heading', { name: /passe premium/i })).toBeInTheDocument()
   expect(screen.getByText(/vidéo en direct pour voir les actions/i)).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: /payer 300 fcfa/i })).toBeDisabled()
-  expect(screen.getByRole('button', { name: /payer 1\s?500 fcfa/i })).toBeDisabled()
+  expect(screen.getByRole('button', { name: /payer 415 fcfa/i })).toBeDisabled()
+  expect(screen.getByRole('button', { name: /payer 1\s?645 fcfa/i })).toBeDisabled()
   expect(
     screen.getByRole('link', { name: /connecte-toi pour passer premium/i }),
   ).toBeInTheDocument()
@@ -41,7 +41,7 @@ describe('signed in', () => {
 
   test('buying the evening pass (test payment) makes the player Premium', async () => {
     renderAt('/premium')
-    await userEvent.click(await screen.findByRole('button', { name: /payer 300 fcfa/i }))
+    await userEvent.click(await screen.findByRole('button', { name: /payer 415 fcfa/i }))
     expect(await screen.findByText(/tu es premium jusqu’au/i)).toBeInTheDocument()
   })
 
@@ -53,7 +53,7 @@ describe('signed in', () => {
     }
     setPaymentService(redirect)
     renderAt('/premium')
-    await userEvent.click(await screen.findByRole('button', { name: /payer 1\s?500 fcfa/i }))
+    await userEvent.click(await screen.findByRole('button', { name: /payer 1\s?645 fcfa/i }))
     expect(assign).toHaveBeenCalledWith('https://checkout.cinetpay.com/payment/x')
     vi.unstubAllGlobals()
   })
@@ -61,7 +61,7 @@ describe('signed in', () => {
   test('when payment is not open yet, it says so', async () => {
     setPaymentService({ checkout: async () => ({ kind: 'unavailable' }) })
     renderAt('/premium')
-    await userEvent.click(await screen.findByRole('button', { name: /payer 300 fcfa/i }))
+    await userEvent.click(await screen.findByRole('button', { name: /payer 415 fcfa/i }))
     expect(await screen.findByRole('alert')).toHaveTextContent(/pas encore ouvert/i)
   })
 
