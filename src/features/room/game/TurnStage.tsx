@@ -1,12 +1,12 @@
 import { Button, Emoji } from '@/design-system'
-import { pointsFor, skipsLeft, type GameState } from '@/engine'
-import { ChallengeCard } from '@/features/game/ChallengeCard'
+import type { GameState } from '@/engine'
 import { CountdownRing } from '@/features/game/CountdownRing'
 import { KindChooser } from '@/features/game/KindChooser'
 import { WrittenDareForm } from '@/features/game/WrittenDareForm'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import type { RoomStoreState } from '../roomStore'
+import { ChallengeStage } from './ChallengeStage'
 import { FaceDownCards } from './FaceDownCards'
 import { ProposalComposer } from './ProposalComposer'
 
@@ -112,29 +112,13 @@ export function TurnStage({ state, game }: TurnStageProps) {
       )
     case 'challenge':
       return turn.dare ? (
-        <div className="flex flex-col items-center gap-6">
-          <ChallengeCard
-            dare={turn.dare}
-            rotation={0}
-            byline={format(t.roomGame.by, { name: nameOf(turn.askerId) })}
-          />
-          {isAnswerer ? (
-            <div className="flex w-full max-w-sm flex-col gap-2.5">
-              <Button size="lg" onClick={() => state.act({ type: 'COMPLETE' })}>
-                {format(t.game.done, { points: `+${pointsFor(turn.kind!, 'done')}` })}
-              </Button>
-              <Button
-                variant="ghost"
-                className="normal-case tracking-normal"
-                disabled={skipsLeft(game, selfId) === 0}
-                onClick={() => state.act({ type: 'SKIP' })}
-              >
-                {format(t.game.skip, { count: skipsLeft(game, selfId) })}
-              </Button>
-            </div>
-          ) : null}
-          {skipAway}
-        </div>
+        <ChallengeStage
+          state={state}
+          game={game}
+          turn={{ ...turn, dare: turn.dare }}
+          nameOf={nameOf}
+          extra={skipAway}
+        />
       ) : null
     default:
       return null

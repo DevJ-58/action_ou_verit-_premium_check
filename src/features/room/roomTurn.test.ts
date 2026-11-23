@@ -64,4 +64,17 @@ test('a full room turn: two propose, the answerer turns a card, every phone sees
   const dare = games[0]!.turn!.dare!
   expect(games.every((g) => g.turn!.dare!.text === dare.text)).toBe(true)
   expect(dare.text).toBe(`Défi de ${games[0]!.turn!.askerId}`)
+
+  // The answerer answers; every phone sees it; another player votes; the answer is kept.
+  byId(answererId).getState().act({ type: 'ANSWER', playerId: answererId, text: 'Fait !' })
+  await flush()
+  expect(phones.every((p) => p.getState().room!.game!.turn!.answer?.text === 'Fait !')).toBe(true)
+  const voter = proposers[0]!
+  voter.getState().act({ type: 'VOTE', playerId: voter.getState().self.id, ok: true })
+  // Nobody may vote or answer for someone else.
+  voter.getState().act({ type: 'ANSWER', playerId: answererId, text: 'Faux' })
+  await flush()
+  const turn = byId(answererId).getState().room!.game!.turn!
+  expect(turn.votes).toEqual({ [voter.getState().self.id]: true })
+  expect(turn.answer?.text).toBe('Fait !')
 })

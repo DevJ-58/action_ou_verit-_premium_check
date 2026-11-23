@@ -13,6 +13,8 @@ export function mayAct(game: GameState, hostId: string, from: string, action: Ga
     case 'SKIP':
       return from === answerer || from === hostId
     case 'PROPOSE':
+    case 'ANSWER':
+    case 'VOTE':
       return action.playerId === from
     case 'PICK_SYSTEM':
     case 'PICK_CUSTOM':

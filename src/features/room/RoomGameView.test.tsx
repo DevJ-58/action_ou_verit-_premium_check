@@ -1,72 +1,9 @@
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router'
 import { systemDares } from '@/content/systemDares'
-import { createGame, createSeededRng, reduce, type GameAction, type GameState } from '@/engine'
-import { ROOM_DEFAULTS, toPlayer } from './applyIntent'
-import { RoomGameView } from './RoomGameView'
-import type { RoomStoreState } from './roomStore'
-import type { Member, RoomState } from './types'
+import type { GameAction } from '@/engine'
+import { gameAt, notAnswerer, proposing, show, stateFor } from './roomTestKit'
 
-const member = (id: string, pseudo: string): Member => ({
-  id,
-  pseudo,
-  avatarId: '1f981',
-  limits: { excludedCategories: [], maxIntensity: 4 },
-  customDares: [],
-})
-const members = [member('a', 'Awa'), member('k', 'Kofi'), member('i', 'Inès')]
-
-function gameAt(actions: (g: GameState) => GameAction[]): GameState {
-  const ctx = { rng: createSeededRng(11), systemDares }
-  let g = createGame({
-    id: 'g',
-    settings: { ...ROOM_DEFAULTS, categories: ['fun'] },
-    players: members.map(toPlayer),
-  })
-  for (const step of [{ type: 'SPIN' }, { type: 'SPIN_SETTLED' }] as GameAction[])
-    g = reduce(g, step, ctx)
-  for (const step of actions(g)) g = reduce(g, step, ctx)
-  return g
-}
-
-function stateFor(selfId: string, game: GameState, extra: Partial<RoomState> = {}): RoomStoreState {
-  const room: RoomState = {
-    code: 'ABCDEF',
-    version: 3,
-    hostId: 'a',
-    status: 'playing',
-    members,
-    game,
-    reactions: [],
-    ...extra,
-  }
-  return {
-    self: members.find((m) => m.id === selfId)!,
-    room,
-    role: selfId === 'a' ? 'host' : 'guest',
-    online: new Set(members.map((m) => m.id)),
-    disconnect: vi.fn(),
-    createRoom: vi.fn(),
-    joinRoom: vi.fn(),
-    start: vi.fn(),
-    act: vi.fn(),
-    react: vi.fn(),
-    leave: vi.fn(),
-  }
-}
-
-function show(state: RoomStoreState) {
-  render(
-    <MemoryRouter>
-      <RoomGameView state={state} onLeave={() => {}} />
-    </MemoryRouter>,
-  )
-  return state
-}
-
-const proposing = () => gameAt(() => [{ type: 'CHOOSE_KIND', kind: 'dare' }])
-const notAnswerer = (g: GameState) => g.players.find((p) => p.id !== g.turn!.answererId)!.id
 
 test('a proposer writes a dare and sends it as their proposal', async () => {
   const g = proposing()
