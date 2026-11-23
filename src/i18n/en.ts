@@ -227,6 +227,13 @@ export const en: Dictionary = {
     },
   },
   room: {
+    scan: 'Scan a QR code',
+    scanTitle: 'Scan the room’s QR code',
+    scanHint: 'Point at the QR code shown on the host’s phone.',
+    scanNotRoom: 'This QR code is not a Truth or Dare room.',
+    scanDenied: 'Allow the camera in your browser to scan, or type the code.',
+    scanUnsupported: 'Your phone can’t scan here: type the code.',
+    or: 'or',
     create: 'Create a room',
     createHint: 'Everyone plays on their own phone',
     join: 'Join',

@@ -231,6 +231,13 @@ export const fr = {
     },
   },
   room: {
+    scan: 'Scanner un QR code',
+    scanTitle: 'Scanne le QR code du salon',
+    scanHint: 'Vise le QR code affiché sur le téléphone de l’hôte.',
+    scanNotRoom: 'Ce QR code n’est pas un salon Action ou Vérité.',
+    scanDenied: 'Autorise la caméra dans ton navigateur pour scanner, ou tape le code.',
+    scanUnsupported: 'Ton téléphone ne permet pas de scanner ici : tape le code.',
+    or: 'ou',
     create: 'Créer un salon',
     createHint: 'Chacun joue depuis son téléphone',
     join: 'Rejoindre',
