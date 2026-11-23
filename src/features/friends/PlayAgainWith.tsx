@@ -2,7 +2,9 @@ import { Avatar } from '@/design-system'
 import { useAccount } from '@/features/account/accountStore'
 import type { Member } from '@/features/room/types'
 import { useT } from '@/i18n/useT'
+import { format } from '@/i18n/format'
 import { AddFriendButton } from './AddFriendButton'
+import { openProfile } from './profileViewer'
 
 /** After a room game: keep the other players as friends to play again. */
 export function PlayAgainWith({ members }: { members: Member[] }) {
@@ -19,8 +21,15 @@ export function PlayAgainWith({ members }: { members: Member[] }) {
             key={m.id}
             className="flex items-center gap-2 rounded-full bg-seat py-1.5 pr-2 pl-1.5"
           >
-            <Avatar name={m.pseudo} avatarId={m.avatarId} size="sm" />
-            <span className="max-w-28 truncate text-sm font-bold">{m.pseudo}</span>
+            <button
+              type="button"
+              aria-label={format(t.friends.seeProfile, { name: m.pseudo })}
+              onClick={() => openProfile(m.id)}
+              className="flex items-center gap-2 rounded-full"
+            >
+              <Avatar name={m.pseudo} avatarId={m.avatarId} size="sm" />
+              <span className="max-w-28 truncate text-sm font-bold">{m.pseudo}</span>
+            </button>
             <AddFriendButton person={{ id: m.id, pseudo: m.pseudo, avatarId: m.avatarId }} />
           </li>
         ))}

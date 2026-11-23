@@ -2,14 +2,18 @@ import { useLocation, useOutlet } from 'react-router'
 import { motion, useReducedMotion } from 'motion/react'
 import { springs } from '@/design-system'
 import { useAccountBoot } from '@/features/account/useAccountBoot'
+import { useSocialBoot } from '@/features/friends/socialHub'
 import { useApplySettings } from '@/features/settings/useApplySettings'
 import { useAudioUnlock } from '@/lib/audio/useAudioUnlock'
 import { UpdateBanner } from '@/features/update/UpdateBanner'
 import { TrialWelcome } from '@/features/premium/TrialWelcome'
+import { FriendRequestToast } from '@/features/friends/FriendRequestToast'
+import { PublicProfileSheet } from '@/features/friends/PublicProfileSheet'
 
 /** Applies settings, fades/slides each new screen in, and offers app updates. */
 export function RootLayout() {
   useAccountBoot()
+  useSocialBoot()
   useApplySettings()
   useAudioUnlock()
   const outlet = useOutlet()
@@ -28,6 +32,8 @@ export function RootLayout() {
       </motion.div>
       <UpdateBanner />
       <TrialWelcome />
+      <FriendRequestToast />
+      <PublicProfileSheet />
     </>
   )
 }

@@ -6,10 +6,12 @@ import { useT } from '@/i18n/useT'
 
 export interface StatsGridProps {
   stats: AccountStats
+  /** The player's own stats (shows a hint when empty). */
+  own?: boolean
 }
 
 /** The player's numbers, as tiles. */
-export function StatsGrid({ stats }: StatsGridProps) {
+export function StatsGrid({ stats, own = true }: StatsGridProps) {
   const t = useT()
   const tiles: { emoji: EmojiName; value: number; label: string }[] = [
     { emoji: 'game', value: stats.games, label: t.profile.statGames },
@@ -37,7 +39,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
           </motion.li>
         ))}
       </ul>
-      {stats.games === 0 ? <p className="text-sm text-muted">{t.profile.noStats}</p> : null}
+      {own && stats.games === 0 ? <p className="text-sm text-muted">{t.profile.noStats}</p> : null}
     </section>
   )
 }

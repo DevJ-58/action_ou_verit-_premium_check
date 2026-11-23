@@ -85,7 +85,7 @@ test('two phones play a room turn: everyone proposes, the answerer turns a card'
   await expect(answerer.getByRole('log').getByText('Bravo 👏')).toBeVisible()
 })
 
-test('a player met in a room becomes a friend and is invited to the next room', async ({
+test('a player met in a room accepts a friend request and is invited to the next room', async ({
   context,
 }) => {
   test.setTimeout(90_000)
@@ -98,8 +98,13 @@ test('a player met in a room becomes a friend and is invited to the next room', 
   await awa.waitForURL(/salon\/[A-Z2-9]{6}$/)
   const first = awa.url().slice(-6)
   await kofi.goto(`./salon/${first}`)
-  await awa.getByRole('button', { name: 'Ajouter Kofi en ami' }).click()
-  await expect(awa.getByRole('button', { name: 'Ajouter Kofi en ami' })).toHaveCount(0)
+  await awa.getByRole('button', { name: 'Demander Kofi en ami' }).click()
+  await expect(awa.getByText('Demande envoyée')).toBeVisible()
+  // Kofi accepts the friend request.
+  const request = kofi.getByRole('region', { name: 'Demande d’ami' })
+  await expect(request).toContainText('Awa veut être ton ami')
+  await request.getByRole('button', { name: 'Accepter' }).click()
+  await expect(awa.getByText('Ami', { exact: true })).toBeVisible()
 
   // Both leave; Awa opens a new room and invites Kofi.
   await kofi.goto('./')

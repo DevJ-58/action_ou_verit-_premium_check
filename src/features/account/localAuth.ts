@@ -78,6 +78,26 @@ export function localPremiumUntil(accountId: string): string | null {
   return readAccounts().find((a) => a.id === accountId)?.premiumUntil ?? null
 }
 
+/** Development only: another local account's profile (social features between tabs). */
+export function readLocalProfile(accountId: string): Profile | null {
+  const account = readAccounts().find((a) => a.id === accountId)
+  return account
+    ? {
+        ...account.profile,
+        stats: sanitizeStats(account.profile.stats),
+        friends: sanitizeFriends(account.profile.friends),
+      }
+    : null
+}
+
+export function updateLocalProfile(accountId: string, change: (p: Profile) => Profile): void {
+  writeAccounts(
+    readAccounts().map((a) =>
+      a.id === accountId ? { ...a, profile: change(readLocalProfile(a.id) ?? a.profile) } : a,
+    ),
+  )
+}
+
 const toSession = (a: StoredAccount): Session => ({
   account: { id: a.id, email: a.email },
   premiumUntil: a.premiumUntil ?? null,

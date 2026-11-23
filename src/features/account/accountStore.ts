@@ -18,6 +18,8 @@ export interface AccountState {
   recordGame(game: FinishedGame, asPlayer?: string): Promise<void>
   /** Re-reads the Premium end date (after a purchase). */
   refreshPremium(): Promise<void>
+  /** Re-reads the profile (friends changed on the server side). */
+  reloadProfile(): Promise<void>
   addFriend(friend: Friend): Promise<void>
   removeFriend(id: string): Promise<void>
 }
@@ -68,6 +70,11 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
         session: { ...session, premiumUntil: fresh.premiumUntil, premiumTrial: fresh.premiumTrial },
       })
     }
+  },
+  reloadProfile: async () => {
+    const fresh = await getAuthService().current()
+    const session = get().session
+    if (fresh && session && fresh.account.id === session.account.id) set({ session: fresh })
   },
   addFriend: async (friend) => {
     const profile = get().session?.profile

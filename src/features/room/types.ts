@@ -76,6 +76,8 @@ export type BusMessage =
   | { kind: 'chat'; code: string; message: ChatMessage; origin?: string }
   | { kind: 'invite'; code: string; invite: Invite; origin?: string }
   | { kind: 'signal'; code: string; signal: Signal; origin?: string }
+  | { kind: 'social'; code: string; origin?: string }
+  | { kind: 'online'; code: string; memberId: string; origin?: string }
 
 export type RoomError = 'roomNotFound' | 'roomFull' | 'roomStarted' | 'joinTimeout'
 

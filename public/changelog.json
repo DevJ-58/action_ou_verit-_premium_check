@@ -1,18 +1,16 @@
 {
   "entries": [
     {
-      "version": "2026-11-24.3",
+      "version": "2026-11-24.4",
       "fr": [
-        "Lecture des défis à voix haute (voix de femme ou d’homme, réglée par l’hôte)",
-        "Micro en direct : on voit qui parle, et les voix sont plus claires et plus fortes",
-        "La bouteille fait du bruit en tournant, et la musique se coupe quand ton micro est ouvert",
-        "Photos : prends-en une ou choisis-la dans ta galerie (1 Mo max)"
+        "Demandes d’ami : envoie une demande en salon ou à la fin de la partie, l’autre accepte",
+        "Vois quels amis sont en ligne et invite-les dans un salon en un tap",
+        "Touche un joueur pour voir son profil (avatar, bio, statistiques)"
       ],
       "en": [
-        "Dares read aloud (woman’s or man’s voice, set by the host)",
-        "Live mic: see who is talking, with clearer and louder voices",
-        "The bottle ticks as it spins, and music stops while your mic is on",
-        "Photos: take one or choose it from your gallery (1 MB max)"
+        "Friend requests: send one in a room or after the game, the other accepts",
+        "See which friends are online and invite them to a room in one tap",
+        "Tap a player to see their profile (avatar, bio, stats)"
       ]
     }
   ]
