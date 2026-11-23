@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router'
 import { motion } from 'motion/react'
-import { Button, KenteBand, springs } from '@/design-system'
+import { Button, KenteBand, springs, Wordmark } from '@/design-system'
 import { hasResumableGame } from '@/features/game/resumable'
 import { useT } from '@/i18n/useT'
-import { CardFan } from './CardFan'
 import { EntryLink } from './EntryLink'
+import { HomeTable } from './HomeTable'
 
 export function HomeScreen() {
   const t = useT()
@@ -13,31 +13,35 @@ export function HomeScreen() {
   return (
     <div className="flex flex-1 flex-col pt-[env(safe-area-inset-top)]">
       <KenteBand />
-      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col min-[900px]:max-w-5xl">
-        <header className="flex items-center justify-between px-5 pt-4">
-          <span className="font-display text-xl text-gold-text">A ◆ V</span>
+      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 min-[900px]:max-w-5xl">
+        <header className="flex items-center justify-between pt-4">
+          <Wordmark />
           <span className="rounded-full border-[1.5px] border-gold-text px-2.5 py-0.5 text-xs font-extrabold tracking-[0.14em] text-gold-text">
             18+
           </span>
         </header>
-        <div className="flex flex-1 flex-col min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:items-center min-[900px]:gap-12">
+        <div className="flex flex-1 flex-col gap-4 pt-2 min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:items-center min-[900px]:gap-14">
           <motion.div
-            className="mt-3.5 px-2"
-            initial={{ opacity: 0, y: 24, rotate: -2 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={springs.bouncy}
+            initial={{ opacity: 0, scale: 0.92, rotate: -6 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={springs.gentle}
+            className="px-4 min-[900px]:px-0"
           >
-            <CardFan />
+            <HomeTable />
           </motion.div>
-          <div className="flex flex-1 flex-col">
-            <div className="px-5">
-              <h1 className="font-display text-[clamp(38px,11vw,64px)] leading-none">
-                {t.home.titleBefore} <em className="text-gold-text">{t.home.titleOr}</em>{' '}
+          <div className="flex flex-1 flex-col gap-5 pb-5">
+            <div>
+              <p className="text-xs font-extrabold tracking-[0.18em] text-gold-text uppercase">
+                {t.home.eyebrow}
+              </p>
+              <h1 className="mt-2 font-display text-[clamp(44px,13vw,76px)] leading-[0.92]">
+                {t.home.titleBefore} <em className="text-gold-text">{t.home.titleOr}</em>
+                <br />
                 {t.home.titleAfter}
               </h1>
-              <p className="mt-2.5 text-base leading-normal text-muted">{t.home.tagline}</p>
+              <p className="mt-3 max-w-md text-base leading-normal text-muted">{t.home.tagline}</p>
             </div>
-            <div className="mt-auto flex flex-col gap-3 px-5 pt-6 pb-5 min-[900px]:mt-8">
+            <div className="mt-auto flex flex-col gap-3 min-[900px]:mt-2">
               {canResume ? (
                 <Button variant="truth" size="lg" onClick={() => navigate('/partie')}>
                   {t.home.resume}
@@ -50,18 +54,22 @@ export function HomeScreen() {
                 hint={t.room.createHint}
                 primary
               />
-              <EntryLink
-                to="/salon/rejoindre"
-                emoji="link"
-                title={t.room.join}
-                hint={t.room.joinHint}
-              />
-              <EntryLink
-                to="/partie/nouvelle"
-                emoji="dice"
-                title={t.room.playHere}
-                hint={t.room.playHereHint}
-              />
+              <div className="grid grid-cols-2 gap-3">
+                <EntryLink
+                  to="/salon/rejoindre"
+                  emoji="link"
+                  title={t.room.join}
+                  hint={t.room.joinHint}
+                  compact
+                />
+                <EntryLink
+                  to="/partie/nouvelle"
+                  emoji="dice"
+                  title={t.room.playHere}
+                  hint={t.room.playHereHint}
+                  compact
+                />
+              </div>
             </div>
           </div>
         </div>

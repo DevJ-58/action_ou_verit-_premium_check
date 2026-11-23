@@ -1,13 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#0f0e1a"/>
-  <g transform="translate(256 262) rotate(-12) translate(-92 -128)">
-    <rect width="184" height="256" rx="20" fill="#4757e8"/>
-    <rect x="9" y="9" width="166" height="238" rx="14" fill="none" stroke="#e3b23c" stroke-width="3"/>
-  </g>
-  <g transform="translate(256 262) rotate(10) translate(-92 -128)">
-    <rect width="184" height="256" rx="20" fill="#fffcf5"/>
-    <rect x="9" y="9" width="166" height="238" rx="14" fill="none" stroke="#c99a2e" stroke-width="3"/>
-    <path d="M92 70 L132 128 L92 186 L52 128 Z" fill="#e05a2b"/>
-    <path d="M92 104 L108 128 L92 152 L76 128 Z" fill="#e3b23c"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- « La Table » : the table seen from above, players around it, the wax bottle pointing at one of them. -->
+  <defs>
+    <clipPath id="bottle"><path d="M51 86 Q49 66 55 58 L56.5 42 L63.5 42 L65 58 Q71 66 69 86 Q60 90 51 86Z"/></clipPath>
+    <pattern id="wax" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#fffcf5"/><path d="M4 0.8 L7.2 4 L4 7.2 L0.8 4Z" fill="#e05a2b"/></pattern>
+  </defs>
+  <rect width="120" height="120" fill="#0f0e1a"/>
+  <circle cx="60" cy="60" r="46" fill="#2a2742" stroke="#e3b23c" stroke-width="2.5"/>
+  <circle cx="60" cy="22" r="5.5" fill="#e05a2b"/>
+  <circle cx="86.87" cy="33.13" r="5.5" fill="#e3b23c"/>
+  <circle cx="98" cy="60" r="5.5" fill="#e05a2b"/>
+  <circle cx="86.87" cy="86.87" r="5.5" fill="#4757e8"/>
+  <circle cx="60" cy="98" r="5.5" fill="#e05a2b"/>
+  <circle cx="33.13" cy="86.87" r="5.5" fill="#4757e8"/>
+  <circle cx="22" cy="60" r="5.5" fill="#e05a2b"/>
+  <circle cx="33.13" cy="33.13" r="5.5" fill="#4757e8"/>
+  <g transform="rotate(45 60 60)">
+    <rect x="40" y="38" width="40" height="56" fill="url(#wax)" clip-path="url(#bottle)"/>
+    <path d="M51 86 Q49 66 55 58 L56.5 42 L63.5 42 L65 58 Q71 66 69 86 Q60 90 51 86Z" fill="none" stroke="#e3b23c" stroke-width="2.5"/>
+    <rect x="56" y="35" width="8" height="8" rx="1.5" fill="#e3b23c"/>
   </g>
 </svg>
