@@ -1,5 +1,6 @@
 import type { EmojiName } from '@/content/emoji'
 import type { ChatMessage } from '@/features/chat/types'
+import type { Invite } from '@/features/friends/invites'
 import type { Dare, GameAction, GameSettings, GameState, PlayerLimits } from '@/engine'
 
 /** A player in a room: the public part of their profile. */
@@ -53,6 +54,7 @@ export type BusMessage =
   | { kind: 'presence'; code: string; memberId: string; origin?: string }
   | { kind: 'bye'; code: string; memberId: string; origin?: string }
   | { kind: 'chat'; code: string; message: ChatMessage; origin?: string }
+  | { kind: 'invite'; code: string; invite: Invite; origin?: string }
 
 export type RoomError = 'roomNotFound' | 'roomFull' | 'roomStarted' | 'joinTimeout'
 

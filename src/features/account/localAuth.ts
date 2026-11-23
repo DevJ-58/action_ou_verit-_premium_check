@@ -1,4 +1,5 @@
 import { sanitizeStats } from './accountStats'
+import { sanitizeFriends } from '@/features/friends/friends'
 import { AVATARS } from '@/content/avatars'
 import { newId } from '@/lib/id'
 import { safeSessionStorage, safeStorage } from '@/lib/safeStorage'
@@ -63,7 +64,11 @@ function writeSessionId(id: string | null) {
 
 const toSession = (a: StoredAccount): Session => ({
   account: { id: a.id, email: a.email },
-  profile: { ...a.profile, stats: sanitizeStats(a.profile.stats) },
+  profile: {
+    ...a.profile,
+    stats: sanitizeStats(a.profile.stats),
+    friends: sanitizeFriends(a.profile.friends),
+  },
 })
 
 export function createLocalAuth(): AuthService {

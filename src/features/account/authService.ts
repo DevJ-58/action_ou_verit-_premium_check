@@ -1,5 +1,6 @@
 import type { Dare, PlayerLimits } from '@/engine'
 import { EMPTY_ACCOUNT_STATS, type AccountStats } from './accountStats'
+import type { Friend } from '@/features/friends/friends'
 
 export interface Account {
   id: string
@@ -15,6 +16,7 @@ export interface Profile {
   limits: PlayerLimits
   customDares: Dare[]
   stats: AccountStats
+  friends: Friend[]
 }
 
 export interface Session {
@@ -64,5 +66,6 @@ export function defaultProfile(id: string, pseudo: string, avatarId: string): Pr
     limits: { excludedCategories: [], maxIntensity: 4 },
     customDares: [],
     stats: EMPTY_ACCOUNT_STATS,
+    friends: [],
   }
 }

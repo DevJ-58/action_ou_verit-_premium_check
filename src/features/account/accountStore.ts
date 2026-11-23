@@ -4,6 +4,7 @@ import { AuthError, type AuthErrorCode, type Profile, type Session } from './aut
 import { getAuthService } from './getAuthService'
 import { recordAccountGame } from './accountStats'
 import type { GameState } from '@/engine'
+import { withFriend, type Friend } from '@/features/friends/friends'
 
 export interface AccountState {
   status: 'loading' | 'signedOut' | 'signedIn'
@@ -15,6 +16,8 @@ export interface AccountState {
   updateProfile(patch: Partial<Omit<Profile, 'id'>>): Promise<void>
   /** Adds a finished game to the signed-in player's stats (once per game). */
   recordGame(game: GameState): Promise<void>
+  addFriend(friend: Friend): Promise<void>
+  removeFriend(id: string): Promise<void>
 }
 
 async function attempt(fn: () => Promise<Session>, set: (s: Partial<AccountState>) => void) {
@@ -54,6 +57,16 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
     if (!profile) return
     const stats = recordAccountGame(profile.stats, game, profile.id)
     if (stats !== profile.stats) await get().updateProfile({ stats })
+  },
+  addFriend: async (friend) => {
+    const profile = get().session?.profile
+    if (!profile || friend.id === profile.id) return
+    await get().updateProfile({ friends: withFriend(profile.friends, friend) })
+  },
+  removeFriend: async (id) => {
+    const profile = get().session?.profile
+    if (!profile) return
+    await get().updateProfile({ friends: profile.friends.filter((f) => f.id !== id) })
   },
 }))
 
