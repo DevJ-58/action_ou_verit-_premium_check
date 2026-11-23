@@ -18,7 +18,7 @@ export function createSupabasePayments(getClient: () => Promise<SupabaseClient>)
         })
         if (error) {
           const status = (error as { context?: { status?: number } }).context?.status
-          return status === 404 ? { kind: 'unavailable' } : { kind: 'failed' }
+          return status === 404 || status === 503 ? { kind: 'unavailable' } : { kind: 'failed' }
         }
         const url = (data as { url?: unknown } | null)?.url
         return typeof url === 'string' && CHECKOUT_HOST.test(url)

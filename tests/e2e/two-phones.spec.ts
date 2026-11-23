@@ -103,7 +103,9 @@ test('a player met in a room becomes a friend and is invited to the next room', 
   await kofi.goto('./')
   await awa.getByRole('button', { name: /Quitter/ }).click()
   await awa.getByRole('link', { name: /Créer un salon/ }).click()
-  await awa.waitForURL((url) => /salon\/[A-Z2-9]{6}$/.test(url.pathname) && !url.pathname.endsWith(first))
+  await awa.waitForURL(
+    (url) => /salon\/[A-Z2-9]{6}$/.test(url.pathname) && !url.pathname.endsWith(first),
+  )
   const second = awa.url().slice(-6)
   await awa.getByRole('button', { name: /Inviter mes amis/ }).click()
   await awa.getByRole('button', { name: 'Inviter Kofi' }).click()
@@ -114,4 +116,17 @@ test('a player met in a room becomes a friend and is invited to the next room', 
   await banner.getByRole('button', { name: 'Rejoindre' }).click()
   await kofi.waitForURL(new RegExp(`salon/${second}$`))
   await expect(awa.getByText('Kofi')).toBeVisible()
+})
+
+test('a free host’s room: Premium categories and live video are locked', async ({ context }) => {
+  const awa = await context.newPage()
+  await signUp(awa, 'Awa')
+  await awa.getByRole('link', { name: /Créer un salon/ }).click()
+  await awa.waitForURL(/salon\/[A-Z2-9]{6}$/)
+  await expect(awa.getByText('1 / 6 joueurs')).toBeVisible()
+  await awa.getByRole('button', { name: /Osé/ }).click()
+  await expect(awa.getByRole('dialog')).toContainText('Osé fait partie du Premium')
+  await awa.keyboard.press('Escape')
+  await awa.getByRole('button', { name: /Vidéo en direct des défis/ }).click()
+  await expect(awa.getByRole('dialog')).toContainText('vidéo en direct fait partie du Premium')
 })

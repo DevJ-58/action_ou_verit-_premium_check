@@ -84,3 +84,9 @@ export const AVATARS: readonly AvatarOption[] = [
 export function avatarById(id: string | undefined): AvatarOption | undefined {
   return id ? AVATARS.find((a) => a.id === id) : undefined
 }
+
+/** A random free avatar, for new accounts. */
+export function randomFreeAvatar(rng: () => number = Math.random): string {
+  const free = AVATARS.filter((a) => !a.premium)
+  return free[Math.floor(rng() * free.length)]?.id ?? ''
+}

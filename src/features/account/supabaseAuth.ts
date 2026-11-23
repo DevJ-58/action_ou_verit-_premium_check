@@ -1,5 +1,5 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
-import { AVATARS } from '@/content/avatars'
+import { randomFreeAvatar } from '@/content/avatars'
 import type { Dare, PlayerLimits } from '@/engine'
 import { sanitizeStats } from './accountStats'
 import { sanitizeFriends } from '@/features/friends/friends'
@@ -74,7 +74,7 @@ export function createSupabaseAuth(getClient: () => Promise<SupabaseClient>): Au
     const pseudo = String(
       user.user_metadata?.pseudo ?? user.email?.split('@')[0] ?? 'Joueur',
     ).slice(0, 24)
-    const avatar = AVATARS[Math.floor(Math.random() * AVATARS.length)]?.id ?? ''
+    const avatar = randomFreeAvatar()
     const profile = defaultProfile(user.id, pseudo, avatar)
     const { error: insertError } = await client.from('profiles').upsert(toRow(profile))
     if (insertError) fail(insertError)

@@ -78,7 +78,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
     css: { include: [/tokens\.css/] },
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'supabase/functions/**/*.test.ts'],
     coverage: { provider: 'v8', include: ['src/**'], exclude: ['src/**/*.test.*'] },
   },
 })

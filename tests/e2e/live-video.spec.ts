@@ -32,11 +32,16 @@ test('the designated player goes live and the other phone sees the video', async
   const kofi = await context.newPage()
   await signUp(awa, 'Awa')
   await signUp(kofi, 'Kofi')
+  // Live video is Premium: the host buys an evening pass (test payment without a server).
+  await awa.goto('./premium')
+  await awa.getByRole('button', { name: /Payer 300 FCFA/ }).click()
+  await expect(awa.getByText(/Tu es Premium jusqu’au/)).toBeVisible()
+  await awa.goto('./')
   await awa.getByRole('link', { name: /Créer un salon/ }).click()
   await awa.waitForURL(/salon\/[A-Z2-9]{6}$/)
   await kofi.goto(`./salon/${awa.url().slice(-6)}`)
   await expect(awa.getByText('Kofi')).toBeVisible()
-  await awa.getByRole('button', { name: /Juste pour rire/ }).click()
+  await awa.getByRole('button', { name: /Osé/ }).click()
   await awa.getByRole('button', { name: /Lancer la partie/ }).click()
   await kofi.getByRole('button', { name: /Tourner la bouteille/ }).click()
 
@@ -46,6 +51,7 @@ test('the designated player goes live and the other phone sees the video', async
     .toBe(true)
   const [answerer, viewer] = (await chooser(awa).isVisible()) ? [awa, kofi] : [kofi, awa]
   await chooser(answerer).click()
+  await viewer.getByRole('radio', { name: /Écrire/ }).check({ force: true })
   await viewer.getByLabel(/Ton défi pour/).fill('Danse la salsa pendant dix secondes')
   await viewer.getByRole('button', { name: /^Proposer$/ }).click()
   await answerer.getByRole('button', { name: 'Carte 1' }).click()

@@ -1,6 +1,6 @@
 import { sanitizeStats } from './accountStats'
 import { sanitizeFriends } from '@/features/friends/friends'
-import { AVATARS } from '@/content/avatars'
+import { randomFreeAvatar } from '@/content/avatars'
 import { newId } from '@/lib/id'
 import { safeSessionStorage, safeStorage } from '@/lib/safeStorage'
 import {
@@ -96,7 +96,7 @@ export function createLocalAuth(): AuthService {
       if (accounts.some((a) => a.email === normalized)) throw new AuthError('emailTaken')
       const id = newId('account')
       const salt = newId('salt')
-      const avatar = AVATARS[Math.floor(Math.random() * AVATARS.length)]?.id ?? ''
+      const avatar = randomFreeAvatar()
       const stored: StoredAccount = {
         id,
         email: normalized,
