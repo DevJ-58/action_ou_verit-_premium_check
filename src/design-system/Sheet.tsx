@@ -20,7 +20,7 @@ export function Sheet({ open, onClose, title, children }: SheetProps) {
   return createPortal(
     <AnimatePresence>
       {open ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
+        <div className="fixed inset-x-0 top-0 bottom-(--kb,0px) z-50 flex items-end justify-center">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-ink/60"
@@ -35,7 +35,7 @@ export function Sheet({ open, onClose, title, children }: SheetProps) {
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className="relative w-full max-w-lg rounded-t-[28px] border-t-[1.5px] border-gold bg-bg px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-text shadow-card"
+            className="relative max-h-[calc(var(--vvh,100dvh)-1rem)] w-full max-w-lg overflow-y-auto overscroll-contain rounded-t-[28px] border-t-[1.5px] border-gold bg-bg px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-text shadow-card"
             initial={reduce ? { opacity: 0 } : { y: '100%' }}
             animate={reduce ? { opacity: 1 } : { y: 0 }}
             exit={reduce ? { opacity: 0 } : { y: '100%' }}

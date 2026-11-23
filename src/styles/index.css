@@ -40,3 +40,12 @@
     transform: scaleY(1);
   }
 }
+
+/* iPhone zooms into any field under 16 px when it gets focus: never let that happen. */
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}

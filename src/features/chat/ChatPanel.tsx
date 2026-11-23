@@ -41,7 +41,7 @@ export function ChatPanel({
 
   return (
     <Sheet open={open} onClose={onClose} title={t.chat.title}>
-      <div className="flex h-[min(70dvh,560px)] flex-col gap-3">
+      <div className="flex h-[min(70dvh,560px,calc(var(--vvh,100dvh)-8rem))] flex-col gap-3">
         <div className="min-h-0 flex-1 overflow-y-auto pr-1">
           {messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-muted">

@@ -5,6 +5,7 @@ import { useAccountBoot } from '@/features/account/useAccountBoot'
 import { useSocialBoot } from '@/features/friends/socialHub'
 import { useApplySettings } from '@/features/settings/useApplySettings'
 import { useAudioUnlock } from '@/lib/audio/useAudioUnlock'
+import { useViewportVars } from '@/lib/useViewportVars'
 import { UpdateBanner } from '@/features/update/UpdateBanner'
 import { TrialWelcome } from '@/features/premium/TrialWelcome'
 import { FriendRequestToast } from '@/features/friends/FriendRequestToast'
@@ -16,6 +17,7 @@ export function RootLayout() {
   useSocialBoot()
   useApplySettings()
   useAudioUnlock()
+  useViewportVars()
   const outlet = useOutlet()
   const { pathname } = useLocation()
   const reduce = useReducedMotion()
