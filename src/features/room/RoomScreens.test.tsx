@@ -94,19 +94,11 @@ test('the host creates a room, shares its code and can launch from 2 players', a
 })
 
 test('the join screen offers to scan the room’s QR code', async () => {
-  const { createMemoryRouter, RouterProvider } = await import('react-router')
-  const { routes } = await import('@/app/router')
-  const { render: r, screen: s } = await import('@testing-library/react')
-  const { default: user } = await import('@testing-library/user-event')
-  const { accountStore } = await import('@/features/account/accountStore')
-  const { settingsStore } = await import('@/features/settings/settingsStore')
-  settingsStore.getState().confirmAge()
-  await accountStore.getState().signUp(`scan-${Date.now()}@example.com`, 'motdepasse', 'Scan')
-  r(
+  render(
     <RouterProvider
       router={createMemoryRouter(routes, { initialEntries: ['/salon/rejoindre'] })}
     />,
   )
-  await user.click(await s.findByRole('button', { name: /scanner un qr code/i }))
-  expect(await s.findByRole('dialog', { name: /scanne le qr code/i })).toBeInTheDocument()
+  await userEvent.click(await screen.findByRole('button', { name: /scanner un qr code/i }))
+  expect(await screen.findByRole('dialog', { name: /scanne le qr code/i })).toBeInTheDocument()
 })
