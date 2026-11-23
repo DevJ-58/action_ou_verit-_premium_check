@@ -68,6 +68,13 @@ export const en: Dictionary = {
     left: '{seconds} s',
     sound: 'Turn sound on',
   },
+  update: {
+    title: 'New version available',
+    body: 'The game has been improved. Update to enjoy it (a few seconds).',
+    whatsNew: 'What’s new',
+    apply: 'Update',
+    later: 'Later',
+  },
   home: {
     titleBefore: 'Truth',
     titleOr: 'or',

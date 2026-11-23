@@ -35,7 +35,9 @@ export default defineConfig({
     tailwindcss(),
     spaFallback(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // The app announces new versions and lets the player apply them (see UpdateBanner).
+      registerType: 'prompt',
+      injectRegister: false,
       includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
       manifest: {
         id: BASE_PATH,

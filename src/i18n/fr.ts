@@ -67,6 +67,13 @@ export const fr = {
     left: '{seconds} s',
     sound: 'Activer le son',
   },
+  update: {
+    title: 'Nouvelle version disponible',
+    body: 'Le jeu a été amélioré. Mets à jour pour en profiter (quelques secondes).',
+    whatsNew: 'Quoi de neuf',
+    apply: 'Mettre à jour',
+    later: 'Plus tard',
+  },
   home: {
     titleBefore: 'Action',
     titleOr: 'ou',
