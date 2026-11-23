@@ -75,6 +75,13 @@ export const fr = {
     later: 'Plus tard',
   },
   premium: {
+    trialName: 'Essai Premium gratuit',
+    trialLeft: 'Encore {days} jour(s) d’essai gratuit',
+    trialActive: 'Essai gratuit : encore {days} jour(s), jusqu’au {date}.',
+    trialEnding: 'Ton essai Premium se termine dans {days} jour(s).',
+    trialEnded: 'Ton essai Premium est terminé.',
+    trialKeep: 'Garde le Premium dès 300 FCFA',
+    dismiss: 'Fermer',
     name: 'Premium',
     title: 'Passe Premium',
     tagline: 'Plus de piment, plus de joueurs, la vidéo en direct.',

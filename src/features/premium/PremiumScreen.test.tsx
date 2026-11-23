@@ -7,6 +7,7 @@ import { settingsStore } from '@/features/settings/settingsStore'
 import { setPaymentService } from './getPaymentService'
 import { createLocalPayments } from './localPayments'
 import type { PaymentService } from './payments'
+import { endTrial } from './testing'
 
 const renderAt = (path: string) => {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
@@ -65,6 +66,7 @@ describe('signed in', () => {
   })
 
   test('back from the payment page, the thank-you screen confirms once the server has', async () => {
+    await endTrial()
     renderAt('/premium/merci')
     expect(await screen.findByText(/on vérifie ton paiement/i)).toBeInTheDocument()
     await createLocalPayments().checkout('month')

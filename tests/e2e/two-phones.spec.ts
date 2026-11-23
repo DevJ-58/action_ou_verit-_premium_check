@@ -118,9 +118,26 @@ test('a player met in a room becomes a friend and is invited to the next room', 
   await expect(awa.getByText('Kofi')).toBeVisible()
 })
 
-test('a free host’s room: Premium categories and live video are locked', async ({ context }) => {
+test('new accounts try Premium for 7 days; after the trial, Premium is locked', async ({
+  context,
+}) => {
   const awa = await context.newPage()
   await signUp(awa, 'Awa')
+  await awa.goto('./profil')
+  await expect(awa.getByText('Encore 7 jour(s) d’essai gratuit')).toBeVisible()
+  await awa.goto('./')
+  await awa.getByRole('link', { name: /Créer un salon/ }).click()
+  await awa.waitForURL(/salon\/[A-Z2-9]{6}$/)
+  await expect(awa.getByText('1 / 12 joueurs')).toBeVisible()
+
+  // The trial ends (as if 7 days had passed).
+  await awa.evaluate(() => {
+    const accounts = JSON.parse(localStorage.getItem('av:accounts')!) as { premiumUntil?: string }[]
+    for (const a of accounts) a.premiumUntil = new Date(Date.now() - 1000).toISOString()
+    localStorage.setItem('av:accounts', JSON.stringify(accounts))
+  })
+  await awa.goto('./')
+  await expect(awa.getByText('Ton essai Premium est terminé.')).toBeVisible()
   await awa.getByRole('link', { name: /Créer un salon/ }).click()
   await awa.waitForURL(/salon\/[A-Z2-9]{6}$/)
   await expect(awa.getByText('1 / 6 joueurs')).toBeVisible()

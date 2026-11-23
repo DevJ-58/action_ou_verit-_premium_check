@@ -16,6 +16,15 @@ export const PLANS: Record<PlanId, Plan> = {
   month: { id: 'month', price: 1500, currency: 'XOF', hours: 30 * 24 },
 }
 
+/** Every new account starts with this many days of free Premium. */
+export const TRIAL_DAYS = 7
+
+/** Whole days left before `until` (rounded up, never negative). */
+export function trialDaysLeft(until: string | null | undefined, now = Date.now()): number {
+  if (!until) return 0
+  return Math.max(0, Math.ceil((Date.parse(until) - now) / 86400e3))
+}
+
 /** What a free player gets. */
 export const FREE_LIMITS = { customDares: 5, roomMembers: 6 } as const
 

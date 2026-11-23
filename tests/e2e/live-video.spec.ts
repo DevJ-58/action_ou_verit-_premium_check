@@ -32,7 +32,8 @@ test('the designated player goes live and the other phone sees the video', async
   const kofi = await context.newPage()
   await signUp(awa, 'Awa')
   await signUp(kofi, 'Kofi')
-  // Live video is Premium: the host buys an evening pass (test payment without a server).
+  // Live video is Premium: the host buys an evening pass (test payment without a server)
+  // on top of the free trial.
   await awa.goto('./premium')
   await awa.getByRole('button', { name: /Payer 300 FCFA/ }).click()
   await expect(awa.getByText(/Tu es Premium jusqu’au/)).toBeVisible()

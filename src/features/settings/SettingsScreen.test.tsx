@@ -4,6 +4,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '@/app/router'
 import { AVATARS } from '@/content/avatars'
 import { accountStore } from '@/features/account/accountStore'
+import { endTrial } from '@/features/premium/testing'
 import { settingsStore } from '@/features/settings/settingsStore'
 
 function renderSettings() {
@@ -77,6 +78,7 @@ describe('Premium looks', () => {
   })
 
   test('free players see Premium avatars and themes locked', async () => {
+    await endTrial()
     renderSettings()
     const gallery = await screen.findByRole('radiogroup', { name: /avatar/i })
     const before = accountStore.getState().session!.profile.avatarId

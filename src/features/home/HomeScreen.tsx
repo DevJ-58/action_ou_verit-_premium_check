@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { Button, KenteBand, springs, Wordmark } from '@/design-system'
 import { hasResumableGame } from '@/features/game/resumable'
 import { InstallCard } from '@/features/install/InstallCard'
+import { TrialNotice } from '@/features/premium/TrialNotice'
 import { useT } from '@/i18n/useT'
 import { EntryLink } from './EntryLink'
 import { HomeTable } from './HomeTable'
@@ -43,6 +44,7 @@ export function HomeScreen() {
               <p className="mt-3 max-w-md text-base leading-normal text-muted">{t.home.tagline}</p>
             </div>
             <div className="mt-auto flex flex-col gap-3 min-[900px]:mt-2">
+              <TrialNotice />
               {canResume ? (
                 <Button variant="truth" size="lg" onClick={() => navigate('/partie')}>
                   {t.home.resume}

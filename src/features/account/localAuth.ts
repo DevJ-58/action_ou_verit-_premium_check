@@ -1,6 +1,7 @@
 import { sanitizeStats } from './accountStats'
 import { sanitizeFriends } from '@/features/friends/friends'
 import { randomFreeAvatar } from '@/content/avatars'
+import { TRIAL_DAYS } from '@/features/premium/premium'
 import { newId } from '@/lib/id'
 import { safeSessionStorage, safeStorage } from '@/lib/safeStorage'
 import {
@@ -24,6 +25,7 @@ interface StoredAccount {
   hash: string
   profile: Profile
   premiumUntil?: string | null
+  premiumTrial?: boolean
 }
 
 const ACCOUNTS = 'av:accounts'
@@ -65,7 +67,11 @@ function writeSessionId(id: string | null) {
 
 /** Development only: what a test payment grants on this device. */
 export function grantLocalPremium(accountId: string, until: string): void {
-  writeAccounts(readAccounts().map((a) => (a.id === accountId ? { ...a, premiumUntil: until } : a)))
+  writeAccounts(
+    readAccounts().map((a) =>
+      a.id === accountId ? { ...a, premiumUntil: until, premiumTrial: false } : a,
+    ),
+  )
 }
 
 export function localPremiumUntil(accountId: string): string | null {
@@ -75,6 +81,7 @@ export function localPremiumUntil(accountId: string): string | null {
 const toSession = (a: StoredAccount): Session => ({
   account: { id: a.id, email: a.email },
   premiumUntil: a.premiumUntil ?? null,
+  premiumTrial: a.premiumTrial === true,
   profile: {
     ...a.profile,
     stats: sanitizeStats(a.profile.stats),
@@ -103,6 +110,9 @@ export function createLocalAuth(): AuthService {
         salt,
         hash: await hash(password, salt),
         profile: defaultProfile(id, pseudo, avatar),
+        // Like the server (SQL 0007): every new account gets a free Premium trial.
+        premiumUntil: new Date(Date.now() + TRIAL_DAYS * 86400e3).toISOString(),
+        premiumTrial: true,
       }
       writeAccounts([...accounts, stored])
       writeSessionId(id)

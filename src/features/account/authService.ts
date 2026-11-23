@@ -24,6 +24,8 @@ export interface Session {
   profile: Profile
   /** End of Premium (ISO date), null if never bought. Written by the server only. */
   premiumUntil: string | null
+  /** The current Premium is the free trial of a new account. */
+  premiumTrial: boolean
 }
 
 export type AuthErrorCode =

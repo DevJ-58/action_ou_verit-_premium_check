@@ -64,7 +64,9 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
     const fresh = await getAuthService().current()
     const session = get().session
     if (fresh && session && fresh.account.id === session.account.id) {
-      set({ session: { ...session, premiumUntil: fresh.premiumUntil } })
+      set({
+        session: { ...session, premiumUntil: fresh.premiumUntil, premiumTrial: fresh.premiumTrial },
+      })
     }
   },
   addFriend: async (friend) => {

@@ -4,6 +4,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '@/app/router'
 import { systemDares } from '@/content/systemDares'
 import { accountStore } from '@/features/account/accountStore'
+import { endTrial } from '@/features/premium/testing'
 import { settingsStore } from '@/features/settings/settingsStore'
 
 const renderDares = () =>
@@ -73,6 +74,7 @@ describe('free players keep 5 own dares', () => {
     await act(() =>
       accountStore.getState().signUp(`l-${Date.now()}@example.com`, 'motdepasse', 'Lou'),
     )
+    await endTrial()
     const five = systemDares.slice(0, 5).map((d, i) => ({ ...d, id: `c${i}`, authorId: 'x' }))
     await act(() => accountStore.getState().updateProfile({ customDares: five }))
   })

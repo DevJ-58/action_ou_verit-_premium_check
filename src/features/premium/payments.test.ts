@@ -2,6 +2,7 @@ import { act } from '@testing-library/react'
 import { accountStore } from '@/features/account/accountStore'
 import { createLocalPayments } from './localPayments'
 import { isPremium } from './premium'
+import { endTrial } from './testing'
 
 beforeEach(async () => {
   await act(() => accountStore.getState().signOut())
@@ -11,11 +12,13 @@ beforeEach(async () => {
 })
 const until = () => accountStore.getState().session!.premiumUntil
 
-test('a new account is not Premium', () => {
-  expect(until()).toBeNull()
+test('after the trial, the account is not Premium', async () => {
+  await endTrial()
+  expect(isPremium(until())).toBe(false)
 })
 
 test('a test payment on this device grants the plan, and it survives a reload', async () => {
+  await endTrial()
   const payments = createLocalPayments()
   const result = await payments.checkout('pass')
   expect(result).toEqual({ kind: 'granted' })

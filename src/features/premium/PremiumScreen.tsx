@@ -9,7 +9,7 @@ import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { getPaymentService } from './getPaymentService'
 import { PlanCard } from './PlanCard'
-import { isPremium, type PlanId } from './premium'
+import { isPremium, trialDaysLeft, type PlanId } from './premium'
 
 const FEATURES: { key: keyof ReturnType<typeof useT>['premium']['features']; emoji: EmojiName }[] =
   [
@@ -28,6 +28,7 @@ export function PremiumScreen() {
   const language = useSettings((s) => s.language)
   const status = useAccount((s) => s.status)
   const until = useAccount((s) => s.session?.premiumUntil ?? null)
+  const trial = useAccount((s) => s.session?.premiumTrial === true)
   const signedIn = status === 'signedIn'
   const [busy, setBusy] = useState<PlanId | null>(null)
   const [problem, setProblem] = useState<'unavailable' | 'failed' | null>(null)
@@ -72,7 +73,9 @@ export function PremiumScreen() {
             className="flex items-center justify-center gap-2 rounded-[20px] bg-gold p-3 text-center font-extrabold text-on-gold"
           >
             <Check aria-hidden="true" size={18} />
-            {format(t.premium.active, { date })}
+            {trial
+              ? format(t.premium.trialActive, { days: trialDaysLeft(until), date })
+              : format(t.premium.active, { date })}
           </p>
         ) : null}
         <ul className="flex flex-col gap-2.5">

@@ -76,6 +76,13 @@ export const en: Dictionary = {
     later: 'Later',
   },
   premium: {
+    trialName: 'Free Premium trial',
+    trialLeft: '{days} day(s) of free trial left',
+    trialActive: 'Free trial: {days} day(s) left, until {date}.',
+    trialEnding: 'Your Premium trial ends in {days} day(s).',
+    trialEnded: 'Your Premium trial is over.',
+    trialKeep: 'Keep Premium from 300 FCFA',
+    dismiss: 'Close',
     name: 'Premium',
     title: 'Go Premium',
     tagline: 'More spice, more players, live video.',
