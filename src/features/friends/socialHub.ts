@@ -9,6 +9,9 @@ import { getSocial } from './getSocial'
 import { createLocalPresence, createSupabasePresence, type PresenceService } from './presence'
 import type { FriendRequest } from './social'
 
+/** Requests are also re-read this often: live notices can be missed (app starting, network blink). */
+export const SOCIAL_REFRESH_MS = 10_000
+
 interface Hub {
   selfId: string | null
   requests: FriendRequest[]
@@ -40,7 +43,9 @@ export function setPresence(next: PresenceService | null): void {
 /** Re-reads pending requests (and the friends list, which may have changed). */
 export async function refreshSocial(): Promise<void> {
   const before = socialHub.getState().requests
-  const requests = await getSocial().requests()
+  const requests = await getSocial()
+    .requests()
+    .catch(() => before)
   const selfId = socialHub.getState().selfId
   const fresh = requests.some((r) => r.toId === selfId && !before.some((b) => b.id === r.id))
   socialHub.setState({ requests })
@@ -59,7 +64,14 @@ export function useSocialBoot(): void {
     const offOnline = service.onOnline((online) => socialHub.setState({ online }))
     const offChange = getSocial().onChange(() => void refreshSocial())
     void refreshSocial()
+    const timer = setInterval(() => void refreshSocial(), SOCIAL_REFRESH_MS)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refreshSocial()
+    }
+    document.addEventListener('visibilitychange', onVisible)
     return () => {
+      clearInterval(timer)
+      document.removeEventListener('visibilitychange', onVisible)
       leave()
       offOnline()
       offChange()

@@ -102,9 +102,9 @@ test('a player met in a room accepts a friend request and is invited to the next
   await expect(awa.getByText('Demande envoyée')).toBeVisible()
   // Kofi accepts the friend request.
   const request = kofi.getByRole('region', { name: 'Demande d’ami' })
-  await expect(request).toContainText('Awa veut être ton ami')
+  await expect(request).toContainText('Awa veut être ton ami', { timeout: 15_000 })
   await request.getByRole('button', { name: 'Accepter' }).click()
-  await expect(awa.getByText('Ami', { exact: true })).toBeVisible()
+  await expect(awa.getByText('Ami', { exact: true })).toBeVisible({ timeout: 15_000 })
 
   // Both leave; Awa opens a new room and invites Kofi.
   await kofi.goto('./')
