@@ -1,6 +1,23 @@
 {
   "entries": [
     {
+      "version": "2026-11-24.5",
+      "fr": [
+        "Une couronne dorée signale chaque élément Premium",
+        "En salon : une barre d’étapes dit qui doit jouer, et une barre en bas réunit discussion, micro, réactions et joueurs",
+        "« C’est fait » s’active après le verdict d’au moins un joueur",
+        "Statistiques comptées par le serveur pour tous les joueurs, même si le téléphone était en veille",
+        "iPhone : les fenêtres restent au-dessus du clavier et l’écran ne zoome plus sur les champs"
+      ],
+      "en": [
+        "A gold crown marks every Premium feature",
+        "In rooms: a step bar says who plays, and a bottom bar gathers chat, mic, reactions and players",
+        "“Done” unlocks once at least one player gave a verdict",
+        "Stats are counted by the server for every player, even if their phone was asleep",
+        "iPhone: sheets stay above the keyboard and fields no longer zoom"
+      ]
+    },
+    {
       "version": "2026-11-24.4",
       "fr": [
         "Demandes d’ami : envoie une demande en salon ou à la fin de la partie, l’autre accepte",
