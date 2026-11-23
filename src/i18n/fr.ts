@@ -35,7 +35,8 @@ export const fr = {
     appearance: 'Apparence',
     audio: 'Musique, sons et vibrations',
     music: 'Musique',
-    hapticsHint: 'Les vibrations marchent sur Android ; les iPhone ne les permettent pas aux sites web.',
+    hapticsHint:
+      'Les vibrations marchent sur Android ; les iPhone ne les permettent pas aux sites web.',
     account: 'Compte',
   },
   profile: {
@@ -71,7 +72,8 @@ export const fr = {
     empty: 'Aucun défi personnalisé pour l’instant.',
     emptyHint: 'Crée tes défis depuis la fiche d’un joueur.',
     signInTitle: 'Prépare tes défis à l’avance',
-    signInBody: 'Connecte-toi pour garder tes défis sur ton compte et les poser en un tap pendant les parties.',
+    signInBody:
+      'Connecte-toi pour garder tes défis sur ton compte et les poser en un tap pendant les parties.',
     signInCta: 'Se connecter',
     library: 'Ma bibliothèque',
     filter: 'Type',

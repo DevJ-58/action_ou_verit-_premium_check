@@ -32,9 +32,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
             className="flex flex-col items-center gap-1 rounded-[22px] border border-line px-2 py-3.5 text-center"
           >
             <Emoji name={tile.emoji} size={30} />
-            <span className="font-display text-[30px] leading-none tabular-nums">
-              {tile.value}
-            </span>
+            <span className="font-display text-[30px] leading-none tabular-nums">{tile.value}</span>
             <span className="text-xs font-bold text-muted">{tile.label}</span>
           </motion.li>
         ))}

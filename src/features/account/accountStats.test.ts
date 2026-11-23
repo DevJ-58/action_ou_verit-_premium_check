@@ -3,7 +3,10 @@ import { makeDare, makePlayer } from '@/engine/testing'
 import { EMPTY_ACCOUNT_STATS, recordAccountGame, sanitizeStats } from './accountStats'
 
 function finishedGame(id = 'g1'): GameState {
-  const ctx = { rng: createSeededRng(2), systemDares: [makeDare('d'), makeDare('t', { kind: 'truth' })] }
+  const ctx = {
+    rng: createSeededRng(2),
+    systemDares: [makeDare('d'), makeDare('t', { kind: 'truth' })],
+  }
   let g = createGame({
     id,
     settings: {

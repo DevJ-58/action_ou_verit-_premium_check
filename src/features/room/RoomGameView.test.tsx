@@ -5,7 +5,6 @@ import type { GameAction } from '@/engine'
 import { accountStore } from '@/features/account/accountStore'
 import { gameAt, notAnswerer, proposing, show, stateFor } from './roomTestKit'
 
-
 test('a proposer writes a dare and sends it as their proposal', async () => {
   const g = proposing()
   const s = show(stateFor(notAnswerer(g), g))

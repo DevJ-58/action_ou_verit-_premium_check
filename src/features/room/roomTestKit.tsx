@@ -31,7 +31,11 @@ export function gameAt(actions: (g: GameState) => GameAction[]): GameState {
   return g
 }
 
-export function stateFor(selfId: string, game: GameState, extra: Partial<RoomState> = {}): RoomStoreState {
+export function stateFor(
+  selfId: string,
+  game: GameState,
+  extra: Partial<RoomState> = {},
+): RoomStoreState {
   const room: RoomState = {
     code: 'ABCDEF',
     version: 3,
