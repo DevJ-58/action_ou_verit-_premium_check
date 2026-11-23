@@ -380,6 +380,13 @@ export const en: Dictionary = {
     playing: 'Game in progress',
   },
   chat: {
+    photo: 'Send a photo',
+    photoTitle: 'Photo',
+    sendPhoto: 'Send the photo',
+    photoOf: 'Photo from {name}',
+    myPhoto: 'My photo',
+    photoTooBig: 'Photo too large or unreadable.',
+    lockedPhoto: 'Photos are part of Premium: the room’s host must be Premium.',
     title: 'Chat',
     open: 'Open the chat',
     unread: '{count} unread',

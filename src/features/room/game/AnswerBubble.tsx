@@ -35,7 +35,7 @@ export function AnswerBubble({ answer, name }: AnswerBubbleProps) {
           <VoicePlayer
             path={answer.voiceId}
             ms={answer.voiceMs ?? 1000}
-            resolve={(path) => getChatTransport().voiceUrl(path)}
+            resolve={(path) => getChatTransport().fileUrl(path)}
             label={format(t.chat.listen, {
               name,
               seconds: Math.max(1, Math.round((answer.voiceMs ?? 1000) / 1000)),

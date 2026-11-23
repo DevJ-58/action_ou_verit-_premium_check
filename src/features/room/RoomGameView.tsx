@@ -60,7 +60,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
             store={chat}
             members={room.members}
             selfId={state.self.id}
-            voiceLocked={!roomIsPremium(room)}
+            premiumLocked={!roomIsPremium(room)}
           />
         </span>
       </header>

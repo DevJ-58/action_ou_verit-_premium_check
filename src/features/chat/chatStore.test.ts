@@ -78,7 +78,7 @@ test('a voice note is stored and sent; notes longer than 30 s are refused', asyn
   await flush()
   const [note] = kofi.getState().messages
   expect(note).toMatchObject({ from: 'awa', voice: { ms: 4200 } })
-  expect(await awa.getState().transport.voiceUrl(note!.voice!.path)).toMatch(/^data:audio\/webm/)
+  expect(await awa.getState().transport.fileUrl(note!.voice!.path)).toMatch(/^data:audio\/webm/)
 })
 
 test('the same message delivered twice is shown once', async () => {
@@ -90,4 +90,20 @@ test('the same message delivered twice is shown once', async () => {
   bus.publish({ kind: 'chat', code: 'ABCDEF', message })
   await flush()
   expect(kofi.getState().messages).toHaveLength(1)
+})
+
+test('a photo is stored and sent with its size; photos over 3 MB are refused', async () => {
+  const { phone } = room()
+  const awa = phone('awa')
+  const kofi = phone('kofi')
+  await awa.getState().connect()
+  await kofi.getState().connect()
+  const photo = new Blob(['jpeg'], { type: 'image/jpeg' })
+  expect(await awa.getState().sendPhoto(photo, 800, 600)).toBe(true)
+  const big = new Blob([new Uint8Array(3 * 1024 * 1024 + 1)], { type: 'image/jpeg' })
+  expect(await awa.getState().sendPhoto(big, 800, 600)).toBe(false)
+  await flush()
+  const [note] = kofi.getState().messages
+  expect(note).toMatchObject({ from: 'awa', photo: { width: 800, height: 600 } })
+  expect(await awa.getState().transport.fileUrl(note!.photo!.path)).toMatch(/^data:image\/jpeg/)
 })

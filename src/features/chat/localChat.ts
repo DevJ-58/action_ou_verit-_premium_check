@@ -39,6 +39,7 @@ export function createLocalChat(bus: Bus): ChatTransport {
         if (m.kind === 'chat' && m.code === code && m.origin !== origin) listener(m.message)
       }),
     uploadVoice: (_code, blob) => blobToDataUrl(blob),
-    voiceUrl: async (path) => path,
+    uploadPhoto: (_code, blob) => blobToDataUrl(blob),
+    fileUrl: async (path) => path,
   }
 }

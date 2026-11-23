@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createInMemoryBus } from '@/features/room/bus'
 import { members } from '@/features/room/roomTestKit'
@@ -8,24 +8,43 @@ import { createLocalChat } from './localChat'
 
 beforeEach(() => localStorage.clear())
 
-function setup() {
+function setup(premiumLocked = false) {
   const bus = createInMemoryBus()
   const store = createChatStore({ transport: createLocalChat(bus), code: 'ABCDEF', selfId: 'a' })
-  render(<ChatPanel store={store} members={members} selfId="a" open onClose={() => {}} />)
+  render(
+    <ChatPanel
+      store={store}
+      members={members}
+      selfId="a"
+      open
+      onClose={() => {}}
+      premiumLocked={premiumLocked}
+    />,
+  )
   return store
 }
+const box = () => screen.getByRole('textbox', { name: /^message$/i })
 
-test('typing a message and sending it shows it in the conversation', async () => {
+test('one round button: the mic while empty, send as soon as there is text', async () => {
   setup()
-  await userEvent.type(screen.getByRole('textbox', { name: /^message$/i }), 'On commence ?{Enter}')
-  const log = screen.getByRole('log')
-  expect(await within(log).findByText('On commence ?')).toBeInTheDocument()
-  expect(screen.getByRole('textbox', { name: /^message$/i })).toHaveValue('')
+  expect(screen.getByRole('button', { name: /message vocal/i })).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /^envoyer$/i })).not.toBeInTheDocument()
+  await userEvent.type(box(), 'Salut')
+  expect(screen.getByRole('button', { name: /^envoyer$/i })).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /message vocal/i })).not.toBeInTheDocument()
+})
+
+test('Enter sends, Shift+Enter goes to a new line', async () => {
+  setup()
+  await userEvent.type(box(), 'Ligne 1{Shift>}{Enter}{/Shift}Ligne 2')
+  expect(box()).toHaveValue('Ligne 1\nLigne 2')
+  await userEvent.type(box(), '{Enter}')
+  expect(await within(screen.getByRole('log')).findByText(/Ligne 1/)).toBeInTheDocument()
+  expect(box()).toHaveValue('')
 })
 
 test('messages from others show who wrote them; voice notes can be played', async () => {
   const store = setup()
-  const { act } = await import('@testing-library/react')
   act(() =>
     store.setState({
       messages: [
@@ -36,11 +55,24 @@ test('messages from others show who wrote them; voice notes can be played', asyn
   )
   const log = screen.getByRole('log')
   expect(within(log).getByText('Kofi')).toBeInTheDocument()
-  expect(within(log).getByText('Prêt !')).toBeInTheDocument()
   expect(within(log).getByRole('button', { name: /écouter le vocal.*inès/i })).toBeInTheDocument()
 })
 
-test('a microphone button starts a voice note', () => {
+test('a photo is previewed, then sent and shown in the conversation', async () => {
   setup()
-  expect(screen.getByRole('button', { name: /message vocal/i })).toBeInTheDocument()
+  const file = new File(['img'], 'soiree.jpg', { type: 'image/jpeg' })
+  await userEvent.upload(screen.getByLabelText(/envoyer une photo/i), file)
+  const preview = await screen.findByRole('dialog', { name: /photo/i })
+  await userEvent.click(within(preview).getByRole('button', { name: /envoyer la photo/i }))
+  await waitFor(() =>
+    expect(
+      within(screen.getByRole('log')).getByRole('img', { name: /ma photo/i }),
+    ).toBeInTheDocument(),
+  )
+})
+
+test('without a Premium host, photo and voice buttons explain Premium instead', async () => {
+  setup(true)
+  await userEvent.click(screen.getByRole('button', { name: /message vocal/i }))
+  expect(await screen.findByText(/l’hôte du salon soit premium/i)).toBeInTheDocument()
 })

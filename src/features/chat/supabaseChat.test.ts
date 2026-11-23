@@ -118,5 +118,5 @@ test('voice notes go to the private “voice” bucket under the room code and p
   const chat = createSupabaseChat(async () => f.client)
   const path = await chat.uploadVoice('ABCDEF', new Blob(['x'], { type: 'audio/webm;codecs=opus' }))
   expect(f.ops).toContain('upload voice ABCDEF audio/webm')
-  expect(await chat.voiceUrl(path)).toBe(`https://signed/${path}?t=3600`)
+  expect(await chat.fileUrl(path)).toBe(`https://signed/${path}?t=3600`)
 })

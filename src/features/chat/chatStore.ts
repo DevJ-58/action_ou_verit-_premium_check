@@ -3,6 +3,7 @@ import { newId } from '@/lib/id'
 import {
   CHAT_KEPT,
   CHAT_TEXT_MAX,
+  PHOTO_MAX_BYTES,
   VOICE_MAX_MS,
   type ChatMessage,
   type ChatTransport,
@@ -17,6 +18,7 @@ export interface ChatState {
   connect(): Promise<() => void>
   sendText(text: string): Promise<boolean>
   sendVoice(blob: Blob, ms: number): Promise<boolean>
+  sendPhoto(blob: Blob, width: number, height: number): Promise<boolean>
   setOpen(open: boolean): void
 }
 
@@ -73,6 +75,15 @@ export function createChatStore(input: {
         try {
           const path = await transport.uploadVoice(code, blob)
           return send({ voice: { path, ms: Math.round(ms) } })
+        } catch {
+          return false
+        }
+      },
+      sendPhoto: async (blob, width, height) => {
+        if (blob.size > PHOTO_MAX_BYTES || !blob.type.startsWith('image/')) return false
+        try {
+          const path = await transport.uploadPhoto(code, blob)
+          return send({ photo: { path, width: Math.round(width), height: Math.round(height) } })
         } catch {
           return false
         }

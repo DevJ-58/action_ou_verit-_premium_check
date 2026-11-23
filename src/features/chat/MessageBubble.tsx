@@ -4,6 +4,7 @@ import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
 import type { ChatMessage } from './types'
+import { ChatPhoto } from './ChatPhoto'
 import { VoicePlayer } from './VoicePlayer'
 
 export interface MessageBubbleProps {
@@ -30,6 +31,15 @@ export function MessageBubble({ message, author, mine, resolveVoice }: MessageBu
         {mine ? null : <span className="text-xs font-extrabold text-gold-text">{name}</span>}
         {message.text ? (
           <p className="text-[15px] leading-snug break-words whitespace-pre-wrap">{message.text}</p>
+        ) : null}
+        {message.photo ? (
+          <ChatPhoto
+            path={message.photo.path}
+            width={message.photo.width}
+            height={message.photo.height}
+            resolve={resolveVoice}
+            alt={mine ? t.chat.myPhoto : format(t.chat.photoOf, { name })}
+          />
         ) : null}
         {message.voice ? (
           <VoicePlayer

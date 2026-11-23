@@ -13,7 +13,7 @@ export interface ChatPanelProps {
   selfId: string
   open: boolean
   onClose(): void
-  voiceLocked?: boolean
+  premiumLocked?: boolean
 }
 
 /** The room conversation, in a sheet over the game. */
@@ -23,7 +23,7 @@ export function ChatPanel({
   selfId,
   open,
   onClose,
-  voiceLocked = false,
+  premiumLocked = false,
 }: ChatPanelProps) {
   const t = useT()
   const messages = useStore(store, (s) => s.messages)
@@ -61,13 +61,13 @@ export function ChatPanel({
                 message={m}
                 author={members.find((x) => x.id === m.from)}
                 mine={m.from === selfId}
-                resolveVoice={transport.voiceUrl}
+                resolveVoice={transport.fileUrl}
               />
             ))}
           </ul>
           <div ref={end} />
         </div>
-        <ChatComposer store={store} voiceLocked={voiceLocked} />
+        <ChatComposer store={store} premiumLocked={premiumLocked} />
       </div>
     </Sheet>
   )

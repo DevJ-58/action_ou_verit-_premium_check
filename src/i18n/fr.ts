@@ -387,6 +387,13 @@ export const fr = {
     playing: 'Partie en cours',
   },
   chat: {
+    photo: 'Envoyer une photo',
+    photoTitle: 'Photo',
+    sendPhoto: 'Envoyer la photo',
+    photoOf: 'Photo de {name}',
+    myPhoto: 'Ma photo',
+    photoTooBig: 'Photo trop lourde ou illisible.',
+    lockedPhoto: 'Les photos font partie du Premium : il faut que l’hôte du salon soit Premium.',
     title: 'Discussion',
     open: 'Ouvrir la discussion',
     unread: '{count} non lu(s)',
