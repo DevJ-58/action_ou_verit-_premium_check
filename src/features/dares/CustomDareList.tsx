@@ -5,15 +5,16 @@ import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
 
 export interface CustomDareListProps {
+  label?: string
   dares: Dare[]
   onEdit(dare: Dare): void
   onRemove(dare: Dare): void
 }
 
-export function CustomDareList({ dares, onEdit, onRemove }: CustomDareListProps) {
+export function CustomDareList({ label, dares, onEdit, onRemove }: CustomDareListProps) {
   const t = useT()
   return (
-    <ul className="flex flex-col gap-3">
+    <ul aria-label={label} className="flex flex-col gap-3">
       {dares.map((dare) => (
         <li key={dare.id} className="flex items-start gap-3 rounded-xl border border-line p-4">
           <span

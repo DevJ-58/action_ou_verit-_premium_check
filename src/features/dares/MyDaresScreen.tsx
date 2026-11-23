@@ -1,55 +1,40 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router'
-import { ChevronRight } from 'lucide-react'
-import { Avatar, Emoji, Screen } from '@/design-system'
-import { usePlayers } from '@/features/players/playersStore'
-import { format } from '@/i18n/format'
+import { Emoji, Screen } from '@/design-system'
+import { accountStore, useAccount } from '@/features/account/accountStore'
 import { useT } from '@/i18n/useT'
+import { AccountLibrary } from './AccountLibrary'
+import { LocalPlayersDares } from './LocalPlayersDares'
 
-/** Custom dares of every player on this phone, grouped by author. */
+/** “My dares”: the account library, plus the dares of players on this phone. */
 export function MyDaresScreen() {
   const t = useT()
-  const players = usePlayers((s) => s.players)
-  const authors = players.filter((p) => p.customDares.length > 0)
+  const status = useAccount((s) => s.status)
+  const profile = useAccount((s) => s.session?.profile ?? null)
 
-  if (authors.length === 0) {
-    return (
-      <Screen title={t.myDares.title}>
-        <div className="m-auto flex max-w-xs flex-col items-center text-center">
-          <Emoji name="loveLetter" size={72} />
-          <p className="text-lg font-semibold">{t.myDares.empty}</p>
-          <p className="mt-2 text-muted">{t.myDares.emptyHint}</p>
-        </div>
-      </Screen>
-    )
-  }
+  useEffect(() => {
+    if (status === 'loading') void accountStore.getState().init()
+  }, [status])
 
   return (
     <Screen title={t.myDares.title}>
-      <div className="flex flex-col gap-8 pt-2">
-        {authors.map((player) => (
-          <section key={player.id} className="flex flex-col gap-3">
-            <Link to={`/joueurs/${player.id}`} className="flex min-h-12 items-center gap-3">
-              <Avatar name={player.name} size="sm" />
-              <span className="flex-1">
-                <span className="block font-bold">{player.name}</span>
-                <span className="block text-sm text-muted">
-                  {format(t.players.dareCount, { count: player.customDares.length })}
-                </span>
-              </span>
-              <ChevronRight aria-hidden="true" size={20} className="text-muted" />
+      <div className="flex flex-col gap-10 pt-2">
+        {profile ? (
+          <AccountLibrary profile={profile} />
+        ) : (
+          <section className="flex flex-col items-center gap-3 rounded-[32px] border border-line p-8 text-center">
+            <Emoji name="loveLetter" size={64} />
+            <h2 className="font-display text-[30px] leading-none">{t.myDares.signInTitle}</h2>
+            <p className="max-w-xs text-muted">{t.myDares.signInBody}</p>
+            <Link
+              to="/compte?next=%2Fdefis"
+              className="mt-2 inline-flex min-h-14 items-center rounded-full bg-gold px-6 font-extrabold text-on-gold"
+            >
+              {t.myDares.signInCta}
             </Link>
-            <ul className="flex flex-col gap-2">
-              {player.customDares.map((dare) => (
-                <li key={dare.id} className="rounded-xl border border-line px-4 py-3">
-                  <span className="mr-2 font-display text-lg text-gold-text">
-                    {dare.kind === 'truth' ? 'V' : 'A'}
-                  </span>
-                  {dare.text}
-                </li>
-              ))}
-            </ul>
           </section>
-        ))}
+        )}
+        <LocalPlayersDares />
       </div>
     </Screen>
   )
