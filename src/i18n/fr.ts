@@ -30,8 +30,6 @@ export const fr = {
     title: 'Réglages',
     me: 'Mon profil',
     pseudo: 'Pseudo',
-    limits: 'Mes limites',
-    limitsHint: 'Les autres ne pourront pas te proposer de défis au-delà.',
     appearance: 'Apparence',
     audio: 'Musique, sons et vibrations',
     music: 'Musique',

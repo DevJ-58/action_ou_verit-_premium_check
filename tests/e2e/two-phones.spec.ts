@@ -64,4 +64,21 @@ test('two phones play a room turn: everyone proposes, the answerer turns a card'
 
   await proposer.getByRole('toolbar', { name: 'Réactions' }).getByRole('button').first().click()
   await expect(answerer.getByRole('img', { name: /feu/ })).toBeVisible()
+
+  // The answerer tells how it went; the other phone sees it and votes.
+  await expect(proposer.getByRole('status').filter({ hasText: /relève le défi/ })).toBeVisible()
+  await answerer.getByLabel(/Raconte comment/).fill('Fait, sur une jambe !')
+  await answerer.getByRole('button', { name: /Envoyer ma réponse/ }).click()
+  await expect(proposer.getByRole('status').filter({ hasText: /a répondu/ })).toBeVisible()
+  await expect(proposer.getByRole('blockquote')).toHaveText('Fait, sur une jambe !')
+  await proposer.getByRole('button', { name: /Validé/ }).click()
+  await expect(answerer.getByText(/1 validé · 0 pas convaincu/)).toBeVisible()
+
+  // Chat: a message from one phone shows on the other, with an unread badge.
+  await proposer.getByRole('button', { name: /Ouvrir la discussion/ }).click()
+  await proposer.getByRole('textbox', { name: 'Message' }).fill('Bravo 👏')
+  await proposer.getByRole('textbox', { name: 'Message' }).press('Enter')
+  await expect(answerer.getByRole('button', { name: /1 non lu/ })).toBeVisible()
+  await answerer.getByRole('button', { name: /Ouvrir la discussion/ }).click()
+  await expect(answerer.getByRole('log').getByText('Bravo 👏')).toBeVisible()
 })

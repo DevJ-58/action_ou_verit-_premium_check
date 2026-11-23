@@ -46,12 +46,10 @@ export function SettingsScreen() {
                 onSave={(bio) => void store.updateProfile({ bio })}
               />
             </SettingsGroup>
-            <SettingsGroup emoji="lock" title={t.settings.limits} hint={t.settings.limitsHint}>
-              <LimitsEditor
-                limits={profile.limits}
-                onChange={(limits) => void store.updateProfile({ limits })}
-              />
-            </SettingsGroup>
+            <LimitsEditor
+              limits={profile.limits}
+              onChange={(limits) => void store.updateProfile({ limits })}
+            />
           </div>
         ) : null}
         <div className="flex flex-col gap-10">

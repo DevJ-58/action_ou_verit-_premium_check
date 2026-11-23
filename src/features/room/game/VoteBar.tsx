@@ -22,7 +22,7 @@ export function VoteBar({ votes, mine, onVote }: VoteBarProps) {
       aria-pressed={mine === value}
       onClick={() => onVote?.(value)}
       className={cn(
-        'flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border-[1.5px] px-4 font-bold transition-colors',
+        'flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-[1.5px] px-3 text-sm font-bold whitespace-nowrap transition-colors',
         mine === value ? 'border-gold bg-gold text-on-gold' : 'border-line text-text',
       )}
     >

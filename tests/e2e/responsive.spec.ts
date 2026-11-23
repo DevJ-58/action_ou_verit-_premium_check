@@ -8,6 +8,7 @@ const ROUTES = [
   './joueurs',
   './defis',
   './profil',
+  './reglages',
   './partie/nouvelle',
   './compte',
   './bienvenue',

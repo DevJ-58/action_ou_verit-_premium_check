@@ -31,8 +31,6 @@ export const en: Dictionary = {
     title: 'Settings',
     me: 'My profile',
     pseudo: 'Nickname',
-    limits: 'My limits',
-    limitsHint: 'Others won’t be able to give you dares beyond them.',
     appearance: 'Appearance',
     audio: 'Music, sounds and vibrations',
     music: 'Music',
