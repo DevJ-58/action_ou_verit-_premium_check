@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
+import { useId, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { Camera, Lock, Mic, SendHorizontal } from 'lucide-react'
 import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { useT } from '@/i18n/useT'
@@ -22,7 +22,6 @@ export function ChatComposer({
 }) {
   const t = useT()
   const id = useId()
-  const fileInput = useRef<HTMLInputElement>(null)
   const [text, setText] = useState('')
   const [failed, setFailed] = useState(false)
   const [locked, setLocked] = useState<string | null>(null)
@@ -80,39 +79,39 @@ export function ChatComposer({
     <div className="flex flex-col gap-1.5 border-t border-line pt-3">
       <form onSubmit={(e) => void submit(e)} className="flex items-end gap-2">
         <div className="flex min-h-12 min-w-0 flex-1 items-end gap-1 rounded-[24px] border-[1.5px] border-line bg-seat/50 py-1 pr-3 pl-1">
-          <label
-            htmlFor={`${id}-photo`}
-            title={t.chat.photo}
-            className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-full text-muted has-focus-visible:outline-2 has-focus-visible:outline-gold"
-            onClick={(e) => {
-              if (premiumLocked) {
-                e.preventDefault()
-                setLocked(t.chat.lockedPhoto)
-              }
-            }}
-          >
-            {premiumLocked ? (
-              <Lock aria-hidden="true" size={17} />
-            ) : (
-              <Camera aria-hidden="true" size={20} />
-            )}
-            <input
-              ref={fileInput}
-              id={`${id}-photo`}
-              type="file"
-              accept="image/*"
+          {premiumLocked ? (
+            <button
+              type="button"
               aria-label={t.chat.photo}
-              className="sr-only"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                e.target.value = ''
-                if (file) {
-                  setPhotoError(false)
-                  setPhoto(file)
-                }
-              }}
-            />
-          </label>
+              onClick={() => setLocked(t.chat.lockedPhoto)}
+              className="grid size-10 shrink-0 place-items-center rounded-full text-muted"
+            >
+              <Lock aria-hidden="true" size={17} />
+            </button>
+          ) : (
+            <label
+              htmlFor={`${id}-photo`}
+              title={t.chat.photo}
+              className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-full text-muted has-focus-visible:outline-2 has-focus-visible:outline-gold"
+            >
+              <Camera aria-hidden="true" size={20} />
+              <input
+                id={`${id}-photo`}
+                type="file"
+                accept="image/*"
+                aria-label={t.chat.photo}
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  e.target.value = ''
+                  if (file) {
+                    setPhotoError(false)
+                    setPhoto(file)
+                  }
+                }}
+              />
+            </label>
+          )}
           <label htmlFor={id} className="sr-only">
             {t.chat.message}
           </label>

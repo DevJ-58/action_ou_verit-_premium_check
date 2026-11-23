@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Send } from 'lucide-react'
 import { Button, Sheet } from '@/design-system'
 import { useT } from '@/i18n/useT'
@@ -14,15 +14,13 @@ export interface PhotoPreviewProps {
 /** Shows the chosen photo before it is sent. */
 export function PhotoPreview({ file, busy, error, onSend, onCancel }: PhotoPreviewProps) {
   const t = useT()
-  const [url, setUrl] = useState<string | null>(null)
-  useEffect(() => {
-    if (!file) return
-    const next = URL.createObjectURL?.(file) ?? null
-    setUrl(next)
-    return () => {
-      if (next) URL.revokeObjectURL(next)
-    }
-  }, [file])
+  const url = useMemo(() => (file ? (URL.createObjectURL?.(file) ?? null) : null), [file])
+  useEffect(
+    () => () => {
+      if (url) URL.revokeObjectURL(url)
+    },
+    [url],
+  )
   return (
     <Sheet open={file !== null} onClose={onCancel} title={t.chat.photoTitle}>
       <div className="flex flex-col gap-4">
