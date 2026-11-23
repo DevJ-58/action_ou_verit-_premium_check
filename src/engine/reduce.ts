@@ -4,7 +4,8 @@ import { askerIndexFor, computeSpin, seatAngle } from './geometry'
 import { removePlayer } from './departures'
 import { closeProposals, pickProposal, propose } from './proposals'
 import { pickIndex } from './rng'
-import { pointsFor, type Outcome } from './scoring'
+import { answer, vote } from './answers'
+import { endTurn } from './turnEnd'
 import {
   createGame,
   skipsLeft,
@@ -74,46 +75,6 @@ function withSystemDare(
   const dare = drawDare(ctx.systemDares, filterFor(state, turn, kind), ctx.rng)
   if (!dare) return { ...state, phase: 'asking', turn: { ...turn, kind, noDareAvailable: true } }
   return { ...state, phase: 'challenge', turn: { ...turn, kind, dare, noDareAvailable: false } }
-}
-
-function endTurn(state: GameState, turn: Turn, outcome: Outcome | null): GameState {
-  const scores = { ...state.scores }
-  let { history, usedDareIds } = state
-  if (outcome && turn.dare && turn.kind) {
-    const prev = scores[turn.answererId]!
-    const done = outcome === 'done'
-    scores[turn.answererId] = {
-      done: prev.done + (done ? 1 : 0),
-      skipped: prev.skipped + (done ? 0 : 1),
-      points: prev.points + pointsFor(turn.kind, outcome),
-      truths: prev.truths + (done && turn.kind === 'truth' ? 1 : 0),
-      dares: prev.dares + (done && turn.kind === 'dare' ? 1 : 0),
-    }
-    history = [
-      ...history,
-      {
-        round: state.round,
-        answererId: turn.answererId,
-        askerId: turn.askerId,
-        dare: turn.dare,
-        outcome,
-      },
-    ]
-    usedDareIds = [...usedDareIds, turn.dare.id]
-  }
-  const played = [...state.playedThisRound, turn.answererId]
-  const roundOver = played.length >= state.players.length
-  const round = roundOver ? state.round + 1 : state.round
-  return {
-    ...state,
-    scores,
-    history,
-    usedDareIds,
-    turn: null,
-    playedThisRound: roundOver ? [] : played,
-    round: roundOver && round > state.settings.rounds ? state.round : round,
-    phase: roundOver && round > state.settings.rounds ? 'finished' : 'ready',
-  }
 }
 
 /** Applies one action to the game. Pure: never mutates `state`. Throws GameRuleError. */
@@ -209,6 +170,14 @@ export function reduce(state: GameState, action: GameAction, ctx: ReduceContext)
       const turn = currentTurn(state)
       return pickProposal(state, turn, pickIndex(turn.proposals!.length, ctx.rng))
     }
+
+    case 'ANSWER':
+      expectPhase(state, 'challenge')
+      return answer(state, currentTurn(state), action)
+
+    case 'VOTE':
+      expectPhase(state, 'challenge')
+      return vote(state, currentTurn(state), action.playerId, action.ok)
 
     case 'REMOVE_PLAYER':
       return removePlayer(state, action.playerId)

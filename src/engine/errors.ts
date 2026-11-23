@@ -6,6 +6,8 @@ export type GameRuleCode =
   | 'notEnoughPlayers'
   | 'tooManyPlayers'
   | 'noCategory'
+  | 'notYourTurn'
+  | 'answerInvalid'
 
 /** Thrown when an action breaks a rule of the game. */
 export class GameRuleError extends Error {

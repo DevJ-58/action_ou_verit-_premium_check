@@ -32,6 +32,15 @@ export interface Turn {
   noDareAvailable: boolean
   /** 'everyone' flow: one proposal per other player (shuffled when proposals close). */
   proposals?: Proposal[]
+  /** Set by the designated player while the challenge is on (rooms). */
+  answer?: Answer
+  /** Other players' verdicts on the answer, by player id (true = convinced). */
+  votes?: Record<string, boolean>
+}
+
+export interface Answer {
+  text?: string
+  voiceId?: string
 }
 
 export interface Proposal {
@@ -53,6 +62,8 @@ export interface HistoryEntry {
   askerId: string
   dare: Dare
   outcome: Outcome
+  answer?: Answer
+  votes?: Record<string, boolean>
 }
 
 export interface GameState {
@@ -85,6 +96,8 @@ export type GameAction =
   | { type: 'TIMEOUT_PICK' }
   | { type: 'REMOVE_PLAYER'; playerId: string }
   | { type: 'TIMEOUT_CHOOSE' }
+  | { type: 'ANSWER'; playerId: string; text?: string; voiceId?: string }
+  | { type: 'VOTE'; playerId: string; ok: boolean }
 
 export const EMPTY_SCORE: PlayerScore = { done: 0, skipped: 0, points: 0, truths: 0, dares: 0 }
 
