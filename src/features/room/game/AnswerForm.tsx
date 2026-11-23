@@ -10,10 +10,17 @@ export interface AnswerFormProps {
   answered: boolean
   onAnswer(text: string): void
   onVoice(note: VoiceNote): void
+  voiceLocked?: boolean
 }
 
 /** The designated player answers the truth, or tells how the dare went. */
-export function AnswerForm({ kind, answered, onAnswer, onVoice }: AnswerFormProps) {
+export function AnswerForm({
+  kind,
+  answered,
+  onAnswer,
+  onVoice,
+  voiceLocked = false,
+}: AnswerFormProps) {
   const t = useT()
   const id = useId()
   const [text, setText] = useState('')
@@ -50,7 +57,7 @@ export function AnswerForm({ kind, answered, onAnswer, onVoice }: AnswerFormProp
           {t.roomGame.answerError}
         </p>
       ) : null}
-      <VoiceRecorderBar onNote={onVoice}>
+      <VoiceRecorderBar onNote={onVoice} locked={voiceLocked}>
         <Button type="submit" variant={kind === 'truth' ? 'truth' : 'dare'} className="flex-1">
           {answered ? t.roomGame.updateAnswer : t.roomGame.sendAnswer}
         </Button>

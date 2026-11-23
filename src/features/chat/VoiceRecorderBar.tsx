@@ -1,4 +1,6 @@
-import { Mic, Send, Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import { Lock, Mic, Send, Trash2 } from 'lucide-react'
+import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { IconButton } from '@/design-system'
 import { useT } from '@/i18n/useT'
 import { VOICE_MAX_MS } from './types'
@@ -8,12 +10,15 @@ export interface VoiceRecorderBarProps {
   onNote(note: VoiceNote): void
   /** Shown instead of the mic while not recording (e.g. the text field). */
   children?: React.ReactNode
+  /** Voice notes need Premium (the room's host): the mic explains instead of recording. */
+  locked?: boolean
 }
 
 /** Mic button; while recording, a timer with send and cancel. */
-export function VoiceRecorderBar({ onNote, children }: VoiceRecorderBarProps) {
+export function VoiceRecorderBar({ onNote, children, locked = false }: VoiceRecorderBarProps) {
   const t = useT()
   const recorder = useVoiceRecorder({ onAutoStop: onNote })
+  const [explain, setExplain] = useState(false)
   const left = VOICE_MAX_MS / 1000 - recorder.seconds
 
   if (recorder.status === 'recording') {
@@ -40,8 +45,8 @@ export function VoiceRecorderBar({ onNote, children }: VoiceRecorderBarProps) {
         {children}
         <IconButton
           label={t.chat.record}
-          icon={<Mic size={18} />}
-          onClick={() => void recorder.start()}
+          icon={locked ? <Lock size={16} /> : <Mic size={18} />}
+          onClick={() => (locked ? setExplain(true) : void recorder.start())}
         />
       </div>
       {recorder.status === 'denied' || recorder.status === 'unsupported' ? (
@@ -49,6 +54,12 @@ export function VoiceRecorderBar({ onNote, children }: VoiceRecorderBarProps) {
           {recorder.status === 'denied' ? t.chat.denied : t.chat.unsupported}
         </p>
       ) : null}
+      <PremiumSheet
+        open={explain}
+        onClose={() => setExplain(false)}
+        reason={t.premium.lockedVoice}
+        showLink={false}
+      />
     </div>
   )
 }

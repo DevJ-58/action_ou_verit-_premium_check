@@ -13,10 +13,18 @@ export interface ChatPanelProps {
   selfId: string
   open: boolean
   onClose(): void
+  voiceLocked?: boolean
 }
 
 /** The room conversation, in a sheet over the game. */
-export function ChatPanel({ store, members, selfId, open, onClose }: ChatPanelProps) {
+export function ChatPanel({
+  store,
+  members,
+  selfId,
+  open,
+  onClose,
+  voiceLocked = false,
+}: ChatPanelProps) {
   const t = useT()
   const messages = useStore(store, (s) => s.messages)
   const transport = useStore(store, (s) => s.transport)
@@ -59,7 +67,7 @@ export function ChatPanel({ store, members, selfId, open, onClose }: ChatPanelPr
           </ul>
           <div ref={end} />
         </div>
-        <ChatComposer store={store} />
+        <ChatComposer store={store} voiceLocked={voiceLocked} />
       </div>
     </Sheet>
   )

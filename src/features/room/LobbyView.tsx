@@ -2,6 +2,7 @@ import { Emoji } from '@/design-system'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { InviteFriendsButton } from '@/features/friends/InviteFriendsButton'
+import { roomCapacity, roomIsPremium } from './applyIntent'
 import { HostSetup } from './HostSetup'
 import { InviteCard } from './InviteCard'
 import { MemberList } from './MemberList'
@@ -18,7 +19,7 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
         <InviteCard code={room.code} />
         <section className="flex flex-col gap-3">
           <h2 className="text-lg font-extrabold">
-            {format(t.room.players, { count: room.members.length })}
+            {format(t.premium.roomCount, { count: room.members.length, max: roomCapacity(room) })}
           </h2>
           <MemberList
             members={room.members}
@@ -30,7 +31,11 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
         </section>
       </div>
       {state.role === 'host' ? (
-        <HostSetup memberCount={room.members.length} onStart={(setup) => void state.start(setup)} />
+        <HostSetup
+          memberCount={room.members.length}
+          premium={roomIsPremium(room)}
+          onStart={(setup) => void state.start(setup)}
+        />
       ) : (
         <section className="flex flex-col items-center gap-3 self-center rounded-[32px] bg-seat p-8 text-center">
           <Emoji name="hourglass" size={56} className="motion-safe:animate-bounce" />

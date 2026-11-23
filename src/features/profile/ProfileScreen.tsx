@@ -5,6 +5,7 @@ import { Avatar, Emoji, Screen } from '@/design-system'
 import { accountStore, useAccount } from '@/features/account/accountStore'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
+import { PremiumCard } from '@/features/premium/PremiumCard'
 import { StatsGrid } from './StatsGrid'
 
 /** The player's space: who they are, their stats, their dares. Settings live behind the gear. */
@@ -37,6 +38,7 @@ export function ProfileScreen() {
             {profile.bio ? <p className="max-w-xs text-muted">{profile.bio}</p> : null}
           </header>
           <div className="flex flex-col gap-8">
+            <PremiumCard />
             <StatsGrid stats={profile.stats} />
             <Link
               to="/defis"

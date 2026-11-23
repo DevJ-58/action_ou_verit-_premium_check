@@ -107,3 +107,10 @@ test('while live, the others watch and the one filming can stop', async () => {
   await userEvent.click(await screen.findByRole('button', { name: /arrêter la vidéo/i }))
   expect(s.setLive).toHaveBeenCalledWith(false)
 })
+
+test('voice answers need a Premium host: otherwise the mic explains why', async () => {
+  const g = inChallenge('truth')
+  show(stateFor(g.turn!.answererId, g))
+  await userEvent.click(screen.getByRole('button', { name: /message vocal/i }))
+  expect(await screen.findByRole('dialog')).toHaveTextContent(/l’hôte du salon soit premium/i)
+})

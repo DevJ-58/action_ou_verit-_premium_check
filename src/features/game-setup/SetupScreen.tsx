@@ -8,7 +8,8 @@ import { hasResumableGame } from '@/features/game/resumable'
 import { usePlayers } from '@/features/players/playersStore'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
-import { CategoryGrid } from './CategoryGrid'
+import { PremiumCategoryGrid } from '@/features/premium/PremiumCategoryGrid'
+import { usePremium } from '@/features/premium/usePremium'
 import { SeatOrder } from './SeatOrder'
 import { SettingsPanel, type SetupSettings } from './SettingsPanel'
 import { setupWarnings } from './setupWarnings'
@@ -27,6 +28,7 @@ const RANDOM_PICKER_FROM = 9
 
 export function SetupScreen() {
   const t = useT()
+  const premium = usePremium()
   const navigate = useNavigate()
   const players = usePlayers((s) => s.players)
   const [seated, setSeated] = useState(() => players.slice(0, MAX_PLAYERS).map((p) => p.id))
@@ -71,7 +73,7 @@ export function SetupScreen() {
 
         <section className="flex flex-col gap-3">
           <h2 className="text-lg font-extrabold">{t.setup.categories}</h2>
-          <CategoryGrid selected={categories} onChange={setCategories} />
+          <PremiumCategoryGrid premium={premium} selected={categories} onChange={setCategories} />
           {warnings.map((w) => (
             <p
               key={w.playerId}

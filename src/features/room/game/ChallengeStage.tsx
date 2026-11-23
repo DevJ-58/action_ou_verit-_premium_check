@@ -5,6 +5,7 @@ import { pointsFor, skipsLeft, type GameState, type Turn } from '@/engine'
 import { ChallengeCard } from '@/features/game/ChallengeCard'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
+import { roomIsPremium } from '../applyIntent'
 import type { RoomStoreState } from '../roomStore'
 import { AnswerBubble } from './AnswerBubble'
 import { getChatTransport } from '@/features/chat/getChatTransport'
@@ -93,6 +94,7 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
           <AnswerForm
             kind={kind}
             answered={Boolean(turn.answer)}
+            voiceLocked={!(state.room && roomIsPremium(state.room))}
             onAnswer={(text) => state.act({ type: 'ANSWER', playerId: selfId, text })}
             onVoice={(note) =>
               void getChatTransport()

@@ -8,10 +8,11 @@ export interface RoomChatProps {
   store: ChatStore
   members: Member[]
   selfId: string
+  voiceLocked?: boolean
 }
 
 /** The chat button of a room screen and its panel. */
-export function RoomChat({ store, members, selfId }: RoomChatProps) {
+export function RoomChat({ store, members, selfId, voiceLocked = false }: RoomChatProps) {
   const [open, setOpen] = useState(false)
   return (
     <>
@@ -22,6 +23,7 @@ export function RoomChat({ store, members, selfId }: RoomChatProps) {
         selfId={selfId}
         open={open}
         onClose={() => setOpen(false)}
+        voiceLocked={voiceLocked}
       />
     </>
   )

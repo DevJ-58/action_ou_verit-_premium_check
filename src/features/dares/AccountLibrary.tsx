@@ -5,6 +5,9 @@ import type { ChallengeKind, Dare } from '@/engine'
 import { accountStore } from '@/features/account/accountStore'
 import type { Profile } from '@/features/account/authService'
 import type { CustomDareDraft } from '@/features/players/playersStore'
+import { PremiumSheet } from '@/features/premium/PremiumSheet'
+import { FREE_LIMITS } from '@/features/premium/premium'
+import { usePremium } from '@/features/premium/usePremium'
 import { useT } from '@/i18n/useT'
 import { CustomDareForm } from './CustomDareForm'
 import { CustomDareList } from './CustomDareList'
@@ -19,18 +22,23 @@ export function AccountLibrary({ profile }: { profile: Profile }) {
   const [filter, setFilter] = useState<Filter>('all')
   const [editing, setEditing] = useState<CustomDareDraft | 'new' | null>(null)
   const [browsing, setBrowsing] = useState(false)
+  const [limitReached, setLimitReached] = useState(false)
+  const premium = usePremium()
   const dares = profile.customDares
+  const full = !premium && dares.length >= FREE_LIMITS.customDares
+  /** Runs `then` unless a free player already keeps the maximum number of dares. */
+  const unlessFull = (then: () => void) => (full ? setLimitReached(true) : then())
   const save = (customDares: Dare[]) => void accountStore.getState().updateProfile({ customDares })
   const shown = filter === 'all' ? dares : dares.filter((d) => d.kind === filter)
 
   return (
     <section className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-2.5">
-        <Button onClick={() => setEditing('new')}>
+        <Button onClick={() => unlessFull(() => setEditing('new'))}>
           <Plus aria-hidden="true" size={18} />
           {t.dareForm.add}
         </Button>
-        <Button variant="ghost" onClick={() => setBrowsing(true)}>
+        <Button variant="ghost" onClick={() => unlessFull(() => setBrowsing(true))}>
           <Sparkles aria-hidden="true" size={18} />
           {t.myDares.fromGame}
         </Button>
@@ -60,6 +68,16 @@ export function AccountLibrary({ profile }: { profile: Profile }) {
           />
         </>
       )}
+      {premium ? null : (
+        <p className="-mt-1 self-end text-sm font-bold text-muted tabular-nums">
+          {dares.length} / {FREE_LIMITS.customDares}
+        </p>
+      )}
+      <PremiumSheet
+        open={limitReached}
+        onClose={() => setLimitReached(false)}
+        reason={t.premium.lockedDares}
+      />
       <Sheet
         open={editing !== null}
         onClose={() => setEditing(null)}
@@ -80,7 +98,10 @@ export function AccountLibrary({ profile }: { profile: Profile }) {
         <SystemDareBrowser
           verb={t.myDares.add}
           isTaken={(dare) => hasDare(dares, dare)}
-          onPick={(dare) => save([...dares, ownCopy({ ...dare, id: undefined }, profile.id)])}
+          onPick={(dare) => {
+            if (full) setBrowsing(false)
+            unlessFull(() => save([...dares, ownCopy({ ...dare, id: undefined }, profile.id)]))
+          }}
         />
       </Sheet>
     </section>

@@ -7,7 +7,13 @@ import { CHAT_TEXT_MAX } from './types'
 import { VoiceRecorderBar } from './VoiceRecorderBar'
 
 /** Write a message, or record a voice note. */
-export function ChatComposer({ store }: { store: ChatStore }) {
+export function ChatComposer({
+  store,
+  voiceLocked = false,
+}: {
+  store: ChatStore
+  voiceLocked?: boolean
+}) {
   const t = useT()
   const id = useId()
   const [text, setText] = useState('')
@@ -26,6 +32,7 @@ export function ChatComposer({ store }: { store: ChatStore }) {
   return (
     <div className="flex flex-col gap-1.5 border-t border-line pt-3">
       <VoiceRecorderBar
+        locked={voiceLocked}
         onNote={(note) =>
           void store
             .getState()

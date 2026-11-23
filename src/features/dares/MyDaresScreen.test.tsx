@@ -67,3 +67,21 @@ describe('signed in', () => {
     expect(within(dialog).getAllByRole('button', { name: /déjà dans mes défis/i })).toHaveLength(1)
   })
 })
+
+describe('free players keep 5 own dares', () => {
+  beforeEach(async () => {
+    await act(() =>
+      accountStore.getState().signUp(`l-${Date.now()}@example.com`, 'motdepasse', 'Lou'),
+    )
+    const five = systemDares.slice(0, 5).map((d, i) => ({ ...d, id: `c${i}`, authorId: 'x' }))
+    await act(() => accountStore.getState().updateProfile({ customDares: five }))
+  })
+
+  test('at 5, creating or adding another one explains Premium instead', async () => {
+    renderDares()
+    expect(await screen.findByText('5 / 5')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /créer un défi/i }))
+    expect(await screen.findByRole('dialog')).toHaveTextContent(/5 défis perso/i)
+    expect(mine()).toHaveLength(5)
+  })
+})

@@ -15,6 +15,7 @@ import { TurnStage } from './game/TurnStage'
 import { useHostTimers } from './game/useHostTimers'
 import { useRoomFeedback } from './game/useRoomFeedback'
 import { useGameMusic } from '@/lib/audio/useGameMusic'
+import { roomIsPremium } from './applyIntent'
 import type { RoomStoreState } from './roomStore'
 
 export interface RoomGameViewProps {
@@ -52,7 +53,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           <span className="hidden font-mono text-sm font-bold tracking-[0.2em] text-gold-text min-[380px]:inline">
             {room.code}
           </span>
-          <RoomChat store={chat} members={room.members} selfId={state.self.id} />
+          <RoomChat
+            store={chat}
+            members={room.members}
+            selfId={state.self.id}
+            voiceLocked={!roomIsPremium(room)}
+          />
         </span>
       </header>
 
