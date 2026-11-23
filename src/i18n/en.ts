@@ -76,6 +76,10 @@ export const en: Dictionary = {
     later: 'Later',
   },
   premium: {
+    welcomeTitle: 'Congratulations!',
+    welcomeBody: 'You have the Premium plan, free for 7 days, until {date}.',
+    welcomeList: 'Enjoy the whole game:',
+    welcomeCta: 'Let’s go!',
     trialName: 'Free Premium trial',
     trialLeft: '{days} day(s) of free trial left',
     trialActive: 'Free trial: {days} day(s) left, until {date}.',

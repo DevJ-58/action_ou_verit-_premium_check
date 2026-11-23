@@ -58,7 +58,7 @@ describe('signed in', () => {
   test('adds game dares to the library from a category', async () => {
     renderDares()
     await userEvent.click(await screen.findByRole('button', { name: /ajouter depuis le jeu/i }))
-    const dialog = await screen.findByRole('dialog')
+    const dialog = await screen.findByRole('dialog', { name: /défis du jeu/i })
     await userEvent.click(within(dialog).getByRole('button', { name: /juste pour rire/i }))
     const first = within(dialog).getAllByRole('button', { name: /^ajouter :/i })[0]!
     await userEvent.click(first)

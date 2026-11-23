@@ -14,6 +14,8 @@ async function signUp(page: Page, pseudo: string) {
   await page.getByLabel('E-mail').fill(`${pseudo.toLowerCase()}-${Date.now()}@example.com`)
   await page.getByLabel('Mot de passe').fill('motdepasse')
   await page.getByRole('button', { name: /^Créer mon compte$/ }).click()
+  // New accounts are congratulated for their free Premium trial.
+  await page.getByRole('button', { name: 'C’est parti !' }).click()
   await expect(page.getByRole('link', { name: /Créer un salon/ })).toBeVisible()
 }
 

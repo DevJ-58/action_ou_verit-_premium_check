@@ -5,6 +5,7 @@ import { useAccountBoot } from '@/features/account/useAccountBoot'
 import { useApplySettings } from '@/features/settings/useApplySettings'
 import { useAudioUnlock } from '@/lib/audio/useAudioUnlock'
 import { UpdateBanner } from '@/features/update/UpdateBanner'
+import { TrialWelcome } from '@/features/premium/TrialWelcome'
 
 /** Applies settings, fades/slides each new screen in, and offers app updates. */
 export function RootLayout() {
@@ -26,6 +27,7 @@ export function RootLayout() {
         {outlet}
       </motion.div>
       <UpdateBanner />
+      <TrialWelcome />
     </>
   )
 }

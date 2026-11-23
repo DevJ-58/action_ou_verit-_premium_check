@@ -75,6 +75,10 @@ export const fr = {
     later: 'Plus tard',
   },
   premium: {
+    welcomeTitle: 'Félicitations !',
+    welcomeBody: 'Tu as accès au forfait Premium, offert pendant 7 jours, jusqu’au {date}.',
+    welcomeList: 'Profite de tout le jeu :',
+    welcomeCta: 'C’est parti !',
     trialName: 'Essai Premium gratuit',
     trialLeft: 'Encore {days} jour(s) d’essai gratuit',
     trialActive: 'Essai gratuit : encore {days} jour(s), jusqu’au {date}.',
