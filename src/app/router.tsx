@@ -1,9 +1,6 @@
 import type { RouteObject } from 'react-router'
 import { AgeGateScreen } from '@/features/onboarding/AgeGateScreen'
 import { HomeScreen } from '@/features/home/HomeScreen'
-import { MyDaresScreen } from '@/features/dares/MyDaresScreen'
-import { PlayersScreen } from '@/features/players/PlayersScreen'
-import { ProfileScreen } from '@/features/profile/ProfileScreen'
 import { RequireAge } from './RequireAge'
 import { RootErrorScreen } from './RootErrorScreen'
 import { RootLayout } from './RootLayout'
@@ -22,9 +19,24 @@ export const routes: RouteObject[] = [
             element: <TabsLayout />,
             children: [
               { index: true, element: <HomeScreen /> },
-              { path: 'joueurs', element: <PlayersScreen /> },
-              { path: 'defis', element: <MyDaresScreen /> },
-              { path: 'profil', element: <ProfileScreen /> },
+              {
+                path: 'joueurs',
+                lazy: async () => ({
+                  Component: (await import('@/features/players/PlayersScreen')).PlayersScreen,
+                }),
+              },
+              {
+                path: 'defis',
+                lazy: async () => ({
+                  Component: (await import('@/features/dares/MyDaresScreen')).MyDaresScreen,
+                }),
+              },
+              {
+                path: 'profil',
+                lazy: async () => ({
+                  Component: (await import('@/features/profile/ProfileScreen')).ProfileScreen,
+                }),
+              },
             ],
           },
           {
