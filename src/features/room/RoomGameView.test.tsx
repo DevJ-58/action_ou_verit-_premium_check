@@ -86,6 +86,7 @@ test('reactions: tapping an emoji sends it, and others’ reactions float on scr
     }),
   )
   expect(screen.getByRole('img', { name: /kofi.*feu/i })).toBeInTheDocument()
+  await userEvent.click(screen.getByRole('button', { name: /^réagir$/i }))
   await userEvent.click(
     within(screen.getByRole('toolbar', { name: /réactions/i })).getAllByRole('button')[0]!,
   )
@@ -170,4 +171,20 @@ test('at any moment, the players of the game are one tap away, with their profil
   await userEvent.click(within(sheet).getByRole('button', { name: /voir le profil de inès/i }))
   const { renderHook } = await import('@testing-library/react')
   expect(renderHook(() => viewer.useViewedProfile()).result.current).toBe('i')
+})
+
+test('a guide says what happens and who must act; the dock gathers chat, mic, reactions and players', () => {
+  const g = proposing()
+  show(stateFor(notAnswerer(g), g))
+  const guide = screen.getByRole('region', { name: /étape du tour/i })
+  expect(guide).toHaveTextContent(/à toi : pose un défi/i)
+  expect(within(guide).getByText('Défis')).toHaveAttribute('aria-current', 'step')
+  for (const name of [
+    /ouvrir la discussion/i,
+    /activer mon micro/i,
+    /^réagir$/i,
+    /joueurs de la partie/i,
+  ]) {
+    expect(screen.getByRole('button', { name })).toBeInTheDocument()
+  }
 })

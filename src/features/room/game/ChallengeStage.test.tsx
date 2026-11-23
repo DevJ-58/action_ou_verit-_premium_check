@@ -12,7 +12,7 @@ test('everyone sees who is answering and that no answer came yet', () => {
   const g = inChallenge('truth')
   show(stateFor(notAnswerer(g), g))
   const name = g.players.find((p) => p.id === g.turn!.answererId)!.name
-  expect(screen.getByRole('status')).toHaveTextContent(new RegExp(`${name} réfléchit`, 'i'))
+  expect(screen.getByText(new RegExp(`${name} réfléchit`, 'i'))).toBeInTheDocument()
 })
 
 test('the answerer writes an answer and sends it to the room', async () => {
@@ -30,7 +30,7 @@ test('the answerer writes an answer and sends it to the room', async () => {
 test('once answered, everyone sees the answer and the status says so', () => {
   const g = withTurn(inChallenge('truth'), { answer: { text: 'Oui, une fois' } })
   show(stateFor(notAnswerer(g), g))
-  expect(screen.getByRole('status')).toHaveTextContent(/a répondu/i)
+  expect(screen.getByText(/a répondu/i)).toBeInTheDocument()
   expect(screen.getByRole('blockquote')).toHaveTextContent('Oui, une fois')
 })
 

@@ -86,7 +86,11 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
         ) : null}
         {isAnswerer && !live && liveSeconds > 0 ? (
           <div className="flex w-full max-w-sm flex-col gap-1.5">
-            <Button variant="danger" onClick={() => state.setLive(true)}>
+            <Button
+              variant="danger"
+              className="normal-case tracking-normal"
+              onClick={() => state.setLive(true)}
+            >
               <Video aria-hidden="true" size={18} />
               {format(t.live.start, { duration })}
               <PremiumMark />

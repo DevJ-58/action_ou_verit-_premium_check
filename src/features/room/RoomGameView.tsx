@@ -20,7 +20,8 @@ import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
 import { FloatingReactions } from './game/FloatingReactions'
-import { ReactionBar } from './game/ReactionBar'
+import { GameDock } from './game/GameDock'
+import { TurnGuideBar } from './game/TurnGuideBar'
 import { TurnStage } from './game/TurnStage'
 import { useHostTimers } from './game/useHostTimers'
 import { useRoomFeedback } from './game/useRoomFeedback'
@@ -63,11 +64,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
     if (lastGame) void accountStore.getState().recordRoomGame(code, lastGame)
   }, [code, finished, lastGame])
 
+  const nameOf = (id: string) => room.members.find((m) => m.id === id)?.pseudo ?? ''
   const tableVisible = ['ready', 'spinning', 'choosing'].includes(game.phase)
   const chooserHere = game.phase === 'choosing' && game.turn?.answererId === state.self.id
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
+    <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-[calc(6rem+env(safe-area-inset-bottom))]">
       <header className="flex items-center justify-between pt-2">
         <IconButton label={t.room.leave} icon={<X size={18} />} onClick={onLeave} />
         <span className="text-xs font-extrabold tracking-[0.16em] whitespace-nowrap text-muted uppercase">
@@ -75,20 +77,15 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           <span className="text-lg text-text tabular-nums">{game.round}</span>/
           {game.settings.rounds}
         </span>
-        <span className="flex items-center gap-1.5 min-[380px]:gap-2">
-          <span className="hidden font-mono text-sm font-bold tracking-[0.2em] text-gold-text min-[460px]:inline">
-            {room.code}
-          </span>
-          <GamePlayersButton members={room.members} selfId={state.self.id} online={state.online} />
-          <VoiceButton state={state} />
-          <RoomChat
-            store={chat}
-            members={room.members}
-            selfId={state.self.id}
-            premiumLocked={!roomIsPremium(room)}
-          />
+        <span className="font-mono text-sm font-bold tracking-[0.2em] text-gold-text">
+          {room.code}
         </span>
       </header>
+      {game.phase !== 'finished' ? (
+        <div className="sticky top-0 z-20 -mx-5 bg-bg/95 px-5 pt-3 pb-2 backdrop-blur">
+          <TurnGuideBar game={game} selfId={state.self.id} nameOf={nameOf} />
+        </div>
+      ) : null}
       <div className="pt-3 empty:hidden">
         <VoiceStrip
           members={room.members}
@@ -149,11 +146,21 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
         )}
       </main>
 
-      {game.phase !== 'finished' ? (
-        <footer className="pt-4">
-          <ReactionBar onReact={state.react} />
-        </footer>
-      ) : null}
+      <GameDock
+        onReact={state.react}
+        players={
+          <GamePlayersButton members={room.members} selfId={state.self.id} online={state.online} />
+        }
+        mic={<VoiceButton state={state} />}
+        chat={
+          <RoomChat
+            store={chat}
+            members={room.members}
+            selfId={state.self.id}
+            premiumLocked={!roomIsPremium(room)}
+          />
+        }
+      />
       <FloatingReactions reactions={room.reactions} members={room.members} />
     </div>
   )

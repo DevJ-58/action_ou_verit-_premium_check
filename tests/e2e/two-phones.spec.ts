@@ -64,14 +64,15 @@ test('two phones play a room turn: everyone proposes, the answerer turns a card'
   await expect(answerer.getByRole('button', { name: /C’est fait/ })).toBeVisible()
   await expect(proposer.getByRole('button', { name: /C’est fait/ })).toHaveCount(0)
 
+  await proposer.getByRole('button', { name: 'Réagir' }).click()
   await proposer.getByRole('toolbar', { name: 'Réactions' }).getByRole('button').first().click()
   await expect(answerer.getByRole('img', { name: /feu/ })).toBeVisible()
 
   // The answerer tells how it went; the other phone sees it and votes.
-  await expect(proposer.getByRole('status').filter({ hasText: /relève le défi/ })).toBeVisible()
+  await expect(proposer.getByText(/relève le défi…/)).toBeVisible()
   await answerer.getByLabel(/Raconte comment/).fill('Fait, sur une jambe !')
   await answerer.getByRole('button', { name: /Envoyer ma réponse/ }).click()
-  await expect(proposer.getByRole('status').filter({ hasText: /a répondu/ })).toBeVisible()
+  await expect(proposer.getByText(/a répondu/)).toBeVisible()
   await expect(proposer.getByRole('blockquote')).toHaveText('Fait, sur une jambe !')
   await proposer.getByRole('button', { name: /Validé/ }).click()
   await expect(answerer.getByText(/1 validé · 0 pas convaincu/)).toBeVisible()
