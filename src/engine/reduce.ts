@@ -138,9 +138,15 @@ export function reduce(state: GameState, action: GameAction, ctx: ReduceContext)
       return { ...state, phase: 'challenge', turn: { ...turn, dare } }
     }
 
-    case 'COMPLETE':
+    case 'COMPLETE': {
       expectPhase(state, 'challenge')
-      return endTurn(state, currentTurn(state), 'done')
+      const turn = currentTurn(state)
+      // Rooms: “done” counts once another player has given their verdict.
+      if (state.settings.flow === 'everyone' && Object.keys(turn.votes ?? {}).length === 0) {
+        throw new GameRuleError('awaitingVerdict')
+      }
+      return endTurn(state, turn, 'done')
+    }
 
     case 'SKIP': {
       expectPhase(state, 'asking', 'challenge')

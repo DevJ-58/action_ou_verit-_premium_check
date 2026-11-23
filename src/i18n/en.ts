@@ -442,6 +442,7 @@ export const en: Dictionary = {
     you: 'You',
   },
   roomGame: {
+    awaitingVerdict: 'Waiting for the others’ verdict to confirm…',
     chosen: 'Your proposed dare',
     write: 'Write',
     gameDares: 'Game’s',

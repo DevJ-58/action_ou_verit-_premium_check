@@ -74,6 +74,7 @@ test('only the designated player answers, with text of 1 to 500 characters or a 
 
 test('answering outside the challenge phase is refused', () => {
   const g = inChallenge()
+  g.run({ type: 'VOTE', playerId: g.others[0]!, ok: true })
   g.run({ type: 'COMPLETE' })
   expectRule(() => g.run({ type: 'ANSWER', playerId: g.answerer, text: 'x' }), 'invalidPhase')
 })
@@ -96,4 +97,24 @@ test('the answer and the votes go into the history when the turn ends', () => {
   const entry = g.state.history.at(-1)!
   expect(entry.answer).toEqual({ text: 'Jamais.' })
   expect(entry.votes).toEqual({ [g.others[0]!]: false })
+})
+
+test('in rooms, the designated player can say it is done only once someone gave a verdict', () => {
+  const g = inChallenge()
+  expectRule(() => g.run({ type: 'COMPLETE' }), 'awaitingVerdict')
+  g.run({ type: 'VOTE', playerId: g.others[0]!, ok: false })
+  g.run({ type: 'COMPLETE' })
+  expect(g.state.history.at(-1)).toMatchObject({ outcome: 'done' })
+})
+
+test('others can give their verdict as soon as the card is turned (an action has no written answer)', () => {
+  const g = inChallenge()
+  g.run({ type: 'VOTE', playerId: g.others[0]!, ok: true })
+  expect(g.state.turn!.votes).toEqual({ [g.others[0]!]: true })
+})
+
+test('skipping never waits for a verdict', () => {
+  const g = inChallenge()
+  g.run({ type: 'SKIP' })
+  expect(g.state.history.at(-1)).toMatchObject({ outcome: 'skipped' })
 })

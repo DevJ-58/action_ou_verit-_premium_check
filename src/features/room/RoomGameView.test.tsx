@@ -70,9 +70,10 @@ test('in the challenge, everyone sees the card and its author; the answerer can 
   expect(screen.queryByRole('button', { name: /c’est fait/i })).not.toBeInTheDocument()
 })
 
-test('the answerer can complete the challenge', async () => {
-  const g = gameAt(() => [{ type: 'CHOOSE_KIND', kind: 'dare' }, { type: 'CLOSE_PROPOSALS' }])
-  const s = show(stateFor(g.turn!.answererId, g))
+test('the answerer can complete the challenge once someone gave a verdict', async () => {
+  const g0 = gameAt(() => [{ type: 'CHOOSE_KIND', kind: 'dare' }, { type: 'CLOSE_PROPOSALS' }])
+  const g = { ...g0, turn: { ...g0.turn!, votes: { [notAnswerer(g0)]: true } } }
+  const s = show(stateFor(g.turn.answererId, g))
   await userEvent.click(screen.getByRole('button', { name: /c’est fait/i }))
   expect(s.act).toHaveBeenCalledWith({ type: 'COMPLETE' })
 })

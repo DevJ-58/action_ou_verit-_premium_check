@@ -34,6 +34,8 @@ test('a player who leaves between turns is removed everywhere', () => {
   g.run({ type: 'SPIN_SETTLED' })
   g.run({ type: 'CHOOSE_KIND', kind: 'dare' })
   g.run({ type: 'CLOSE_PROPOSALS' })
+  const voter = g.state.players.find((p) => p.id !== g.state.turn!.answererId)!.id
+  g.run({ type: 'VOTE', playerId: voter, ok: true })
   g.run({ type: 'COMPLETE' })
   const played = g.state.playedThisRound[0]!
   const s = g.run({ type: 'REMOVE_PLAYER', playerId: played })

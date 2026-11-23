@@ -449,6 +449,7 @@ export const fr = {
     you: 'Toi',
   },
   roomGame: {
+    awaitingVerdict: 'En attente du verdict des autres pour valider…',
     chosen: 'Ton défi proposé',
     write: 'Écrire',
     gameDares: 'Du jeu',

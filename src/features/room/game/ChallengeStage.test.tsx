@@ -114,3 +114,20 @@ test('voice answers need a Premium host: otherwise the mic explains why', async 
   await userEvent.click(screen.getByRole('button', { name: /message vocal/i }))
   expect(await screen.findByRole('dialog')).toHaveTextContent(/l’hôte du salon soit premium/i)
 })
+
+test('“done” waits for a verdict from the others; skipping does not', async () => {
+  const g = inChallenge('dare')
+  const s = show(stateFor(g.turn!.answererId, g))
+  expect(screen.getByRole('button', { name: /c’est fait/i })).toBeDisabled()
+  expect(screen.getByText(/en attente du verdict/i)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /passer/i })).toBeEnabled()
+  void s
+})
+
+test('others can give their verdict as soon as the card is turned', async () => {
+  const g = inChallenge('dare')
+  const voter = notAnswerer(g)
+  const s = show(stateFor(voter, g))
+  await userEvent.click(screen.getByRole('button', { name: /validé/i }))
+  expect(s.act).toHaveBeenCalledWith({ type: 'VOTE', playerId: voter, ok: true })
+})

@@ -48,8 +48,14 @@ test('the player filming or the host stops it; the end of the turn stops it too'
   const on = applyIntent(r, live(answerer, true), rng)!
   expect(applyIntent(on, live(answerer, false), rng)!.live).toBeNull()
   expect(applyIntent(on, live('a', false), rng)!.live).toBeNull()
-  const done = applyIntent(
+  const voter = r.game!.players.find((p) => p.id !== answerer)!.id
+  const voted = applyIntent(
     on,
+    { id: 'v', from: voter, type: 'action', action: { type: 'VOTE', playerId: voter, ok: true } },
+    rng,
+  )!
+  const done = applyIntent(
+    voted,
     { id: 'c', from: answerer, type: 'action', action: { type: 'COMPLETE' } },
     rng,
   )!

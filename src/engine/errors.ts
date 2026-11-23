@@ -8,6 +8,7 @@ export type GameRuleCode =
   | 'noCategory'
   | 'notYourTurn'
   | 'answerInvalid'
+  | 'awaitingVerdict'
 
 /** Thrown when an action breaks a rule of the game. */
 export class GameRuleError extends Error {

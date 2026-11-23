@@ -30,6 +30,7 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
   const answerer = nameOf(turn.answererId)
   const kind = turn.kind ?? turn.dare.kind
   const live = state.room?.live ?? null
+  const verdicts = Object.keys(turn.votes ?? {}).length
   const liveSeconds = game.settings.liveSeconds ?? 0
   const code = state.room?.code ?? ''
   const duration = liveSeconds >= 60 ? `${liveSeconds / 60} min` : `${liveSeconds} s`
@@ -73,14 +74,12 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
       </div>
       <div className="flex w-full flex-col items-center gap-5 min-[900px]:pt-12">
         {turn.answer ? <AnswerBubble answer={turn.answer} name={answerer} /> : null}
-        {turn.answer || turn.votes ? (
+        {!isAnswerer || turn.votes ? (
           <VoteBar
             votes={turn.votes ?? {}}
             mine={isAnswerer ? undefined : (turn.votes?.[selfId] ?? null)}
             onVote={
-              isAnswerer || !turn.answer
-                ? undefined
-                : (ok) => state.act({ type: 'VOTE', playerId: selfId, ok })
+              isAnswerer ? undefined : (ok) => state.act({ type: 'VOTE', playerId: selfId, ok })
             }
           />
         ) : null}
@@ -109,7 +108,16 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
                   .catch(() => {})
               }
             />
-            <Button size="lg" onClick={() => state.act({ type: 'COMPLETE' })}>
+            {verdicts === 0 ? (
+              <p role="status" className="text-center text-sm font-semibold text-muted">
+                {t.roomGame.awaitingVerdict}
+              </p>
+            ) : null}
+            <Button
+              size="lg"
+              disabled={verdicts === 0}
+              onClick={() => state.act({ type: 'COMPLETE' })}
+            >
               {format(t.game.done, { points: `+${pointsFor(kind, 'done')}` })}
             </Button>
             <Button
