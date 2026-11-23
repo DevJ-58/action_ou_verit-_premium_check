@@ -52,6 +52,7 @@ export const fr = {
     join: 'Activer mon micro',
     leave: 'Couper mon micro',
     myVoice: 'Ta voix : {voice}',
+    speaking: '{name} parle',
     talking: 'Micros ouverts',
     connecting: 'Connexion…',
     denied: 'Autorise le micro dans ton navigateur pour parler avec les autres.',

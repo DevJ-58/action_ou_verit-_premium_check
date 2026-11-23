@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { X } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { Button, IconButton } from '@/design-system'
@@ -9,6 +9,7 @@ import { VoiceButton } from '@/features/voice/VoiceButton'
 import { VoiceSpeakers } from '@/features/voice/VoiceSpeakers'
 import { VoiceStrip } from '@/features/voice/VoiceStrip'
 import { useVoiceRoom } from '@/features/voice/useVoiceRoom'
+import { useSpeaking } from '@/features/voice/speaking'
 import { useRoomChat } from '@/features/chat/useRoomChat'
 import { RecapBody } from '@/features/game/RecapBody'
 import { Table } from '@/features/game/Table'
@@ -38,6 +39,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useRoomFeedback(room, state.self.id)
   const chat = useRoomChat(room.code, state.self.id)
   const voice = useVoiceRoom(state)
+  const voices = useMemo(() => {
+    const all = new Map(voice.remote)
+    if (voice.local) all.set(state.self.id, voice.local)
+    return all
+  }, [voice.remote, voice.local, state.self.id])
+  const speaking = useSpeaking(voices)
   // The music stops while this player's mic is on, so voices are heard clearly.
   const micOn = room.voice?.includes(state.self.id) ?? false
   useGameMusic(game.phase !== 'finished' && !micOn)
@@ -75,7 +82,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
         </span>
       </header>
       <div className="pt-3 empty:hidden">
-        <VoiceStrip members={room.members} talking={room.voice ?? []} selfId={state.self.id} />
+        <VoiceStrip
+          members={room.members}
+          talking={room.voice ?? []}
+          selfId={state.self.id}
+          speaking={speaking}
+        />
         {voice.status === 'denied' ? (
           <p role="alert" className="text-sm font-semibold text-dare">
             {t.voice.denied}

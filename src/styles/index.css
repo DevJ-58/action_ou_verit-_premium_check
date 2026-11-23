@@ -30,3 +30,13 @@
     }
   }
 }
+
+/* Bars of the voice strip while someone talks. */
+@keyframes speak {
+  from {
+    transform: scaleY(0.3);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

@@ -20,6 +20,7 @@ export function useVoiceRoom(state: RoomStoreState) {
   const setVoice = state.setVoice
   const [phase, setPhase] = useState<'ready' | 'denied' | null>(null)
   const [remote, setRemote] = useState<ReadonlyMap<string, MediaStream>>(new Map())
+  const [local, setLocal] = useState<MediaStream | null>(null)
   const mesh = useRef<VoiceMesh | null>(null)
   const talkingRef = useRef(talking)
 
@@ -60,6 +61,7 @@ export function useVoiceRoom(state: RoomStoreState) {
           }),
       })
       mesh.current.update(talkingRef.current)
+      setLocal(chain?.stream ?? mic)
       setPhase('ready')
     })()
     return () => {
@@ -69,6 +71,7 @@ export function useVoiceRoom(state: RoomStoreState) {
       chain?.stop()
       mic?.getTracks().forEach((t) => t.stop())
       setRemote(new Map())
+      setLocal(null)
       setPhase((p) => (p === 'denied' ? p : null))
     }
   }, [on, code, selfId, avatarId, setVoice])
@@ -80,5 +83,5 @@ export function useVoiceRoom(state: RoomStoreState) {
     : phase === 'denied'
       ? 'denied'
       : 'off'
-  return { status, remote }
+  return { status, remote, local }
 }

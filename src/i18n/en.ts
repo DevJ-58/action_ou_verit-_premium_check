@@ -53,6 +53,7 @@ export const en: Dictionary = {
     join: 'Turn my mic on',
     leave: 'Turn my mic off',
     myVoice: 'Your voice: {voice}',
+    speaking: '{name} is talking',
     talking: 'Mics on',
     connecting: 'Connecting…',
     denied: 'Allow the microphone in your browser to talk with the others.',

@@ -2,23 +2,24 @@ import type { EmojiName } from '@/content/emoji'
 
 /**
  * Voices for the live mic. `pitch` shifts the voice (-1 lower … +1 higher), then effects colour it.
- * Nobody talks with their natural voice: the avatar decides.
+ * Nobody talks with their natural voice: the avatar decides. Amounts stay moderate so words
+ * remain easy to understand.
  */
 export const VOICES = {
-  deep: { pitch: -0.45, emoji: 'masks', label: { fr: 'Voix grave', en: 'Deep voice' } },
-  high: { pitch: 0.45, emoji: 'sparkles', label: { fr: 'Voix aiguë', en: 'High voice' } },
-  robot: { pitch: 0, ring: 50, emoji: 'game', label: { fr: 'Robot', en: 'Robot' } },
-  monster: { pitch: -0.8, drive: 18, emoji: 'fire', label: { fr: 'Monstre', en: 'Monster' } },
-  ghost: { pitch: 0.2, echo: 0.32, emoji: 'moon', label: { fr: 'Fantôme', en: 'Ghost' } },
-  alien: { pitch: 0.7, ring: 300, emoji: 'rocket', label: { fr: 'Alien', en: 'Alien' } },
+  deep: { pitch: -0.35, emoji: 'masks', label: { fr: 'Voix grave', en: 'Deep voice' } },
+  high: { pitch: 0.4, emoji: 'sparkles', label: { fr: 'Voix aiguë', en: 'High voice' } },
+  robot: { pitch: 0, ring: 40, emoji: 'game', label: { fr: 'Robot', en: 'Robot' } },
+  monster: { pitch: -0.55, drive: 8, emoji: 'fire', label: { fr: 'Monstre', en: 'Monster' } },
+  ghost: { pitch: 0.15, echo: 0.25, emoji: 'moon', label: { fr: 'Fantôme', en: 'Ghost' } },
+  alien: { pitch: 0.45, ring: 90, emoji: 'rocket', label: { fr: 'Alien', en: 'Alien' } },
   radio: {
     pitch: -0.15,
     band: true,
-    drive: 6,
+    drive: 4,
     emoji: 'speech',
     label: { fr: 'Radio', en: 'Radio' },
   },
-  fairy: { pitch: 0.85, echo: 0.18, emoji: 'star', label: { fr: 'Fée', en: 'Fairy' } },
+  fairy: { pitch: 0.55, echo: 0.15, emoji: 'star', label: { fr: 'Fée', en: 'Fairy' } },
 } as const satisfies Record<
   string,
   {

@@ -43,3 +43,9 @@ test('everyone sees who has their mic on, and with which voice', () => {
   expect(strip).toHaveTextContent('Kofi')
   expect(strip).toHaveTextContent('Monstre')
 })
+
+test('the one talking lights up for everyone', () => {
+  render(<VoiceStrip members={members} talking={['k', 'a']} selfId="a" speaking={new Set(['k'])} />)
+  expect(screen.getByRole('listitem', { name: /kofi parle/i })).toBeInTheDocument()
+  expect(screen.queryByRole('listitem', { name: /awa parle/i })).not.toBeInTheDocument()
+})

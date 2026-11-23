@@ -33,7 +33,7 @@ export function changeVoice(ctx: AudioContext, mic: MediaStream, voice: VoiceId)
     stoppers.push(shifter.stop)
   }
   if (preset.ring) {
-    // Ring modulation: the voice's volume follows a fast oscillator (metallic, robotic).
+    // Ring modulation (metallic, robotic), mixed with the shifted voice so words stay clear.
     const ring = ctx.createGain()
     ring.gain.value = 0
     const osc = ctx.createOscillator()
@@ -41,8 +41,14 @@ export function changeVoice(ctx: AudioContext, mic: MediaStream, voice: VoiceId)
     osc.connect(ring.gain)
     osc.start()
     stoppers.push(() => osc.stop())
+    const mix = ctx.createGain()
+    const dry = ctx.createGain()
+    dry.gain.value = 0.55
     node.connect(ring)
-    node = ring
+    node.connect(dry)
+    ring.connect(mix)
+    dry.connect(mix)
+    node = mix
   }
   if (preset.band) {
     const band = ctx.createBiquadFilter()
@@ -59,7 +65,7 @@ export function changeVoice(ctx: AudioContext, mic: MediaStream, voice: VoiceId)
     node = shaper
   }
   const out = ctx.createGain()
-  out.gain.value = 1.4
+  out.gain.value = 1.8
   node.connect(out)
   if (preset.echo) {
     const delay = ctx.createDelay()
@@ -71,7 +77,10 @@ export function changeVoice(ctx: AudioContext, mic: MediaStream, voice: VoiceId)
     feedback.connect(delay)
     delay.connect(destination)
   }
+  // Evens out the loudness (quiet words louder, shouts held back).
   const limiter = ctx.createDynamicsCompressor()
+  limiter.threshold.value = -20
+  limiter.ratio.value = 6
   out.connect(limiter)
   limiter.connect(destination)
 
