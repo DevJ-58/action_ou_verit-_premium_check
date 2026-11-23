@@ -203,6 +203,7 @@ export const en: Dictionary = {
       roomFull: 'This room is full (12 players max).',
       roomStarted: 'The game has already started in this room.',
       invalidCode: 'A code has 6 characters.',
+      joinTimeout: 'The host is not answering. Check the code or ask them to reopen the app.',
     },
     lobbyTitle: 'Waiting room',
     shareTitle: 'Invite your friends',
@@ -246,6 +247,9 @@ export const en: Dictionary = {
     },
     spinTurn: 'Spin the bottle',
     othersWillAsk: 'The others will set your dare',
+    offline: 'offline',
+    skipFor: 'Skip {name}’s turn',
+    absent: '{name} is offline',
   },
   categories: {
     fun: { name: 'Just for fun', description: 'Light challenges to break the ice' },

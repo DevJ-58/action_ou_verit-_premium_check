@@ -24,6 +24,15 @@ export const ROOM_DEFAULTS: Omit<GameSettings, 'categories'> = {
   picker: 'bottle',
 }
 
+/** Removes a member from the room and, if a game is on, from the game (their turn ends). */
+export function withoutMember(room: RoomState, memberId: string, rng: Rng): RoomState {
+  const members = room.members.filter((m) => m.id !== memberId)
+  const game = room.game
+    ? reduce(room.game, { type: 'REMOVE_PLAYER', playerId: memberId }, { rng, systemDares })
+    : null
+  return { ...room, members, game }
+}
+
 export function toPlayer(member: Member): Player {
   return {
     id: member.id,
@@ -50,6 +59,8 @@ function startGame(room: RoomState, setup: RoomSetup): RoomState | null {
  * refused (wrong sender, wrong phase, broken rule). Never throws on bad input.
  */
 export function applyIntent(room: RoomState, intent: Intent, rng: Rng): RoomState | null {
+  // Everything but joining requires the sender to be in the room.
+  if (intent.type !== 'join' && !room.members.some((m) => m.id === intent.from)) return null
   switch (intent.type) {
     case 'join': {
       if (room.members.some((m) => m.id === intent.member.id)) return null
@@ -57,8 +68,7 @@ export function applyIntent(room: RoomState, intent: Intent, rng: Rng): RoomStat
       return { ...room, members: [...room.members, intent.member] }
     }
     case 'leave':
-      if (!room.members.some((m) => m.id === intent.from)) return null
-      return { ...room, members: room.members.filter((m) => m.id !== intent.from) }
+      return withoutMember(room, intent.from, rng)
     case 'start':
       if (intent.from !== room.hostId || room.status !== 'lobby') return null
       return startGame(room, intent.setup)

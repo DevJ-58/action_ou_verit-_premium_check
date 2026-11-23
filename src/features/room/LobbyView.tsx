@@ -19,7 +19,12 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
           <h2 className="text-lg font-extrabold">
             {format(t.room.players, { count: room.members.length })}
           </h2>
-          <MemberList members={room.members} hostId={room.hostId} selfId={state.self.id} />
+          <MemberList
+            members={room.members}
+            hostId={room.hostId}
+            selfId={state.self.id}
+            online={state.online}
+          />
         </section>
       </div>
       {state.role === 'host' ? (

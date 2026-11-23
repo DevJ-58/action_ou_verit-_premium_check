@@ -2,7 +2,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla'
 import type { EmojiName } from '@/content/emoji'
 import type { GameAction, Rng } from '@/engine'
 import { newId } from '@/lib/id'
-import { applyIntent } from './applyIntent'
+import { applyIntent, withoutMember } from './applyIntent'
 import type { RoomTransport } from './localTransport'
 import { generateRoomCode } from './roomCode'
 import {
@@ -15,16 +15,30 @@ import {
   type RoomState,
 } from './types'
 
+export interface RoomTiming {
+  /** How long the host may be offline before the next present member takes over. */
+  hostAbsentMs: number
+  /** How long a guest waits for the host to accept them. */
+  joinTimeoutMs: number
+}
+
+export const DEFAULT_TIMING: RoomTiming = { hostAbsentMs: 8000, joinTimeoutMs: 8000 }
+
 export interface RoomStoreState {
   self: Member
   room: RoomState | null
   role: 'host' | 'guest' | null
+  /** Ids of the members currently online. */
+  online: ReadonlySet<string>
   createRoom(): Promise<string>
   joinRoom(code: string): Promise<RoomError | null>
   start(setup: RoomSetup): Promise<void>
   act(action: GameAction): void
   react(emoji: EmojiName): void
+  /** Leaves for good (others are told). */
   leave(): void
+  /** Stops talking to the room without leaving (app closed, phone locked). */
+  disconnect(): void
 }
 
 export type RoomStore = StoreApi<RoomStoreState>
@@ -33,12 +47,16 @@ export function createRoomStore(deps: {
   transport: RoomTransport
   self: Member
   rng: Rng
+  timing?: Partial<RoomTiming>
 }): RoomStore {
   const { transport, self, rng } = deps
+  const timing = { ...DEFAULT_TIMING, ...deps.timing }
   const seen = new Set<string>()
-  let unsubscribe: (() => void) | null = null
+  let cleanup: (() => void) | null = null
+  let stopTracking: ((silent?: boolean) => void) | null = null
+  let hostWatch: ReturnType<typeof setTimeout> | null = null
 
-  const store = createStore<RoomStoreState>()((set, get) => {
+  return createStore<RoomStoreState>()((set, get, storeApi) => {
     const roleFor = (room: RoomState) => (room.hostId === self.id ? 'host' : 'guest')
 
     function commit(next: RoomState) {
@@ -55,18 +73,57 @@ export function createRoomStore(deps: {
       if (next) commit(next)
     }
 
+    /** If the host has gone quiet, the first present member (in join order) takes over. */
+    function watchHost() {
+      if (hostWatch) clearTimeout(hostWatch)
+      hostWatch = null
+      const { room, online } = get()
+      if (!room || online.has(room.hostId)) return
+      hostWatch = setTimeout(() => {
+        const current = get()
+        const r = current.room
+        if (!r || current.online.has(r.hostId)) return
+        const successor = r.members.find((m) => m.id !== r.hostId && current.online.has(m.id))
+        if (successor?.id !== self.id) return
+        // Jump the version so no late state from the old host can win.
+        const taken = { ...r, hostId: self.id, version: r.version + 10 }
+        set({ room: taken, role: 'host' })
+        void transport.claimHost(taken)
+      }, timing.hostAbsentMs)
+    }
+
     function listen(code: string) {
-      unsubscribe?.()
+      cleanup?.()
       const offState = transport.onState(code, (state) => {
         const current = get().room
         if (current && state.version <= current.version) return
         set({ room: state, role: roleFor(state) })
+        watchHost()
       })
       const offIntent = transport.onIntent(code, handle)
-      unsubscribe = () => {
+      const offPresence = transport.onPresence(code, (online) => {
+        set({ online })
+        watchHost()
+      })
+      stopTracking = transport.track(code, self.id)
+      const heartbeat = setInterval(() => {
+        if (get().role === 'host') transport.touch(code)
+      }, 5000)
+      cleanup = () => {
+        clearInterval(heartbeat)
         offState()
         offIntent()
+        offPresence()
+        if (hostWatch) clearTimeout(hostWatch)
       }
+    }
+
+    function stop(sayGoodbye: boolean) {
+      cleanup?.()
+      cleanup = null
+      stopTracking?.(!sayGoodbye)
+      stopTracking = null
+      set({ room: null, role: null, online: new Set() })
     }
 
     function send(intent: IntentBody) {
@@ -77,10 +134,27 @@ export function createRoomStore(deps: {
       else transport.sendIntent(room.code, full)
     }
 
+    function waitUntilMember(): Promise<boolean> {
+      return new Promise((resolve) => {
+        const deadline = setTimeout(() => {
+          off()
+          resolve(false)
+        }, timing.joinTimeoutMs)
+        const isIn = () => get().room?.members.some((m) => m.id === self.id) ?? false
+        const off = storeApi.subscribe(() => {
+          if (!isIn()) return
+          clearTimeout(deadline)
+          off()
+          resolve(true)
+        })
+      })
+    }
+
     return {
       self,
       room: null,
       role: null,
+      online: new Set(),
       createRoom: async () => {
         let code = generateRoomCode(rng)
         while (await transport.readSnapshot(code)) code = generateRoomCode(rng)
@@ -104,8 +178,12 @@ export function createRoomStore(deps: {
         if (!already && snapshot.members.length >= ROOM_MAX_MEMBERS) return 'roomFull'
         listen(code)
         set({ room: snapshot, role: roleFor(snapshot) })
-        if (!already) send({ type: 'join', member: self })
-        return null
+        if (already) return null
+        const accepted = waitUntilMember()
+        send({ type: 'join', member: self })
+        if (await accepted) return null
+        stop(true)
+        return 'joinTimeout'
       },
       start: async (setup) => send({ type: 'start', setup }),
       act: (action) => send({ type: 'action', action }),
@@ -114,20 +192,13 @@ export function createRoomStore(deps: {
         const { room, role } = get()
         if (room && role === 'host') {
           const next = room.members.find((m) => m.id !== self.id)
-          if (next)
-            commit({
-              ...room,
-              hostId: next.id,
-              members: room.members.filter((m) => m.id !== self.id),
-            })
+          if (next) commit({ ...withoutMember(room, self.id, rng), hostId: next.id })
         } else if (room) {
           send({ type: 'leave' })
         }
-        unsubscribe?.()
-        unsubscribe = null
-        set({ room: null, role: null })
+        stop(true)
       },
+      disconnect: () => stop(false),
     }
   })
-  return store
 }

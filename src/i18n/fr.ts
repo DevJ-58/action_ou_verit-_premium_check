@@ -205,6 +205,7 @@ export const fr = {
       roomFull: 'Ce salon est complet (12 joueurs maximum).',
       roomStarted: 'La partie a déjà commencé dans ce salon.',
       invalidCode: 'Un code fait 6 caractères.',
+      joinTimeout: 'L’hôte ne répond pas. Vérifie le code ou demande-lui de rouvrir l’app.',
     },
     lobbyTitle: 'Salle d’attente',
     shareTitle: 'Invite tes amis',
@@ -248,6 +249,9 @@ export const fr = {
     },
     spinTurn: 'Tourner la bouteille',
     othersWillAsk: 'Les autres vont te poser un défi',
+    offline: 'hors ligne',
+    skipFor: 'Passer le tour de {name}',
+    absent: '{name} est hors ligne',
   },
   categories: {
     fun: { name: 'Juste pour rire', description: 'Des défis légers pour briser la glace' },

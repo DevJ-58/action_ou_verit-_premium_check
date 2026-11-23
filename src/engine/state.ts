@@ -83,6 +83,8 @@ export type GameAction =
   | { type: 'CLOSE_PROPOSALS' }
   | { type: 'PICK_PROPOSAL'; index: number }
   | { type: 'TIMEOUT_PICK' }
+  | { type: 'REMOVE_PLAYER'; playerId: string }
+  | { type: 'TIMEOUT_CHOOSE' }
 
 export const EMPTY_SCORE: PlayerScore = { done: 0, skipped: 0, points: 0, truths: 0, dares: 0 }
 

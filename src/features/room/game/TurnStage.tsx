@@ -23,6 +23,16 @@ export function TurnStage({ state, game }: TurnStageProps) {
   const nameOf = (id: string) => game.players.find((p) => p.id === id)?.name ?? ''
   if (!turn) return null
   const isAnswerer = turn.answererId === selfId
+  const answererAway = state.role === 'host' && !isAnswerer && !state.online.has(turn.answererId)
+  const skipAway = answererAway ? (
+    <Button
+      variant="ghost"
+      className="normal-case tracking-normal"
+      onClick={() => state.act({ type: 'SKIP' })}
+    >
+      {format(t.roomGame.skipFor, { name: nameOf(turn.answererId) })}
+    </Button>
+  ) : null
   const answerer = nameOf(turn.answererId)
   const others = game.players.length - 1
   const waiting = (emoji: 'thinking' | 'eyes' | 'hourglass', text: string) => (
@@ -56,13 +66,21 @@ export function TurnStage({ state, game }: TurnStageProps) {
           />
         </div>
       ) : (
-        <ProposalComposer
-          game={game}
-          turn={turn}
-          selfId={selfId}
-          ownDares={state.self.customDares}
-          onPropose={(dare) => state.act({ type: 'PROPOSE', playerId: selfId, dare })}
-        />
+        <div className="flex flex-col gap-4">
+          <div className="self-end">
+            <CountdownRing
+              key={`${game.round}-${turn.answererId}`}
+              seconds={game.settings.proposeSeconds ?? 60}
+            />
+          </div>
+          <ProposalComposer
+            game={game}
+            turn={turn}
+            selfId={selfId}
+            ownDares={state.self.customDares}
+            onPropose={(dare) => state.act({ type: 'PROPOSE', playerId: selfId, dare })}
+          />
+        </div>
       )
     case 'picking':
       return (
@@ -115,6 +133,7 @@ export function TurnStage({ state, game }: TurnStageProps) {
               </Button>
             </div>
           ) : null}
+          {skipAway}
         </div>
       ) : null
     default:

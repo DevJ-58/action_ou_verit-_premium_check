@@ -2,53 +2,69 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { createSupabaseTransport } from './supabaseTransport'
 import type { RoomState } from './types'
 
-type Handler = (msg: { payload: unknown }) => void
+type Cb = (payload: Record<string, unknown>) => void
 
 function fakeClient() {
-  const rows = new Map<string, { state: RoomState; host_id: string; version: number }>()
-  const sent: { event: string; payload: unknown }[] = []
-  const handlers = new Map<string, Handler>()
   const ops: string[] = []
+  const changes: { table: string; cb: Cb }[] = []
+  let presenceSync: (() => void) | null = null
+  let presence: Record<string, unknown[]> = {}
   const channel = {
-    on: (_: string, filter: { event: string }, cb: Handler) => {
-      handlers.set(filter.event, cb)
+    on: (type: string, filter: { table?: string; event?: string }, cb: Cb) => {
+      if (type === 'postgres_changes') changes.push({ table: filter.table!, cb })
+      if (type === 'presence' && filter.event === 'sync') presenceSync = cb as unknown as () => void
       return channel
     },
-    subscribe: (cb: (status: string) => void) => {
-      setTimeout(() => cb('SUBSCRIBED'), 0)
+    subscribe: (cb?: (status: string) => void) => {
+      setTimeout(() => cb?.('SUBSCRIBED'), 0)
       return channel
     },
-    send: async (msg: { event: string; payload: unknown }) => {
-      sent.push(msg)
+    track: async (payload: { id: string }) => {
+      ops.push(`track ${payload.id}`)
       return 'ok'
     },
+    presenceState: () => presence,
+    unsubscribe: async () => 'ok',
   }
-  const client = {
-    channel: () => channel,
-    from: () => ({
-      select: () => ({
-        eq: (_: string, code: string) => ({
-          maybeSingle: async () => ({
-            data: rows.has(code) ? { state: rows.get(code)!.state } : null,
-            error: null,
-          }),
-        }),
-      }),
-      insert: async (row: { code: string; state: RoomState; host_id: string; version: number }) => {
-        ops.push(`insert ${row.code} v${row.version}`)
-        rows.set(row.code, row)
-        return { error: null }
-      },
-      update: (row: { state: RoomState; host_id: string; version: number }) => ({
-        eq: async (_: string, code: string) => {
-          ops.push(`update ${code} v${row.version} host=${row.host_id}`)
-          rows.set(code, row)
+  const table = (name: string) => ({
+    insert: async (row: Record<string, unknown>) => {
+      ops.push(`insert ${name} ${JSON.stringify(row.intent ?? { v: row.version })}`)
+      return { error: null }
+    },
+    update: (row: Record<string, unknown>) => ({
+      eq: (_: string, code: string) => ({
+        then: (resolve: (r: { error: null }) => void) => {
+          ops.push(`touch ${name} ${code}`)
+          resolve({ error: null })
+        },
+        lt: async (_c: string, v: number) => {
+          ops.push(`update ${name} ${code} ${row.version ?? 'touch'} if<${v}`)
           return { error: null }
         },
       }),
     }),
+  })
+  const client = {
+    channel: () => channel,
+    removeChannel: async () => 'ok',
+    from: table,
+    rpc: async (fn: string, args: Record<string, unknown>) => {
+      ops.push(`rpc ${fn} ${args.p_code}`)
+      if (fn === 'join_room')
+        return { data: args.p_code === 'ABCDEF' ? state(4) : null, error: null }
+      return { data: true, error: null }
+    },
   }
-  return { client: client as unknown as SupabaseClient, sent, handlers, ops }
+  return {
+    client: client as unknown as SupabaseClient,
+    ops,
+    emit: (tbl: string, row: Record<string, unknown>) =>
+      changes.filter((c) => c.table === tbl).forEach((c) => c.cb({ new: row })),
+    setPresence: (ids: string[]) => {
+      presence = Object.fromEntries(ids.map((id) => [id, [{ id }]]))
+      presenceSync?.()
+    },
+  }
 }
 
 const state = (version: number, hostId = 'a'): RoomState => ({
@@ -62,41 +78,61 @@ const state = (version: number, hostId = 'a'): RoomState => ({
 })
 const tick = () => new Promise((r) => setTimeout(r, 5))
 
-test('the host inserts the room first, then updates it, and broadcasts each state', async () => {
+test('joining goes through the join_room function', async () => {
   const f = fakeClient()
-  const transport = createSupabaseTransport(async () => f.client)
-  transport.publishState(state(1))
-  await tick()
-  transport.publishState(state(2, 'b'))
-  await tick()
-  expect(f.ops).toEqual(['insert ABCDEF v1', 'update ABCDEF v2 host=b'])
-  expect(f.sent.map((m) => m.event)).toEqual(['state', 'state'])
-  expect(await transport.readSnapshot('ABCDEF')).toMatchObject({ version: 2, hostId: 'b' })
-  expect(await transport.readSnapshot('ZZZZZZ')).toBeNull()
+  const t = createSupabaseTransport(async () => f.client)
+  expect(await t.readSnapshot('ABCDEF')).toMatchObject({ version: 4 })
+  expect(await t.readSnapshot('ZZZZZZ')).toBeNull()
+  expect(f.ops).toEqual(['rpc join_room ABCDEF', 'rpc join_room ZZZZZZ'])
 })
 
-test('states and intents received on the channel reach listeners until they unsubscribe', async () => {
+test('the host inserts the room, then only writes newer versions', async () => {
   const f = fakeClient()
-  const transport = createSupabaseTransport(async () => f.client)
+  const t = createSupabaseTransport(async () => f.client)
+  t.publishState(state(1))
+  t.publishState(state(2, 'b'))
+  await tick()
+  expect(f.ops).toEqual(['insert rooms {"v":1}', 'update rooms ABCDEF 2 if<2'])
+})
+
+test('intents are inserted in the intents table; the host receives them with the server-stamped sender', async () => {
+  const f = fakeClient()
+  const t = createSupabaseTransport(async () => f.client)
+  const received: unknown[] = []
+  t.onIntent('ABCDEF', (i) => received.push(i))
+  t.sendIntent('ABCDEF', { id: 'i1', from: 'forged', type: 'leave' })
+  await tick()
+  expect(f.ops).toContain('insert room_intents {"id":"i1","from":"forged","type":"leave"}')
+  f.emit('room_intents', {
+    code: 'ABCDEF',
+    from_id: 'real-user',
+    intent: { id: 'i1', from: 'forged', type: 'leave' },
+  })
+  expect(received).toEqual([{ id: 'i1', from: 'real-user', type: 'leave' }])
+})
+
+test('room states arrive from database changes', async () => {
+  const f = fakeClient()
+  const t = createSupabaseTransport(async () => f.client)
   const states: RoomState[] = []
-  const off = transport.onState('ABCDEF', (s) => states.push(s))
-  const intents: unknown[] = []
-  transport.onIntent('ABCDEF', (i) => intents.push(i))
+  const off = t.onState('ABCDEF', (s) => states.push(s))
   await tick()
-  f.handlers.get('state')!({ payload: state(3) })
-  f.handlers.get('intent')!({ payload: { id: 'i1', from: 'b', type: 'leave' } })
+  f.emit('rooms', { code: 'ABCDEF', state: state(7) })
   off()
-  f.handlers.get('state')!({ payload: state(4) })
-  expect(states.map((s) => s.version)).toEqual([3])
-  expect(intents).toEqual([{ id: 'i1', from: 'b', type: 'leave' }])
+  f.emit('rooms', { code: 'ABCDEF', state: state(8) })
+  expect(states.map((s) => s.version)).toEqual([7])
 })
 
-test('intents are broadcast on the room channel', async () => {
+test('presence lists who is online; taking over hosting calls claim_host', async () => {
   const f = fakeClient()
-  const transport = createSupabaseTransport(async () => f.client)
-  transport.sendIntent('ABCDEF', { id: 'i2', from: 'b', type: 'leave' })
+  const t = createSupabaseTransport(async () => f.client)
+  const seen: string[][] = []
+  t.onPresence('ABCDEF', (ids) => seen.push([...ids].sort()))
+  t.track('ABCDEF', 'a')
   await tick()
-  expect(f.sent).toEqual([
-    { type: 'broadcast', event: 'intent', payload: { id: 'i2', from: 'b', type: 'leave' } },
-  ])
+  f.setPresence(['a', 'b'])
+  expect(seen.at(-1)).toEqual(['a', 'b'])
+  expect(f.ops).toContain('track a')
+  expect(await t.claimHost(state(12, 'b'))).toBe(true)
+  expect(f.ops).toContain('rpc claim_host ABCDEF')
 })

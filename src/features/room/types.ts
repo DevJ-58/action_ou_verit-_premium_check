@@ -49,7 +49,9 @@ export type IntentBody = Intent extends infer I
 export type BusMessage =
   | { kind: 'state'; code: string; state: RoomState; origin?: string }
   | { kind: 'intent'; code: string; intent: Intent; origin?: string }
+  | { kind: 'presence'; code: string; memberId: string; origin?: string }
+  | { kind: 'bye'; code: string; memberId: string; origin?: string }
 
-export type RoomError = 'roomNotFound' | 'roomFull' | 'roomStarted'
+export type RoomError = 'roomNotFound' | 'roomFull' | 'roomStarted' | 'joinTimeout'
 
 export const ROOM_MAX_MEMBERS = 12

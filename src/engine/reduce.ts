@@ -1,6 +1,7 @@
 import { drawDare, isAllowedFor, validateWrittenDare } from './dares'
 import { GameRuleError } from './errors'
 import { askerIndexFor, computeSpin, seatAngle } from './geometry'
+import { removePlayer } from './departures'
 import { closeProposals, pickProposal, propose } from './proposals'
 import { pickIndex } from './rng'
 import { pointsFor, type Outcome } from './scoring'
@@ -208,6 +209,13 @@ export function reduce(state: GameState, action: GameAction, ctx: ReduceContext)
       const turn = currentTurn(state)
       return pickProposal(state, turn, pickIndex(turn.proposals!.length, ctx.rng))
     }
+
+    case 'REMOVE_PLAYER':
+      return removePlayer(state, action.playerId)
+
+    case 'TIMEOUT_CHOOSE':
+      expectPhase(state, 'choosing')
+      return reduce(state, { type: 'CHOOSE_KIND', kind: ctx.rng() < 0.5 ? 'truth' : 'dare' }, ctx)
 
     case 'RESTART': {
       expectPhase(state, 'finished')

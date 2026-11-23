@@ -21,12 +21,7 @@ export interface Session {
 }
 
 export type AuthErrorCode =
-  | 'emailTaken'
-  | 'badCredentials'
-  | 'weakPassword'
-  | 'invalidEmail'
-  | 'confirmEmail'
-  | 'network'
+  'emailTaken' | 'badCredentials' | 'weakPassword' | 'invalidEmail' | 'confirmEmail' | 'network'
 
 export class AuthError extends Error {
   readonly code: AuthErrorCode

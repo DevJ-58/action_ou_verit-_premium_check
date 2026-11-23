@@ -21,6 +21,8 @@ export function mayAct(game: GameState, hostId: string, from: string, action: Ga
     case 'SPIN_SETTLED':
     case 'CLOSE_PROPOSALS':
     case 'TIMEOUT_PICK':
+    case 'TIMEOUT_CHOOSE':
+    case 'REMOVE_PLAYER':
     case 'RESTART':
       return from === hostId
     default:

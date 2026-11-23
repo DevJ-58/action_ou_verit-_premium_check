@@ -51,3 +51,19 @@ for (const size of WIDTHS) {
     }
   })
 }
+
+test('the room lobby fits a 320 px phone', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  await page.goto('./compte?next=%2Fsalon%2Fnouveau')
+  await page.getByRole('radio', { name: /Créer un compte/ }).check({ force: true })
+  await page.getByLabel('Pseudo').fill('Petit')
+  await page.getByLabel('E-mail').fill(`petit-${Date.now()}@example.com`)
+  await page.getByLabel('Mot de passe').fill('motdepasse')
+  await page.getByRole('button', { name: /^Créer mon compte$/ }).click()
+  await page.waitForURL(/salon\/[A-Z2-9]{6}$/)
+  await expect(page.getByRole('button', { name: /Lancer la partie/ })).toBeVisible()
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - window.innerWidth,
+  )
+  expect(overflow).toBeLessThanOrEqual(0)
+})

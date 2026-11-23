@@ -45,6 +45,8 @@ function stateFor(selfId: string, game: GameState, extra: Partial<RoomState> = {
     self: members.find((m) => m.id === selfId)!,
     room,
     role: selfId === 'a' ? 'host' : 'guest',
+    online: new Set(members.map((m) => m.id)),
+    disconnect: vi.fn(),
     createRoom: vi.fn(),
     joinRoom: vi.fn(),
     start: vi.fn(),
@@ -160,4 +162,19 @@ test('at the end, everyone sees the recap; the host can replay', async () => {
   ).toBeInTheDocument()
   await userEvent.click(screen.getByRole('button', { name: /rejouer/i }))
   expect(s.act).toHaveBeenCalledWith({ type: 'RESTART' })
+})
+
+test('the host can skip the turn of an answerer who went offline', async () => {
+  const g = gameAt(() => [{ type: 'CHOOSE_KIND', kind: 'dare' }, { type: 'CLOSE_PROPOSALS' }])
+  const answerer = g.turn!.answererId
+  const host = g.players.find((p) => p.id !== answerer)!.id
+  const state = stateFor(host, g)
+  const s = show({
+    ...state,
+    role: 'host',
+    room: { ...state.room!, hostId: host },
+    online: new Set([host]),
+  })
+  await userEvent.click(screen.getByRole('button', { name: /passer le tour de/i }))
+  expect(s.act).toHaveBeenCalledWith({ type: 'SKIP' })
 })
