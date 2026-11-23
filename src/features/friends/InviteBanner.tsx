@@ -27,7 +27,7 @@ export function InviteBanner() {
           <div className="flex items-center gap-3 rounded-[24px] border-[1.5px] border-gold bg-seat p-3 shadow-card">
             <Avatar name={invite.fromPseudo} avatarId={invite.fromAvatar} size="sm" />
             <div className="min-w-0 flex-1">
-              <p className="truncate font-extrabold">
+              <p className="text-[15px] leading-tight font-extrabold">
                 {format(t.friends.invitesYou, { name: invite.fromPseudo })}
               </p>
               <p className="font-mono text-xs tracking-[0.2em] text-gold-text">
