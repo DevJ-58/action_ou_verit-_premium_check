@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
-import { useAccount } from '@/features/account/accountStore'
+import { accountStore, useAccount } from '@/features/account/accountStore'
 import { feedback } from '@/lib/feedback'
 import { getInviteTransport } from './getInviteTransport'
 import { createInviteStore, type InviteStore } from './inviteStore'
@@ -37,6 +37,11 @@ function storeFor(selfId: string): InviteStore {
 /** Invitations waiting for the signed-in player (live), plus a way to dismiss them. */
 export function useMyInvites(): { invites: Invite[]; dismiss(invite: Invite): void } {
   const selfId = useAccount((s) => s.session?.account.id ?? null)
+  const status = useAccount((s) => s.status)
+  useEffect(() => {
+    // The home screen may be the first one opened: know who is signed in to fetch invitations.
+    if (status === 'loading') void accountStore.getState().init()
+  }, [status])
   useEffect(() => {
     if (selfId) storeFor(selfId)
   }, [selfId])

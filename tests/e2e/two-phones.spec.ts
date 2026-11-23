@@ -82,3 +82,36 @@ test('two phones play a room turn: everyone proposes, the answerer turns a card'
   await answerer.getByRole('button', { name: /Ouvrir la discussion/ }).click()
   await expect(answerer.getByRole('log').getByText('Bravo 👏')).toBeVisible()
 })
+
+test('a player met in a room becomes a friend and is invited to the next room', async ({
+  context,
+}) => {
+  test.setTimeout(90_000)
+  const awa = await context.newPage()
+  const kofi = await context.newPage()
+  await signUp(awa, 'Awa')
+  await signUp(kofi, 'Kofi')
+
+  await awa.getByRole('link', { name: /Créer un salon/ }).click()
+  await awa.waitForURL(/salon\/[A-Z2-9]{6}$/)
+  const first = awa.url().slice(-6)
+  await kofi.goto(`./salon/${first}`)
+  await awa.getByRole('button', { name: 'Ajouter Kofi en ami' }).click()
+  await expect(awa.getByRole('button', { name: 'Ajouter Kofi en ami' })).toHaveCount(0)
+
+  // Both leave; Awa opens a new room and invites Kofi.
+  await kofi.goto('./')
+  await awa.getByRole('button', { name: /Quitter/ }).click()
+  await awa.getByRole('link', { name: /Créer un salon/ }).click()
+  await awa.waitForURL((url) => /salon\/[A-Z2-9]{6}$/.test(url.pathname) && !url.pathname.endsWith(first))
+  const second = awa.url().slice(-6)
+  await awa.getByRole('button', { name: /Inviter mes amis/ }).click()
+  await awa.getByRole('button', { name: 'Inviter Kofi' }).click()
+  await expect(awa.getByText('Invité ✓')).toBeVisible()
+
+  const banner = kofi.getByRole('region', { name: 'Invitation' })
+  await expect(banner).toContainText('Awa t’invite à jouer')
+  await banner.getByRole('button', { name: 'Rejoindre' }).click()
+  await kofi.waitForURL(new RegExp(`salon/${second}$`))
+  await expect(awa.getByText('Kofi')).toBeVisible()
+})
