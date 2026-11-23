@@ -1,5 +1,6 @@
 import { useId, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { Camera, Lock, Mic, SendHorizontal } from 'lucide-react'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { useT } from '@/i18n/useT'
 import type { ChatStore } from './chatStore'
@@ -87,8 +88,9 @@ export function ChatComposer({
             type="button"
             aria-label={t.chat.photo}
             onClick={() => (premiumLocked ? setLocked(t.chat.lockedPhoto) : setChoosing(true))}
-            className="grid size-10 shrink-0 place-items-center rounded-full text-muted"
+            className="relative grid size-10 shrink-0 place-items-center rounded-full text-muted"
           >
+            <PremiumMark corner />
             {premiumLocked ? (
               <Lock aria-hidden="true" size={17} />
             ) : (

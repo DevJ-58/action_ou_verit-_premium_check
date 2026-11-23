@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Lock, Mic, Send, Trash2 } from 'lucide-react'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { IconButton } from '@/design-system'
 import { useT } from '@/i18n/useT'
@@ -43,11 +44,14 @@ export function VoiceRecorderBar({ onNote, children, locked = false }: VoiceReco
     <div className="flex w-full flex-col gap-1.5">
       <div className="flex w-full items-center gap-2">
         {children}
-        <IconButton
-          label={t.chat.record}
-          icon={locked ? <Lock size={16} /> : <Mic size={18} />}
-          onClick={() => (locked ? setExplain(true) : void recorder.start())}
-        />
+        <span className="relative">
+          <IconButton
+            label={t.chat.record}
+            icon={locked ? <Lock size={16} /> : <Mic size={18} />}
+            onClick={() => (locked ? setExplain(true) : void recorder.start())}
+          />
+          <PremiumMark corner />
+        </span>
       </div>
       {recorder.status === 'denied' || recorder.status === 'unsupported' ? (
         <p role="alert" className="text-sm font-semibold text-dare">

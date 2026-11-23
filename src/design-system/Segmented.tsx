@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { springs } from './motion'
@@ -8,6 +8,8 @@ export interface SegmentedProps<T extends string> {
   value: T
   options: ReadonlyArray<{ value: T; label: string }>
   onChange(value: T): void
+  /** Shown after the label (e.g. a Premium mark). */
+  badge?: ReactNode
 }
 
 export function Segmented<T extends string>({
@@ -15,12 +17,14 @@ export function Segmented<T extends string>({
   value,
   options,
   onChange,
+  badge,
 }: SegmentedProps<T>) {
   const name = useId()
   return (
     <fieldset className="m-0 border-0 p-0">
-      <legend className="mb-2 text-xs font-extrabold tracking-[0.18em] text-muted uppercase">
+      <legend className="mb-2 flex items-center gap-1.5 text-xs font-extrabold tracking-[0.18em] text-muted uppercase">
         {label}
+        {badge}
       </legend>
       <div
         role="radiogroup"

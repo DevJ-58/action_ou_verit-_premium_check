@@ -11,6 +11,7 @@ import { AnswerBubble } from './AnswerBubble'
 import { getChatTransport } from '@/features/chat/getChatTransport'
 import { LiveBroadcastView } from '@/features/live/LiveBroadcastView'
 import { LiveViewerView } from '@/features/live/LiveViewerView'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { AnswerForm } from './AnswerForm'
 import { VoteBar } from './VoteBar'
 
@@ -88,6 +89,7 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
             <Button variant="danger" onClick={() => state.setLive(true)}>
               <Video aria-hidden="true" size={18} />
               {format(t.live.start, { duration })}
+              <PremiumMark />
             </Button>
             <p className="text-center text-xs text-muted">{t.live.hint}</p>
           </div>

@@ -3,6 +3,7 @@ import { Emoji } from '@/design-system'
 import type { CategoryId } from '@/engine'
 import { useT } from '@/i18n/useT'
 import { Lock } from 'lucide-react'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { cn } from '@/lib/cn'
 
 export interface CategoryGridProps {
@@ -39,8 +40,9 @@ export function CategoryGrid({ selected, onChange, locked = [], onLocked }: Cate
               )}
             >
               <span className="flex items-start justify-between gap-2">
-                <span className="text-base leading-tight font-extrabold">
+                <span className="flex items-start gap-1.5 text-base leading-tight font-extrabold">
                   {t.categories[c.id].name}
+                  {c.free || isLocked ? null : <PremiumMark className="mt-0.5" />}
                 </span>
                 <Emoji
                   name={c.emoji}

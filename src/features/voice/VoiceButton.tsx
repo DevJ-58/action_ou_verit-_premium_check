@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Mic, MicOff } from 'lucide-react'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { roomIsPremium } from '@/features/room/applyIntent'
 import type { RoomStoreState } from '@/features/room/roomStore'
@@ -35,7 +36,9 @@ export function VoiceButton({ state }: { state: RoomStoreState }) {
             aria-hidden="true"
             className="absolute inset-0 rounded-full border-2 border-dare motion-safe:animate-ping"
           />
-        ) : null}
+        ) : (
+          <PremiumMark corner />
+        )}
       </button>
       <PremiumSheet
         open={locked}

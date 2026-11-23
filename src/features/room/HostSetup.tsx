@@ -6,6 +6,7 @@ import { ReaderSetting } from '@/features/game/ReaderSetting'
 import { PremiumCategoryGrid } from '@/features/premium/PremiumCategoryGrid'
 import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { PremiumBadge } from '@/features/premium/PremiumBadge'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { useT } from '@/i18n/useT'
 import type { RoomSetup } from './types'
 
@@ -51,6 +52,7 @@ export function HostSetup({ memberCount, premium, onStart }: HostSetupProps) {
       {premium ? (
         <Segmented
           label={t.live.setting}
+          badge={<PremiumMark />}
           value={String(liveSeconds)}
           options={LIVE.map((s) => ({
             value: s,

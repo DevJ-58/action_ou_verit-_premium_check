@@ -3,6 +3,7 @@ import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { InviteFriendsButton } from '@/features/friends/InviteFriendsButton'
 import { roomCapacity, roomIsPremium } from './applyIntent'
+import { PremiumMark } from '@/features/premium/PremiumMark'
 import { HostSetup } from './HostSetup'
 import { InviteCard } from './InviteCard'
 import { MemberList } from './MemberList'
@@ -20,6 +21,7 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
         <section className="flex flex-col gap-3">
           <h2 className="text-lg font-extrabold">
             {format(t.premium.roomCount, { count: room.members.length, max: roomCapacity(room) })}
+            {roomIsPremium(room) ? <PremiumMark className="ml-1.5 align-middle" /> : null}
           </h2>
           <MemberList
             members={room.members}
