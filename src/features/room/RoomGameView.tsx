@@ -11,6 +11,7 @@ import { VoiceStrip } from '@/features/voice/VoiceStrip'
 import { useVoiceRoom } from '@/features/voice/useVoiceRoom'
 import { useSpeaking } from '@/features/voice/speaking'
 import { useRoomChat } from '@/features/chat/useRoomChat'
+import { useReadDare } from '@/features/game/useReadDare'
 import { RecapBody } from '@/features/game/RecapBody'
 import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
@@ -39,6 +40,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useRoomFeedback(room, state.self.id)
   const chat = useRoomChat(room.code, state.self.id)
   const voice = useVoiceRoom(state)
+  useReadDare(game)
   const voices = useMemo(() => {
     const all = new Map(voice.remote)
     if (voice.local) all.set(state.self.id, voice.local)

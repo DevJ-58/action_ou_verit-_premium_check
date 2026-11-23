@@ -60,6 +60,13 @@ export const en: Dictionary = {
     locked: 'The live mic is part of Premium: the room’s host must be Premium.',
     hint: 'Your voice is changed to match your avatar.',
   },
+  reader: {
+    setting: 'Read the dares aloud',
+    off: 'No',
+    female: 'Woman’s voice',
+    male: 'Man’s voice',
+    phrase: '{kind} for {name}. {text}',
+  },
   live: {
     isLive: '{name} is live',
     setting: 'Live video of the dares',

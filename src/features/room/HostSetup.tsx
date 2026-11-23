@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Play } from 'lucide-react'
 import { Button, Segmented } from '@/design-system'
 import type { CategoryId, GameSettings } from '@/engine'
+import { ReaderSetting } from '@/features/game/ReaderSetting'
 import { PremiumCategoryGrid } from '@/features/premium/PremiumCategoryGrid'
 import { PremiumSheet } from '@/features/premium/PremiumSheet'
 import { PremiumBadge } from '@/features/premium/PremiumBadge'
@@ -28,6 +29,7 @@ export function HostSetup({ memberCount, premium, onStart }: HostSetupProps) {
     useState<NonNullable<GameSettings['proposeSeconds']>>(60)
   const [liveSeconds, setLiveSeconds] = useState<NonNullable<GameSettings['liveSeconds']>>(60)
   const [liveLocked, setLiveLocked] = useState(false)
+  const [readAloud, setReadAloud] = useState<NonNullable<GameSettings['readAloud']>>('female')
   const canStart = memberCount >= 2 && categories.length > 0
 
   return (
@@ -71,6 +73,7 @@ export function HostSetup({ memberCount, premium, onStart }: HostSetupProps) {
         onClose={() => setLiveLocked(false)}
         reason={t.premium.lockedLive}
       />
+      <ReaderSetting value={readAloud} onChange={setReadAloud} />
       {memberCount < 2 ? (
         <p className="text-sm font-semibold text-muted">{t.room.needTwo}</p>
       ) : null}
@@ -78,7 +81,13 @@ export function HostSetup({ memberCount, premium, onStart }: HostSetupProps) {
         size="lg"
         disabled={!canStart}
         onClick={() =>
-          onStart({ categories, rounds, proposeSeconds, liveSeconds: premium ? liveSeconds : 0 })
+          onStart({
+            categories,
+            rounds,
+            proposeSeconds,
+            liveSeconds: premium ? liveSeconds : 0,
+            readAloud,
+          })
         }
       >
         <Play aria-hidden="true" size={20} />

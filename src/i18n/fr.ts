@@ -59,6 +59,13 @@ export const fr = {
     locked: 'Le micro en direct fait partie du Premium : il faut que l’hôte du salon soit Premium.',
     hint: 'Ta voix est transformée selon ton avatar.',
   },
+  reader: {
+    setting: 'Lecture des défis à voix haute',
+    off: 'Non',
+    female: 'Voix de femme',
+    male: 'Voix d’homme',
+    phrase: '{kind} pour {name}. {text}',
+  },
   live: {
     isLive: '{name} est en direct',
     setting: 'Vidéo en direct des défis',

@@ -1,4 +1,5 @@
 import { Segmented } from '@/design-system'
+import { ReaderSetting } from '@/features/game/ReaderSetting'
 import type { GameSettings } from '@/engine'
 import { useT } from '@/i18n/useT'
 
@@ -53,6 +54,10 @@ export function SettingsPanel({ value, onChange }: SettingsPanelProps) {
           label: t.setup.pickers[p],
         }))}
         onChange={(picker) => set({ picker })}
+      />
+      <ReaderSetting
+        value={value.readAloud ?? 'female'}
+        onChange={(readAloud) => set({ readAloud })}
       />
     </div>
   )

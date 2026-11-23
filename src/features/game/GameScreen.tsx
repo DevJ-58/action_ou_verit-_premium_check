@@ -13,6 +13,7 @@ import { ChallengeCard } from './ChallengeCard'
 import { CountdownRing } from './CountdownRing'
 import { GameHeader } from './GameHeader'
 import { gameStore, useGame } from './gameStore'
+import { useReadDare } from './useReadDare'
 import { KindChooser } from './KindChooser'
 import { Table } from './Table'
 
@@ -26,6 +27,7 @@ export function GameScreen() {
   const [resumedSpinning, setResumedSpinning] = useState(phase === 'spinning')
   const dispatch = (action: GameAction) => gameStore.getState().dispatch(action)
   useGameMusic(Boolean(game) && phase !== 'finished')
+  useReadDare(game)
 
   useEffect(() => {
     if (phase !== 'spinning') return

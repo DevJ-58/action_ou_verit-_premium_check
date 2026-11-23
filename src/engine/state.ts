@@ -21,6 +21,8 @@ export interface GameSettings {
   proposeSeconds?: 30 | 60 | 90
   /** Rooms: length of a live video of the challenge, in seconds (0 = no video). */
   liveSeconds?: 0 | 30 | 60 | 120
+  /** Every phone reads the turned card aloud, with a woman's or a man's voice. */
+  readAloud?: 'off' | 'female' | 'male'
 }
 
 export type Phase =

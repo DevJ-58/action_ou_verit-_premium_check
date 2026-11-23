@@ -1,18 +1,18 @@
 {
   "entries": [
     {
-      "version": "2026-11-24.2",
+      "version": "2026-11-24.3",
       "fr": [
-        "Micro en direct : parle avec les autres, avec une voix transformée selon ton avatar",
-        "Envoie des photos dans le chat, et une barre de saisie repensée",
-        "Affichage revu sur petits téléphones, tablettes et ordinateurs",
-        "Correctifs : plus de partie bloquée d’un côté, statistiques bien comptées"
+        "Lecture des défis à voix haute (voix de femme ou d’homme, réglée par l’hôte)",
+        "Micro en direct : on voit qui parle, et les voix sont plus claires et plus fortes",
+        "La bouteille fait du bruit en tournant, et la musique se coupe quand ton micro est ouvert",
+        "Photos : prends-en une ou choisis-la dans ta galerie (1 Mo max)"
       ],
       "en": [
-        "Live mic: talk with the others, with a voice changed to match your avatar",
-        "Send photos in the chat, with a redesigned input bar",
-        "Better layout on small phones, tablets and computers",
-        "Fixes: no more game stuck on one side, stats counted correctly"
+        "Dares read aloud (woman’s or man’s voice, set by the host)",
+        "Live mic: see who is talking, with clearer and louder voices",
+        "The bottle ticks as it spins, and music stops while your mic is on",
+        "Photos: take one or choose it from your gallery (1 MB max)"
       ]
     }
   ]

@@ -31,6 +31,7 @@ export const ROOM_DEFAULTS: Omit<GameSettings, 'categories'> = {
   maxSkips: 3,
   picker: 'bottle',
   liveSeconds: 60,
+  readAloud: 'female',
 }
 
 /** Which turn a live video belongs to. */
