@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { Crown } from 'lucide-react'
 import { Avatar } from '@/design-system'
 import { useT } from '@/i18n/useT'
+import { AddFriendButton } from '@/features/friends/AddFriendButton'
 import type { Member } from './types'
 
 export interface MemberListProps {
@@ -43,6 +44,9 @@ export function MemberList({ members, hostId, selfId, online }: MemberListProps)
             ) : m.id === selfId ? (
               <span className="text-[11px] font-semibold text-muted">{t.room.you}</span>
             ) : null}
+            {m.id === selfId ? null : (
+              <AddFriendButton person={{ id: m.id, pseudo: m.pseudo, avatarId: m.avatarId }} />
+            )}
           </motion.li>
         ))}
       </AnimatePresence>

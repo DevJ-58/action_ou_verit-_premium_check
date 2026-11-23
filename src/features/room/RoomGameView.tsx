@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { Button, IconButton } from '@/design-system'
 import { accountStore } from '@/features/account/accountStore'
+import { PlayAgainWith } from '@/features/friends/PlayAgainWith'
 import { RoomChat } from '@/features/chat/RoomChat'
 import { useRoomChat } from '@/features/chat/useRoomChat'
 import { RecapBody } from '@/features/game/RecapBody'
@@ -57,7 +58,8 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
 
       <main className="flex flex-1 flex-col gap-6 pt-6 min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:items-center">
         {game.phase === 'finished' ? (
-          <div className="min-[900px]:col-span-2">
+          <div className="flex flex-col gap-8 min-[900px]:col-span-2">
+            <PlayAgainWith members={room.members} />
             <RecapBody
               game={game}
               onReplay={state.role === 'host' ? () => state.act({ type: 'RESTART' }) : undefined}

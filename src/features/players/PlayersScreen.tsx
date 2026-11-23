@@ -4,6 +4,7 @@ import { ChevronRight, UserPlus } from 'lucide-react'
 import { Avatar, Button, Emoji, Screen, Sheet } from '@/design-system'
 import { useT } from '@/i18n/useT'
 import { format } from '@/i18n/format'
+import { FriendsSection } from '@/features/friends/FriendsSection'
 import { AddPlayerForm } from './AddPlayerForm'
 import { playersStore, usePlayers } from './playersStore'
 
@@ -14,6 +15,9 @@ export function PlayersScreen() {
 
   return (
     <Screen title={t.players.title}>
+      <div className="pt-2 pb-6 empty:hidden">
+        <FriendsSection />
+      </div>
       {players.length === 0 ? (
         <div className="my-auto flex flex-col items-center text-center">
           <Emoji name="people" size={72} />

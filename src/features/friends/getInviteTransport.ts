@@ -16,3 +16,8 @@ export function getInviteTransport(): InviteTransport {
   }
   return transport
 }
+
+/** Test seam. */
+export function setInviteTransport(next: InviteTransport | null): void {
+  transport = next
+}

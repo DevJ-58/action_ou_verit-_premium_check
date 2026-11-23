@@ -1,6 +1,7 @@
 import { Emoji } from '@/design-system'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
+import { InviteFriendsButton } from '@/features/friends/InviteFriendsButton'
 import { HostSetup } from './HostSetup'
 import { InviteCard } from './InviteCard'
 import { MemberList } from './MemberList'
@@ -25,6 +26,7 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
             selfId={state.self.id}
             online={state.online}
           />
+          <InviteFriendsButton code={room.code} memberIds={room.members.map((m) => m.id)} />
         </section>
       </div>
       {state.role === 'host' ? (
