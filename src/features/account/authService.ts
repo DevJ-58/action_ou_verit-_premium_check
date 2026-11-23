@@ -1,4 +1,5 @@
 import type { Dare, PlayerLimits } from '@/engine'
+import { EMPTY_ACCOUNT_STATS, type AccountStats } from './accountStats'
 
 export interface Account {
   id: string
@@ -13,6 +14,7 @@ export interface Profile {
   bio: string
   limits: PlayerLimits
   customDares: Dare[]
+  stats: AccountStats
 }
 
 export interface Session {
@@ -61,5 +63,6 @@ export function defaultProfile(id: string, pseudo: string, avatarId: string): Pr
     bio: '',
     limits: { excludedCategories: [], maxIntensity: 4 },
     customDares: [],
+    stats: EMPTY_ACCOUNT_STATS,
   }
 }

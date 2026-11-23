@@ -2,6 +2,8 @@ import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { AuthError, type AuthErrorCode, type Profile, type Session } from './authService'
 import { getAuthService } from './getAuthService'
+import { recordAccountGame } from './accountStats'
+import type { GameState } from '@/engine'
 
 export interface AccountState {
   status: 'loading' | 'signedOut' | 'signedIn'
@@ -11,6 +13,8 @@ export interface AccountState {
   signIn(email: string, password: string): Promise<AuthErrorCode | null>
   signOut(): Promise<void>
   updateProfile(patch: Partial<Omit<Profile, 'id'>>): Promise<void>
+  /** Adds a finished game to the signed-in player's stats (once per game). */
+  recordGame(game: GameState): Promise<void>
 }
 
 async function attempt(fn: () => Promise<Session>, set: (s: Partial<AccountState>) => void) {
@@ -44,6 +48,12 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
     const profile = { ...session.profile, ...patch, id: session.profile.id }
     set({ session: { ...session, profile } })
     await getAuthService().saveProfile(profile)
+  },
+  recordGame: async (game) => {
+    const profile = get().session?.profile
+    if (!profile) return
+    const stats = recordAccountGame(profile.stats, game, profile.id)
+    if (stats !== profile.stats) await get().updateProfile({ stats })
   },
 }))
 

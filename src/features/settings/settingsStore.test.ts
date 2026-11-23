@@ -1,11 +1,12 @@
 import { createSettingsStore, SETTINGS_DEFAULTS } from './settingsStore'
 
-test('defaults are French, Nuit theme, sound and haptics on, age not confirmed', () => {
+test('defaults are French, Nuit theme, music, sound and haptics on, age not confirmed', () => {
   expect(SETTINGS_DEFAULTS).toEqual({
     language: 'fr',
     theme: 'nuit',
     sound: true,
     haptics: true,
+    music: true,
     ageConfirmedAt: null,
   })
 })

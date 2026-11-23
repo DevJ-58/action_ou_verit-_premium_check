@@ -2,6 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { systemDares } from '@/content/systemDares'
 import type { GameAction } from '@/engine'
+import { accountStore } from '@/features/account/accountStore'
 import { gameAt, notAnswerer, proposing, show, stateFor } from './roomTestKit'
 
 
@@ -114,4 +115,12 @@ test('the host can skip the turn of an answerer who went offline', async () => {
   })
   await userEvent.click(screen.getByRole('button', { name: /passer le tour de/i }))
   expect(s.act).toHaveBeenCalledWith({ type: 'SKIP' })
+})
+
+test('a finished game is added to the player’s account stats', () => {
+  const record = vi.spyOn(accountStore.getState(), 'recordGame').mockResolvedValue()
+  const g = { ...proposing(), phase: 'finished' as const, turn: null }
+  show(stateFor('k', g))
+  expect(record).toHaveBeenCalledWith(g)
+  record.mockRestore()
 })

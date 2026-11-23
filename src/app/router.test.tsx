@@ -71,15 +71,15 @@ describe('with age confirmed', () => {
     ).not.toBeInTheDocument()
   })
 
-  test('switching the language in Profil translates the app', async () => {
-    renderAt('/profil')
+  test('switching the language in the settings translates the app', async () => {
+    renderAt('/reglages')
     await userEvent.click(await screen.findByRole('radio', { name: 'English' }))
-    expect(await screen.findByRole('link', { name: 'Play' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Settings' })).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('en')
   })
 
-  test('choosing the Ivoire theme in Profil applies it to the page', async () => {
-    renderAt('/profil')
+  test('choosing the Ivoire theme in the settings applies it to the page', async () => {
+    renderAt('/reglages')
     await userEvent.click(await screen.findByRole('radio', { name: /ivoire/i }))
     expect(document.documentElement.dataset.theme).toBe('ivoire')
   })

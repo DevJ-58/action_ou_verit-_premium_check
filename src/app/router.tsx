@@ -77,6 +77,12 @@ export const routes: RouteObject[] = [
             ],
           },
           {
+            path: 'reglages',
+            lazy: async () => ({
+              Component: (await import('@/features/settings/SettingsScreen')).SettingsScreen,
+            }),
+          },
+          {
             path: 'compte',
             lazy: async () => ({
               Component: (await import('@/features/account/AuthScreen')).AuthScreen,

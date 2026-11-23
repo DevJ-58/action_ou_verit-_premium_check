@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { Button, IconButton } from '@/design-system'
+import { accountStore } from '@/features/account/accountStore'
 import { RecapBody } from '@/features/game/RecapBody'
 import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
@@ -22,6 +24,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useHostTimers(state)
   const room = state.room!
   const game = room.game!
+  const finished = game.phase === 'finished' ? game : null
+
+  useEffect(() => {
+    if (finished) void accountStore.getState().recordGame(finished)
+  }, [finished])
+
   const tableVisible = ['ready', 'spinning', 'choosing'].includes(game.phase)
 
   return (

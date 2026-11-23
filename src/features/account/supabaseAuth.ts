@@ -1,6 +1,7 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
 import { AVATARS } from '@/content/avatars'
 import type { Dare, PlayerLimits } from '@/engine'
+import { sanitizeStats } from './accountStats'
 import {
   AuthError,
   checkCredentials,
@@ -19,6 +20,7 @@ interface ProfileRow {
   bio: string
   limits: PlayerLimits
   custom_dares: Dare[]
+  stats?: unknown
 }
 
 const toRow = (p: Profile): ProfileRow => ({
@@ -28,6 +30,7 @@ const toRow = (p: Profile): ProfileRow => ({
   bio: p.bio,
   limits: p.limits,
   custom_dares: p.customDares,
+  stats: p.stats,
 })
 
 const fromRow = (r: ProfileRow): Profile => ({
@@ -37,6 +40,7 @@ const fromRow = (r: ProfileRow): Profile => ({
   bio: r.bio,
   limits: r.limits,
   customDares: r.custom_dares,
+  stats: sanitizeStats(r.stats),
 })
 
 const CODES: Record<string, AuthErrorCode> = {
