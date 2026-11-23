@@ -19,6 +19,8 @@ export interface GameSettings {
   flow?: 'asker' | 'everyone'
   /** Time given to propose in the 'everyone' flow. */
   proposeSeconds?: 30 | 60 | 90
+  /** Rooms: length of a live video of the challenge, in seconds (0 = no video). */
+  liveSeconds?: 0 | 30 | 60 | 120
 }
 
 export type Phase =

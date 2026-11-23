@@ -29,6 +29,17 @@ export interface RoomState {
   members: Member[]
   game: GameState | null
   reactions: Reaction[]
+  /** The designated player is filming the challenge, live. */
+  live?: Live | null
+}
+
+export interface Live {
+  by: string
+  /** Which turn it belongs to (round and answerer). */
+  turnKey: string
+  seconds: number
+  /** Host clock, milliseconds. */
+  startedAt: number
 }
 
 export type RoomSetup = Pick<GameSettings, 'categories'> & Partial<GameSettings>
@@ -39,6 +50,7 @@ export type Intent = { id: string; from: string } & (
   | { type: 'start'; setup: RoomSetup }
   | { type: 'action'; action: GameAction }
   | { type: 'react'; emoji: EmojiName }
+  | { type: 'live'; on: boolean }
 )
 
 /** An intent without the id and sender, which the room store fills in. */

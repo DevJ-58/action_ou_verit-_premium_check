@@ -57,6 +57,7 @@ export function stateFor(
     start: vi.fn(),
     act: vi.fn(),
     react: vi.fn(),
+    setLive: vi.fn(),
     leave: vi.fn(),
   }
 }

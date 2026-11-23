@@ -103,3 +103,20 @@ test('when nobody can write a dare, the turn is skipped after a while', () => {
   vi.advanceTimersByTime(60_000)
   expect(act).toHaveBeenCalledWith({ type: 'SKIP' })
 })
+
+test('the host stops the live video at the end of its time', () => {
+  vi.useFakeTimers()
+  const setLive = vi.fn()
+  const state = hostState(base)
+  const withLive = {
+    ...state,
+    setLive,
+    room: { ...state.room!, live: { by: 'b', turnKey: 'k', seconds: 30, startedAt: Date.now() } },
+  } as RoomStoreState
+  renderHook(() => useHostTimers(withLive))
+  vi.advanceTimersByTime(29_000)
+  expect(setLive).not.toHaveBeenCalled()
+  vi.advanceTimersByTime(1_000)
+  expect(setLive).toHaveBeenCalledWith(false)
+  vi.useRealTimers()
+})

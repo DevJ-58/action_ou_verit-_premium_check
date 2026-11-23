@@ -35,6 +35,8 @@ export interface RoomStoreState {
   start(setup: RoomSetup): Promise<void>
   act(action: GameAction): void
   react(emoji: EmojiName): void
+  /** Starts or stops the live video of the challenge. */
+  setLive(on: boolean): void
   /** Leaves for good (others are told). */
   leave(): void
   /** Stops talking to the room without leaving (app closed, phone locked). */
@@ -188,6 +190,7 @@ export function createRoomStore(deps: {
       start: async (setup) => send({ type: 'start', setup }),
       act: (action) => send({ type: 'action', action }),
       react: (emoji) => send({ type: 'react', emoji }),
+      setLive: (on) => send({ type: 'live', on }),
       leave: () => {
         const { room, role } = get()
         if (room && role === 'host') {

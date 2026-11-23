@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { GameAction } from '@/engine'
 import { SPIN_MS } from '@/features/game/Bottle'
+import { liveExpired } from '../applyIntent'
 import type { RoomStoreState } from '../roomStore'
 
 export const PICK_SECONDS = 30
@@ -48,4 +49,16 @@ export function useHostTimers(state: RoomStoreState) {
     const id = setTimeout(() => act(chosen), remaining)
     return () => clearTimeout(id)
   }, [isHost, phase, turnKey, proposals, others, proposeSeconds, act])
+
+  // The live video stops by itself at the end of its time.
+  const live = state.room?.live
+  const setLive = state.setLive
+  useEffect(() => {
+    if (!isHost || !live) return
+    const id = setTimeout(
+      () => setLive(false),
+      liveExpired(live, Date.now()) ? 0 : live.startedAt + live.seconds * 1000 - Date.now(),
+    )
+    return () => clearTimeout(id)
+  }, [isHost, live, setLive])
 }
