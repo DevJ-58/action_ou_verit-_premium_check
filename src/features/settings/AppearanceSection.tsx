@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import { Segmented } from '@/design-system'
+import { PremiumSheet } from '@/features/premium/PremiumSheet'
+import { usePremium } from '@/features/premium/usePremium'
 import { useT } from '@/i18n/useT'
 import { settingsStore, useSettings, type Language } from './settingsStore'
 import { SettingsGroup } from './SettingsGroup'
@@ -15,6 +18,8 @@ export function AppearanceSection() {
   const theme = useSettings((s) => s.theme)
   const language = useSettings((s) => s.language)
   const actions = settingsStore.getState()
+  const premium = usePremium()
+  const [locked, setLocked] = useState(false)
   return (
     <SettingsGroup emoji="sparkles" title={t.settings.appearance}>
       <ThemePicker
@@ -22,7 +27,10 @@ export function AppearanceSection() {
         value={theme}
         names={t.profile.themes}
         onChange={actions.setTheme}
+        premium={premium}
+        onLocked={() => setLocked(true)}
       />
+      <PremiumSheet open={locked} onClose={() => setLocked(false)} reason={t.premium.lockedLook} />
       <Segmented
         label={t.profile.language}
         value={language}

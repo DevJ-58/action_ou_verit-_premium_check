@@ -47,16 +47,39 @@ const LABELS: Record<string, string> = {
   '1f60e': 'Lunettes de soleil',
 }
 
+/** Exclusive to Premium players. */
+const PREMIUM_LABELS: Record<string, string> = {
+  '1f409': 'Dragon',
+  '1f9db-1f3ff': 'Vampire',
+  '1f9da-1f3fe': 'Fée',
+  '1f9d9-1f3ff': 'Mage',
+  '1f9b8-1f3ff': 'Super-héros',
+  '1f977-1f3fe': 'Ninja',
+  '1f9dc-1f3ff': 'Sirène',
+  '1f483-1f3ff': 'Danseuse',
+  '1f985': 'Aigle',
+  '1f989': 'Hibou',
+  '1f43a': 'Loup',
+  '1f47e': 'Monstre de l’espace',
+}
+
 export interface AvatarOption {
   id: string
   label: string
   src: string
+  premium: boolean
 }
 
-export const AVATARS: readonly AvatarOption[] = Object.entries(LABELS).flatMap(([id, label]) => {
-  const src = FILES[`../assets/fluent/avatars/${id}.webp`]
-  return src ? [{ id, label, src }] : []
-})
+const options = (labels: Record<string, string>, premium: boolean): AvatarOption[] =>
+  Object.entries(labels).flatMap(([id, label]) => {
+    const src = FILES[`../assets/fluent/avatars/${id}.webp`]
+    return src ? [{ id, label, src, premium }] : []
+  })
+
+export const AVATARS: readonly AvatarOption[] = [
+  ...options(LABELS, false),
+  ...options(PREMIUM_LABELS, true),
+]
 
 export function avatarById(id: string | undefined): AvatarOption | undefined {
   return id ? AVATARS.find((a) => a.id === id) : undefined

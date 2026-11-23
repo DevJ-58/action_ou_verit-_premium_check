@@ -4,7 +4,10 @@ import { createStore } from 'zustand/vanilla'
 import { safeStorage } from '@/lib/safeStorage'
 
 export type Language = 'fr' | 'en'
-export type ThemeName = 'nuit' | 'ivoire' | 'terre'
+export type ThemeName = 'nuit' | 'ivoire' | 'terre' | 'kente' | 'indigo'
+
+/** Themes exclusive to Premium players. */
+export const PREMIUM_THEMES: readonly ThemeName[] = ['kente', 'indigo']
 
 export interface SettingsValues {
   language: Language
@@ -42,7 +45,8 @@ function sanitizeSettings(raw: unknown): Partial<SettingsValues> {
   const s = raw as Record<string, unknown>
   const out: Partial<SettingsValues> = {}
   if (s.language === 'fr' || s.language === 'en') out.language = s.language
-  if (s.theme === 'nuit' || s.theme === 'ivoire' || s.theme === 'terre') out.theme = s.theme
+  if (['nuit', 'ivoire', 'terre', 'kente', 'indigo'].includes(s.theme as string))
+    out.theme = s.theme as ThemeName
   if (typeof s.sound === 'boolean') out.sound = s.sound
   if (typeof s.haptics === 'boolean') out.haptics = s.haptics
   if (typeof s.music === 'boolean') out.music = s.music

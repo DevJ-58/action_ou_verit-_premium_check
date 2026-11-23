@@ -75,6 +75,43 @@
   --shadow: rgb(0 0 0 / 0.45);
 }
 
+/* Premium themes. */
+[data-theme='kente'] {
+  color-scheme: dark;
+  --bg: #0e2219;
+  --text: #f6efd9;
+  --muted: #cfd9c6;
+  --gold: #f2b632;
+  --gold-text: #f2b632;
+  --on-gold: #0e2219;
+  --seat: #1c3a2b;
+  --facet-1: #183223;
+  --facet-2: #13291d;
+  --facet-3: #1c3a2b;
+  --facet-4: #162e21;
+  --kente-dark: #0e2219;
+  --line: rgb(242 182 50 / 0.5);
+  --shadow: rgb(0 0 0 / 0.5);
+}
+
+[data-theme='indigo'] {
+  color-scheme: dark;
+  --bg: #101734;
+  --text: #eef0fb;
+  --muted: #c3c8e4;
+  --gold: #e9b44c;
+  --gold-text: #e9b44c;
+  --on-gold: #101734;
+  --seat: #1f2a57;
+  --facet-1: #1a234a;
+  --facet-2: #151d3f;
+  --facet-3: #1f2a57;
+  --facet-4: #182148;
+  --kente-dark: #101734;
+  --line: rgb(233 180 76 / 0.5);
+  --shadow: rgb(0 0 0 / 0.5);
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-text: var(--text);

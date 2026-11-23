@@ -1,16 +1,27 @@
 import { useId } from 'react'
 import { motion } from 'motion/react'
 import { AVATARS } from '@/content/avatars'
+import { Crown } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export interface AvatarGalleryProps {
   label: string
   value: string
   onChange(avatarId: string): void
+  /** Premium player: exclusive avatars can be chosen. */
+  premium?: boolean
+  /** A free player tapped an exclusive avatar. */
+  onLocked?(): void
 }
 
 /** Grid of ready-made 3D avatars, as a radio group. */
-export function AvatarGallery({ label, value, onChange }: AvatarGalleryProps) {
+export function AvatarGallery({
+  label,
+  value,
+  onChange,
+  premium = false,
+  onLocked,
+}: AvatarGalleryProps) {
   const name = useId()
   return (
     <fieldset className="m-0 border-0 p-0">
@@ -24,6 +35,7 @@ export function AvatarGallery({ label, value, onChange }: AvatarGalleryProps) {
       >
         {AVATARS.map((avatar) => {
           const selected = avatar.id === value
+          const locked = avatar.premium && !premium
           return (
             <motion.label
               key={avatar.id}
@@ -39,15 +51,23 @@ export function AvatarGallery({ label, value, onChange }: AvatarGalleryProps) {
                 className="sr-only"
                 checked={selected}
                 aria-label={avatar.label}
-                onChange={() => onChange(avatar.id)}
+                onChange={() => (locked ? onLocked?.() : onChange(avatar.id))}
               />
               <img
                 src={avatar.src}
                 alt=""
                 loading="lazy"
                 draggable={false}
-                className="size-[78%] object-contain"
+                className={cn('size-[78%] object-contain', locked && 'opacity-55')}
               />
+              {avatar.premium ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-1 left-1 grid size-5 place-items-center rounded-full bg-gold text-on-gold"
+                >
+                  <Crown size={11} />
+                </span>
+              ) : null}
               {selected ? (
                 <span
                   aria-hidden="true"

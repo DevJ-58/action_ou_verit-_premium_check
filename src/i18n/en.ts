@@ -162,7 +162,7 @@ export const en: Dictionary = {
     signedOutBody: 'Create your account to play remotely, pick your 3D avatar and keep your dares.',
     signedOutCta: 'Create an account or sign in',
     theme: 'Theme',
-    themes: { nuit: 'Night', ivoire: 'Ivory', terre: 'Earth' },
+    themes: { nuit: 'Night', ivoire: 'Ivory', terre: 'Earth', kente: 'Kente', indigo: 'Indigo' },
     language: 'Language',
     sound: 'Sounds',
     haptics: 'Vibrations',

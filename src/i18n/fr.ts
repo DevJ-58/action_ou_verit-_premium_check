@@ -166,7 +166,7 @@ export const fr = {
       'Crée ton compte pour jouer à distance, choisir ton avatar 3D et garder tes défis.',
     signedOutCta: 'Créer un compte ou se connecter',
     theme: 'Thème',
-    themes: { nuit: 'Nuit', ivoire: 'Ivoire', terre: 'Terre' },
+    themes: { nuit: 'Nuit', ivoire: 'Ivoire', terre: 'Terre', kente: 'Kente', indigo: 'Indigo' },
     language: 'Langue',
     sound: 'Sons',
     haptics: 'Vibrations',

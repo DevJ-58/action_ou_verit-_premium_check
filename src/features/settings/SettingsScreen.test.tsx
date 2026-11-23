@@ -68,3 +68,34 @@ describe('signed in', () => {
     ).toBeInTheDocument()
   })
 })
+
+describe('Premium looks', () => {
+  beforeEach(async () => {
+    await act(() =>
+      accountStore.getState().signUp(`look-${Date.now()}@example.com`, 'motdepasse', 'Zoé'),
+    )
+  })
+
+  test('free players see Premium avatars and themes locked', async () => {
+    renderSettings()
+    const gallery = await screen.findByRole('radiogroup', { name: /avatar/i })
+    const before = accountStore.getState().session!.profile.avatarId
+    await userEvent.click(within(gallery).getByRole('radio', { name: /dragon/i }))
+    expect(accountStore.getState().session!.profile.avatarId).toBe(before)
+    expect(await screen.findByRole('dialog')).toHaveTextContent(/réservé au premium/i)
+    await userEvent.keyboard('{Escape}')
+    await userEvent.click(screen.getByRole('radio', { name: /kente/i }))
+    expect(settingsStore.getState().theme).not.toBe('kente')
+  })
+
+  test('Premium players can use them', async () => {
+    const until = new Date(Date.now() + 3600e3).toISOString()
+    act(() => accountStore.setState((s) => ({ session: { ...s.session!, premiumUntil: until } })))
+    renderSettings()
+    const gallery = await screen.findByRole('radiogroup', { name: /avatar/i })
+    await userEvent.click(within(gallery).getByRole('radio', { name: /dragon/i }))
+    expect(accountStore.getState().session!.profile.avatarId).toBe('1f409')
+    await userEvent.click(screen.getByRole('radio', { name: /kente/i }))
+    expect(settingsStore.getState().theme).toBe('kente')
+  })
+})

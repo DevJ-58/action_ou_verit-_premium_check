@@ -25,7 +25,7 @@ function contrast(a: string, b: string): number {
 
 const fixed = block(':root {')
 
-describe.each(['nuit', 'ivoire', 'terre'])('theme %s', (theme) => {
+describe.each(['nuit', 'ivoire', 'terre', 'kente', 'indigo'])('theme %s', (theme) => {
   const t = { ...fixed, ...block(`[data-theme='${theme}']`) }
   test.each([
     ['text', 'bg'],
