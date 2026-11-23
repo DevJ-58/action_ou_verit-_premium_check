@@ -15,6 +15,7 @@ export interface SystemDareBrowserProps {
   /** Extra rule, e.g. the answerer's limits. */
   accept?(dare: Dare): boolean
   isTaken?(dare: Dare): boolean
+  takenLabel?: string
   verb: string
   onPick(dare: Dare): void
 }
@@ -23,7 +24,7 @@ const ALL = CATEGORIES.map((c) => c.id)
 
 /** The game's own dares, by category, ready to be added or chosen in one tap. */
 export function SystemDareBrowser(props: SystemDareBrowserProps) {
-  const { kind: fixedKind, categories = ALL, accept, isTaken, verb, onPick } = props
+  const { kind: fixedKind, categories = ALL, accept, isTaken, takenLabel, verb, onPick } = props
   const t = useT()
   const [kind, setKind] = useState<ChallengeKind>(fixedKind ?? 'truth')
   const [category, setCategory] = useState<CategoryId>(categories[0] ?? 'fun')
@@ -65,7 +66,7 @@ export function SystemDareBrowser(props: SystemDareBrowserProps) {
               <button
                 type="button"
                 disabled={taken}
-                aria-label={taken ? t.myDares.taken : `${verb} : ${dare.text}`}
+                aria-label={taken ? (takenLabel ?? t.myDares.taken) : `${verb} : ${dare.text}`}
                 onClick={() => onPick(dare)}
                 className={cn(
                   'grid size-11 shrink-0 place-items-center rounded-full border-[1.5px]',

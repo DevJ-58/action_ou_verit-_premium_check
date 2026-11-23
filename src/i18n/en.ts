@@ -259,6 +259,11 @@ export const en: Dictionary = {
     playing: 'Game in progress',
   },
   roomGame: {
+    chosen: 'Your proposed dare',
+    write: 'Write',
+    gameDares: 'Game dares',
+    source: 'Where your dare comes from',
+    noOwn: 'None of your dares fits this turn.',
     chooses: '{name} is choosing Truth or Dare…',
     preparing: 'The others are preparing a dare for you…',
     proposeTitle: 'Set your dare for {name}',

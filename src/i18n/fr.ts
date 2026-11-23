@@ -263,6 +263,11 @@ export const fr = {
     playing: 'Partie en cours',
   },
   roomGame: {
+    chosen: 'Ton défi proposé',
+    write: 'Écrire',
+    gameDares: 'Défis du jeu',
+    source: 'D’où vient ton défi',
+    noOwn: 'Aucun de tes défis ne convient à ce tour.',
     chooses: '{name} choisit Action ou Vérité…',
     preparing: 'Les autres te préparent un défi…',
     proposeTitle: 'Pose ton défi à {name}',
