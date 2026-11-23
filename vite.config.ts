@@ -38,9 +38,12 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
       manifest: {
+        id: BASE_PATH,
         name: 'Action ou Vérité',
+        categories: ['games', 'entertainment'],
         short_name: 'Action·Vérité',
-        description: 'Le jeu Action ou Vérité, autour d’un téléphone posé au centre de la table.',
+        description:
+          'Le jeu de soirée Action ou Vérité : sur un téléphone ou chacun le sien, à table ou à distance.',
         lang: 'fr',
         display: 'standalone',
         orientation: 'portrait',

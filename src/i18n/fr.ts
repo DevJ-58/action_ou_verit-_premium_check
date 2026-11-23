@@ -16,6 +16,17 @@ export const fr = {
     decline: 'J’ai moins de 18 ans',
     declined: 'Cette application est réservée aux adultes. Reviens nous voir à tes 18 ans !',
   },
+  install: {
+    title: 'Installe l’appli',
+    body: 'Une icône sur ton écran d’accueil, en plein écran, sans passer par le navigateur.',
+    cta: 'Installer l’appli',
+    later: 'Plus tard',
+    iosTitle: 'Ajouter à l’écran d’accueil',
+    iosStep1: 'Touche le bouton Partager en bas de Safari (le carré avec une flèche vers le haut).',
+    iosStep2: 'Fais défiler et choisis « Sur l’écran d’accueil ».',
+    iosStep3: 'Touche « Ajouter » : l’icône du jeu apparaît avec tes autres applis.',
+    iosSafari: 'Sur iPhone, ouvre d’abord cette page dans Safari.',
+  },
   home: {
     titleBefore: 'Action',
     titleOr: 'ou',

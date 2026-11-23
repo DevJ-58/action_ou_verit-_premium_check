@@ -17,6 +17,17 @@ export const en: Dictionary = {
     decline: 'I am under 18',
     declined: 'This app is for adults only. Come back when you turn 18!',
   },
+  install: {
+    title: 'Install the app',
+    body: 'An icon on your home screen, full screen, no browser bar.',
+    cta: 'Install the app',
+    later: 'Later',
+    iosTitle: 'Add to Home Screen',
+    iosStep1: 'Tap the Share button at the bottom of Safari (the square with an arrow).',
+    iosStep2: 'Scroll and choose “Add to Home Screen”.',
+    iosStep3: 'Tap “Add”: the game icon appears with your other apps.',
+    iosSafari: 'On iPhone, open this page in Safari first.',
+  },
   home: {
     titleBefore: 'Truth',
     titleOr: 'or',

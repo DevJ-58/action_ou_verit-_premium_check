@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router'
 import { motion } from 'motion/react'
 import { Button, KenteBand, springs, Wordmark } from '@/design-system'
 import { hasResumableGame } from '@/features/game/resumable'
+import { InstallCard } from '@/features/install/InstallCard'
 import { useT } from '@/i18n/useT'
 import { EntryLink } from './EntryLink'
 import { HomeTable } from './HomeTable'
@@ -70,6 +71,7 @@ export function HomeScreen() {
                   compact
                 />
               </div>
+              <InstallCard />
             </div>
           </div>
         </div>
