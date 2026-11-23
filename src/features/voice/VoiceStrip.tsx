@@ -5,6 +5,7 @@ import { useSettings } from '@/features/settings/settingsStore'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
+import { openProfile } from '@/features/friends/profileViewer'
 import { VOICES, voiceFor } from './presets'
 import { SpeakingBars } from './SpeakingBars'
 
@@ -40,7 +41,14 @@ export function VoiceStrip({ members, talking, selfId, speaking = NOBODY }: Voic
                 talks ? 'border-gold bg-gold/15' : 'border-transparent bg-seat',
               )}
             >
-              <Avatar name={m.pseudo} avatarId={m.avatarId} size="sm" />
+              <button
+                type="button"
+                aria-label={format(t.friends.seeProfile, { name: m.pseudo })}
+                onClick={() => openProfile(m.id)}
+                className="shrink-0 rounded-full"
+              >
+                <Avatar name={m.pseudo} avatarId={m.avatarId} size="sm" />
+              </button>
               <span className="flex flex-col leading-tight">
                 <span className="flex items-center gap-1 text-sm font-bold">
                   {talks ? (

@@ -9,10 +9,13 @@ import { Seat } from './Seat'
 export interface TableProps {
   game: GameState
   animate: boolean
+  /** Rooms: tapping a player opens their profile. */
+  onPlayer?(playerId: string): void
+  playerLabel?(name: string): string
 }
 
 /** Faceted table with the players in a circle and the bottle (or light sweep) in the middle. */
-export function Table({ game, animate }: TableProps) {
+export function Table({ game, animate, onPlayer, playerLabel }: TableProps) {
   const { players, turn, phase, settings } = game
   const spinning = phase === 'spinning'
   const revealed = turn !== null && !spinning
@@ -32,6 +35,8 @@ export function Table({ game, animate }: TableProps) {
           avatarId={player.avatar}
           angle={seatAngle(index, players.length)}
           lit={sweep === index}
+          onOpen={onPlayer ? () => onPlayer(player.id) : undefined}
+          openLabel={playerLabel?.(player.name)}
           role={
             revealed && player.id === turn.answererId
               ? 'answerer'

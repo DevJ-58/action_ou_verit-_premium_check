@@ -7,15 +7,20 @@ export interface SeatProps {
   angle: number
   role: AvatarRole
   lit: boolean
+  /** Rooms: opens the player's profile. */
+  onOpen?(): void
+  openLabel?: string
 }
 
 /** A player's place around the table, positioned by its angle. */
-export function Seat({ name, avatarId, angle, role, lit }: SeatProps) {
+export function Seat({ name, avatarId, angle, role, lit, onOpen, openLabel }: SeatProps) {
   const rad = (angle * Math.PI) / 180
   const highlighted = role !== 'none' || lit
+  const Tag = onOpen ? 'button' : 'div'
   return (
-    <div
-      className="absolute flex w-20 -translate-x-1/2 -translate-y-7 flex-col items-center gap-1.5"
+    <Tag
+      {...(onOpen ? { type: 'button' as const, onClick: onOpen, 'aria-label': openLabel } : {})}
+      className="absolute flex w-20 -translate-x-1/2 -translate-y-7 flex-col items-center gap-1.5 rounded-[18px]"
       style={{ left: `${50 + 44 * Math.sin(rad)}%`, top: `${50 - 44 * Math.cos(rad)}%` }}
     >
       <span
@@ -38,6 +43,6 @@ export function Seat({ name, avatarId, angle, role, lit }: SeatProps) {
       >
         {name}
       </span>
-    </div>
+    </Tag>
   )
 }

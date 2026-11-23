@@ -4,6 +4,9 @@ import { useReducedMotion } from 'motion/react'
 import { Button, IconButton } from '@/design-system'
 import { accountStore } from '@/features/account/accountStore'
 import { PlayAgainWith } from '@/features/friends/PlayAgainWith'
+import { GamePlayersButton } from '@/features/friends/GamePlayersButton'
+import { openProfile } from '@/features/friends/profileViewer'
+import { format } from '@/i18n/format'
 import { RoomChat } from '@/features/chat/RoomChat'
 import { VoiceButton } from '@/features/voice/VoiceButton'
 import { VoiceSpeakers } from '@/features/voice/VoiceSpeakers'
@@ -66,14 +69,16 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
     <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
       <header className="flex items-center justify-between pt-2">
         <IconButton label={t.room.leave} icon={<X size={18} />} onClick={onLeave} />
-        <span className="text-xs font-extrabold tracking-[0.16em] text-muted uppercase">
-          {t.game.round} <span className="text-lg text-text tabular-nums">{game.round}</span> /{' '}
+        <span className="text-xs font-extrabold tracking-[0.16em] whitespace-nowrap text-muted uppercase">
+          <span className="max-[379px]:sr-only">{t.game.round} </span>
+          <span className="text-lg text-text tabular-nums">{game.round}</span>/
           {game.settings.rounds}
         </span>
-        <span className="flex items-center gap-2">
-          <span className="hidden font-mono text-sm font-bold tracking-[0.2em] text-gold-text min-[380px]:inline">
+        <span className="flex items-center gap-1.5 min-[380px]:gap-2">
+          <span className="hidden font-mono text-sm font-bold tracking-[0.2em] text-gold-text min-[460px]:inline">
             {room.code}
           </span>
+          <GamePlayersButton members={room.members} selfId={state.self.id} online={state.online} />
           <VoiceButton state={state} />
           <RoomChat
             store={chat}
@@ -113,7 +118,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
             {tableVisible ? (
               // The player choosing needs the Truth / Dare buttons in view on small phones.
               <div className={chooserHere ? 'max-[899px]:hidden' : undefined}>
-                <Table game={game} animate={!reduceMotion} />
+                <Table
+                  game={game}
+                  animate={!reduceMotion}
+                  onPlayer={openProfile}
+                  playerLabel={(name) => format(t.friends.seeProfile, { name })}
+                />
               </div>
             ) : null}
             <div

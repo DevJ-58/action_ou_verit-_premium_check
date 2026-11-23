@@ -6,6 +6,7 @@ import { cn } from '@/lib/cn'
 import type { ChatMessage } from './types'
 import { ChatPhoto } from './ChatPhoto'
 import { VoicePlayer } from './VoicePlayer'
+import { openProfile } from '@/features/friends/profileViewer'
 
 export interface MessageBubbleProps {
   message: ChatMessage
@@ -21,7 +22,16 @@ export function MessageBubble({ message, author, mine, resolveVoice }: MessageBu
   const seconds = Math.max(1, Math.round((message.voice?.ms ?? 0) / 1000))
   return (
     <li className={cn('flex items-end gap-2', mine && 'flex-row-reverse')}>
-      {mine ? null : <Avatar name={name} avatarId={author?.avatarId} size="sm" />}
+      {mine || !author ? null : (
+        <button
+          type="button"
+          aria-label={format(t.friends.seeProfile, { name })}
+          onClick={() => openProfile(author.id)}
+          className="shrink-0 rounded-full"
+        >
+          <Avatar name={name} avatarId={author.avatarId} size="sm" />
+        </button>
+      )}
       <div
         className={cn(
           'flex max-w-[80%] flex-col gap-0.5 rounded-[20px] px-3.5 py-2.5',

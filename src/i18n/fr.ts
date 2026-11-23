@@ -28,6 +28,7 @@ export const fr = {
     iosSafari: 'Sur iPhone, ouvre d’abord cette page dans Safari.',
   },
   friends: {
+    gamePlayers: 'Joueurs de la partie',
     request: 'Demander {name} en ami',
     requested: 'Demande envoyée',
     accept: 'Accepter',

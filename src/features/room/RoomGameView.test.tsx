@@ -149,3 +149,24 @@ test('the music plays during the game, but not while this player’s mic is on',
   expect(start).toHaveBeenCalled()
   start.mockRestore()
 })
+
+test('during the game, tapping a player at the table opens their profile', async () => {
+  const g = gameAt(() => [])
+  const viewer = await import('@/features/friends/profileViewer')
+  viewer.closeProfile()
+  show(stateFor('a', { ...g, phase: 'ready', turn: null }))
+  await userEvent.click(screen.getByRole('button', { name: /voir le profil de kofi/i }))
+  const { renderHook } = await import('@testing-library/react')
+  expect(renderHook(() => viewer.useViewedProfile()).result.current).toBe('k')
+})
+
+test('at any moment, the players of the game are one tap away, with their profile', async () => {
+  const viewer = await import('@/features/friends/profileViewer')
+  viewer.closeProfile()
+  show(stateFor('a', proposing()))
+  await userEvent.click(screen.getByRole('button', { name: /joueurs de la partie/i }))
+  const sheet = await screen.findByRole('dialog', { name: /joueurs de la partie/i })
+  await userEvent.click(within(sheet).getByRole('button', { name: /voir le profil de inès/i }))
+  const { renderHook } = await import('@testing-library/react')
+  expect(renderHook(() => viewer.useViewedProfile()).result.current).toBe('i')
+})

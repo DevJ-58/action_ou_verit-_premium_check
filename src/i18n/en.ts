@@ -29,6 +29,7 @@ export const en: Dictionary = {
     iosSafari: 'On iPhone, open this page in Safari first.',
   },
   friends: {
+    gamePlayers: 'Players in this game',
     request: 'Ask {name} to be friends',
     requested: 'Request sent',
     accept: 'Accept',
