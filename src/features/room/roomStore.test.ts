@@ -136,9 +136,10 @@ test('joining fails clearly for an unknown, full or started room', async () => {
   await flush()
   expect(await phone(bus2, 'late').getState().joinRoom(code)).toBe('roomStarted')
 
-  const ids = Array.from({ length: 12 }, (_, i) => `p${i}`)
+  // A free host's room is full at 6 players (12 with Premium, see premiumRoom.test).
+  const ids = Array.from({ length: 6 }, (_, i) => `p${i}`)
   const full = await lobbyWith(...ids)
-  expect(await phone(full.bus, 'thirteen').getState().joinRoom(full.code)).toBe('roomFull')
+  expect(await phone(full.bus, 'seventh').getState().joinRoom(full.code)).toBe('roomFull')
 })
 
 test('reactions reach every phone', async () => {

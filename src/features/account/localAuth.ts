@@ -23,6 +23,7 @@ interface StoredAccount {
   salt: string
   hash: string
   profile: Profile
+  premiumUntil?: string | null
 }
 
 const ACCOUNTS = 'av:accounts'
@@ -62,8 +63,18 @@ function writeSessionId(id: string | null) {
   }
 }
 
+/** Development only: what a test payment grants on this device. */
+export function grantLocalPremium(accountId: string, until: string): void {
+  writeAccounts(readAccounts().map((a) => (a.id === accountId ? { ...a, premiumUntil: until } : a)))
+}
+
+export function localPremiumUntil(accountId: string): string | null {
+  return readAccounts().find((a) => a.id === accountId)?.premiumUntil ?? null
+}
+
 const toSession = (a: StoredAccount): Session => ({
   account: { id: a.id, email: a.email },
+  premiumUntil: a.premiumUntil ?? null,
   profile: {
     ...a.profile,
     stats: sanitizeStats(a.profile.stats),

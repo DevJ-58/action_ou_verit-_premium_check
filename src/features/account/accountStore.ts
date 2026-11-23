@@ -16,6 +16,8 @@ export interface AccountState {
   updateProfile(patch: Partial<Omit<Profile, 'id'>>): Promise<void>
   /** Adds a finished game to the signed-in player's stats (once per game). */
   recordGame(game: GameState): Promise<void>
+  /** Re-reads the Premium end date (after a purchase). */
+  refreshPremium(): Promise<void>
   addFriend(friend: Friend): Promise<void>
   removeFriend(id: string): Promise<void>
 }
@@ -57,6 +59,13 @@ export const accountStore = createStore<AccountState>()((set, get) => ({
     if (!profile) return
     const stats = recordAccountGame(profile.stats, game, profile.id)
     if (stats !== profile.stats) await get().updateProfile({ stats })
+  },
+  refreshPremium: async () => {
+    const fresh = await getAuthService().current()
+    const session = get().session
+    if (fresh && session && fresh.account.id === session.account.id) {
+      set({ session: { ...session, premiumUntil: fresh.premiumUntil } })
+    }
   },
   addFriend: async (friend) => {
     const profile = get().session?.profile

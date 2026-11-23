@@ -26,8 +26,9 @@ export function setRoomTransport(next: RoomTransport): void {
   transport = next
 }
 
-export function memberFromProfile(profile: Profile): Member {
+export function memberFromProfile(profile: Profile, premium = false): Member {
   return {
+    premium,
     id: profile.id,
     pseudo: profile.pseudo,
     avatarId: profile.avatarId,

@@ -2,11 +2,10 @@ import { createStore, type StoreApi } from 'zustand/vanilla'
 import type { EmojiName } from '@/content/emoji'
 import type { GameAction, Rng } from '@/engine'
 import { newId } from '@/lib/id'
-import { applyIntent, withoutMember } from './applyIntent'
+import { applyIntent, roomCapacity, withoutMember } from './applyIntent'
 import type { RoomTransport } from './localTransport'
 import { generateRoomCode } from './roomCode'
 import {
-  ROOM_MAX_MEMBERS,
   type Intent,
   type IntentBody,
   type Member,
@@ -177,7 +176,7 @@ export function createRoomStore(deps: {
         if (!snapshot) return 'roomNotFound'
         const already = snapshot.members.some((m) => m.id === self.id)
         if (!already && snapshot.status !== 'lobby') return 'roomStarted'
-        if (!already && snapshot.members.length >= ROOM_MAX_MEMBERS) return 'roomFull'
+        if (!already && snapshot.members.length >= roomCapacity(snapshot)) return 'roomFull'
         listen(code)
         set({ room: snapshot, role: roleFor(snapshot) })
         if (already) return null

@@ -11,6 +11,8 @@ export interface Member {
   avatarId: string
   limits: PlayerLimits
   customDares: Dare[]
+  /** Premium player: as host, unlocks Premium for the whole room. */
+  premium?: boolean
 }
 
 export interface Reaction {

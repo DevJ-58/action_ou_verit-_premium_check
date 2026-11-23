@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { accountStore } from '@/features/account/accountStore'
+import { isPremium } from '@/features/premium/premium'
 import { memberFromProfile, openRoomStore } from './activeRoom'
 
 /** Creates a room for the signed-in player, then opens its waiting room. */
@@ -10,9 +11,10 @@ export function CreateRoomScreen() {
   useEffect(() => {
     if (started.current) return
     started.current = true
-    const profile = accountStore.getState().session?.profile
+    const session = accountStore.getState().session
+    const profile = session?.profile
     if (!profile) return
-    void openRoomStore(memberFromProfile(profile))
+    void openRoomStore(memberFromProfile(profile, isPremium(session?.premiumUntil)))
       .getState()
       .createRoom()
       .then((code) => navigate(`/salon/${code}`, { replace: true }))

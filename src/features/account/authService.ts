@@ -22,6 +22,8 @@ export interface Profile {
 export interface Session {
   account: Account
   profile: Profile
+  /** End of Premium (ISO date), null if never bought. Written by the server only. */
+  premiumUntil: string | null
 }
 
 export type AuthErrorCode =

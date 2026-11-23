@@ -8,6 +8,7 @@ import {
   type Rng,
 } from '@/engine'
 import { newId } from '@/lib/id'
+import { FREE_LIMITS, allowedCategories } from '@/features/premium/premium'
 import { mayAct } from './authorize'
 import {
   ROOM_MAX_MEMBERS,
@@ -80,9 +81,27 @@ export function toPlayer(member: Member): Player {
   }
 }
 
+/** Premium is shared by the host with the whole room. */
+export function roomIsPremium(room: RoomState): boolean {
+  return room.members.find((m) => m.id === room.hostId)?.premium === true
+}
+
+export function roomCapacity(room: RoomState): number {
+  return roomIsPremium(room) ? ROOM_MAX_MEMBERS : FREE_LIMITS.roomMembers
+}
+
 function startGame(room: RoomState, setup: RoomSetup): RoomState | null {
+  const premium = roomIsPremium(room)
+  const allowed = allowedCategories(premium)
+  if (setup.categories.some((c) => !allowed.includes(c))) return null
   try {
-    const settings: GameSettings = { ...ROOM_DEFAULTS, ...setup, mode: 'remote', flow: 'everyone' }
+    const settings: GameSettings = {
+      ...ROOM_DEFAULTS,
+      ...setup,
+      mode: 'remote',
+      flow: 'everyone',
+      liveSeconds: premium ? (setup.liveSeconds ?? ROOM_DEFAULTS.liveSeconds) : 0,
+    }
     const game = createGame({ id: newId('game'), settings, players: room.members.map(toPlayer) })
     return { ...room, status: 'playing', game }
   } catch (error) {
@@ -101,7 +120,7 @@ export function applyIntent(room: RoomState, intent: Intent, rng: Rng): RoomStat
   switch (intent.type) {
     case 'join': {
       if (room.members.some((m) => m.id === intent.member.id)) return null
-      if (room.status !== 'lobby' || room.members.length >= ROOM_MAX_MEMBERS) return null
+      if (room.status !== 'lobby' || room.members.length >= roomCapacity(room)) return null
       return { ...room, members: [...room.members, intent.member] }
     }
     case 'leave':

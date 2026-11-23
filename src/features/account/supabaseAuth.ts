@@ -81,9 +81,20 @@ export function createSupabaseAuth(getClient: () => Promise<SupabaseClient>): Au
     return profile
   }
 
+  async function loadPremium(client: SupabaseClient, user: User): Promise<string | null> {
+    const { data, error } = await client
+      .from('entitlements')
+      .select('premium_until')
+      .eq('user_id', user.id)
+      .maybeSingle()
+    if (error) return null
+    return (data as { premium_until: string | null } | null)?.premium_until ?? null
+  }
+
   const toSession = async (client: SupabaseClient, user: User): Promise<Session> => ({
     account: { id: user.id, email: user.email ?? '' },
     profile: await loadProfile(client, user),
+    premiumUntil: await loadPremium(client, user),
   })
 
   return {
