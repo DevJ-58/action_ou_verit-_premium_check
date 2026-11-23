@@ -40,14 +40,32 @@ export class FakeAudioContext {
     }
     return osc
   }
+  createDelay() {
+    return { ...node(), delayTime: param() }
+  }
+  createWaveShaper() {
+    return { ...node(), curve: null as Float32Array | null, oversample: 'none' }
+  }
+  createDynamicsCompressor() {
+    return { ...node(), threshold: param(), ratio: param(), knee: param() }
+  }
+  createMediaStreamSource(stream: unknown) {
+    FakeAudioContext.sources.push(stream)
+    return node()
+  }
+  createMediaStreamDestination() {
+    return { ...node(), stream: { id: 'processed', getAudioTracks: () => [{ kind: 'audio' }] } }
+  }
+  static sources: unknown[] = []
   createBuffer(_channels: number, length: number) {
     return { getChannelData: () => new Float32Array(length) }
   }
   createBufferSource() {
-    return { ...node(), buffer: null, start: () => {}, stop: () => {} }
+    return { ...node(), buffer: null, loop: false, start: () => {}, stop: () => {} }
   }
   static reset() {
     FakeAudioContext.started = []
     FakeAudioContext.resumed = 0
+    FakeAudioContext.sources = []
   }
 }

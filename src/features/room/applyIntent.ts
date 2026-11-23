@@ -68,7 +68,8 @@ export function withoutMember(room: RoomState, memberId: string, rng: Rng): Room
   const game = room.game
     ? reduce(room.game, { type: 'REMOVE_PLAYER', playerId: memberId }, { rng, systemDares })
     : null
-  return withLiveChecked({ ...room, members, game })
+  const voice = room.voice?.filter((id) => id !== memberId)
+  return withLiveChecked({ ...room, members, game, ...(voice ? { voice } : {}) })
 }
 
 export function toPlayer(member: Member): Player {
@@ -134,6 +135,15 @@ export function applyIntent(room: RoomState, intent: Intent, rng: Rng): RoomStat
     }
     case 'live':
       return setLive(room, intent.from, intent.on)
+    case 'voice': {
+      const current = room.voice ?? []
+      const has = current.includes(intent.from)
+      if (intent.on === has || (intent.on && !roomIsPremium(room))) return null
+      const voice = intent.on
+        ? [...current, intent.from]
+        : current.filter((id) => id !== intent.from)
+      return { ...room, voice }
+    }
     case 'action': {
       const { game } = room
       if (!game || !mayAct(game, room.hostId, intent.from, intent.action)) return null

@@ -45,6 +45,8 @@ export interface RoomStoreState {
   react(emoji: EmojiName): void
   /** Starts or stops the live video of the challenge. */
   setLive(on: boolean): void
+  /** Joins or leaves the live voice (mic). */
+  setVoice(on: boolean): void
   /** Leaves for good (others are told). */
   leave(): void
   /** Stops talking to the room without leaving (app closed, phone locked). */
@@ -235,6 +237,7 @@ export function createRoomStore(deps: {
       act: (action) => send({ type: 'action', action }),
       react: (emoji) => send({ type: 'react', emoji }),
       setLive: (on) => send({ type: 'live', on }),
+      setVoice: (on) => send({ type: 'voice', on }),
       leave: () => {
         const { room, role } = get()
         if (room && role === 'host') {

@@ -34,6 +34,8 @@ export interface RoomState {
   reactions: Reaction[]
   /** The designated player is filming the challenge, live. */
   live?: Live | null
+  /** Members talking on the live voice (mic on). */
+  voice?: string[]
   /** Result of the previous game (kept on replay, so phones that missed its end still count it). */
   lastGame?: Pick<GameState, 'id' | 'phase' | 'scores'> | null
 }
@@ -56,6 +58,7 @@ export type Intent = { id: string; from: string } & (
   | { type: 'action'; action: GameAction }
   | { type: 'react'; emoji: EmojiName }
   | { type: 'live'; on: boolean }
+  | { type: 'voice'; on: boolean }
 )
 
 /** An intent without the id and sender, which the room store fills in. */
