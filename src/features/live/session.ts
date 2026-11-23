@@ -57,6 +57,7 @@ export function createBroadcaster(input: {
   }
 
   const off = transport.onSignal(code, selfId, (signal) => {
+    if (signal.channel === 'voice') return
     const { from, body } = signal
     if (body.type === 'hello') void connect(from).catch(() => close(from))
     else if (body.type === 'bye') close(from)
@@ -117,7 +118,7 @@ export function createViewer(input: {
   const send = (body: Signal['body']) => transport.send(code, { from: selfId, to: by, body })
 
   const off = transport.onSignal(code, selfId, (signal) => {
-    if (signal.from !== by) return
+    if (signal.channel === 'voice' || signal.from !== by) return
     const { body } = signal
     if (body.type === 'offer') {
       offered = true

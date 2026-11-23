@@ -10,6 +10,8 @@ export interface Signal {
   from: string
   to: string
   body: SignalBody
+  /** 'voice': the live mic between players; absent: the live video of a challenge. */
+  channel?: 'voice'
 }
 
 export interface SignalTransport {

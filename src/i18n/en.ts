@@ -49,6 +49,16 @@ export const en: Dictionary = {
     remove: 'Remove {name} from my friends',
     again: 'Play with them again?',
   },
+  voice: {
+    join: 'Turn my mic on',
+    leave: 'Turn my mic off',
+    myVoice: 'Your voice: {voice}',
+    talking: 'Mics on',
+    connecting: 'Connecting…',
+    denied: 'Allow the microphone in your browser to talk with the others.',
+    locked: 'The live mic is part of Premium: the room’s host must be Premium.',
+    hint: 'Your voice is changed to match your avatar.',
+  },
   live: {
     isLive: '{name} is live',
     setting: 'Live video of the dares',

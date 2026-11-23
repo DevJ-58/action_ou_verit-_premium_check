@@ -48,6 +48,16 @@ export const fr = {
     remove: 'Retirer {name} de mes amis',
     again: 'Rejouer avec eux ?',
   },
+  voice: {
+    join: 'Activer mon micro',
+    leave: 'Couper mon micro',
+    myVoice: 'Ta voix : {voice}',
+    talking: 'Micros ouverts',
+    connecting: 'Connexion…',
+    denied: 'Autorise le micro dans ton navigateur pour parler avec les autres.',
+    locked: 'Le micro en direct fait partie du Premium : il faut que l’hôte du salon soit Premium.',
+    hint: 'Ta voix est transformée selon ton avatar.',
+  },
   live: {
     isLive: '{name} est en direct',
     setting: 'Vidéo en direct des défis',

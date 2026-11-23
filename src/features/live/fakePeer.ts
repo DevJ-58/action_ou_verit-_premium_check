@@ -35,8 +35,8 @@ export class FakePeer {
   }
   async setRemoteDescription(d: RTCSessionDescriptionInit) {
     this.remote = d
-    if (d.type === 'offer') {
-      const stream = { id: 'remote-stream' } as unknown as MediaStream
+    {
+      const stream = { id: `remote-stream-${d.type}` } as unknown as MediaStream
       this.ontrack?.({ streams: [stream], track: {} as MediaStreamTrack })
     }
     this.connectionState = 'connected'

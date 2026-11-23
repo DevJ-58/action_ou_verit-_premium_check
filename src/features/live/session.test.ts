@@ -48,7 +48,7 @@ test('a viewer says hello, gets the camera through an offer/answer, and sees the
   expect(sender!.remote).toMatchObject({ type: 'answer', sdp: 'answer-sdp' })
   expect(sender!.candidates).toEqual([{ candidate: 'cand-answer' }])
   expect(receiver!.candidates).toEqual([{ candidate: 'cand-offer' }])
-  expect(awa.onStream).toHaveBeenCalledWith(expect.objectContaining({ id: 'remote-stream' }))
+  expect(awa.onStream).toHaveBeenCalledWith(expect.objectContaining({ id: 'remote-stream-offer' }))
   expect(awa.onState).toHaveBeenLastCalledWith('connected')
 })
 

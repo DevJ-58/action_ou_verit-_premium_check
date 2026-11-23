@@ -5,6 +5,10 @@ import { Button, IconButton } from '@/design-system'
 import { accountStore } from '@/features/account/accountStore'
 import { PlayAgainWith } from '@/features/friends/PlayAgainWith'
 import { RoomChat } from '@/features/chat/RoomChat'
+import { VoiceButton } from '@/features/voice/VoiceButton'
+import { VoiceSpeakers } from '@/features/voice/VoiceSpeakers'
+import { VoiceStrip } from '@/features/voice/VoiceStrip'
+import { useVoiceRoom } from '@/features/voice/useVoiceRoom'
 import { useRoomChat } from '@/features/chat/useRoomChat'
 import { RecapBody } from '@/features/game/RecapBody'
 import { Table } from '@/features/game/Table'
@@ -32,6 +36,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   const game = room.game!
   useRoomFeedback(room, state.self.id)
   const chat = useRoomChat(room.code, state.self.id)
+  const voice = useVoiceRoom(state)
   useGameMusic(game.phase !== 'finished')
   const finished = game.phase === 'finished' ? game : null
 
@@ -56,6 +61,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           <span className="hidden font-mono text-sm font-bold tracking-[0.2em] text-gold-text min-[380px]:inline">
             {room.code}
           </span>
+          <VoiceButton state={state} />
           <RoomChat
             store={chat}
             members={room.members}
@@ -64,6 +70,15 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           />
         </span>
       </header>
+      <div className="pt-3 empty:hidden">
+        <VoiceStrip members={room.members} talking={room.voice ?? []} selfId={state.self.id} />
+        {voice.status === 'denied' ? (
+          <p role="alert" className="text-sm font-semibold text-dare">
+            {t.voice.denied}
+          </p>
+        ) : null}
+      </div>
+      <VoiceSpeakers remote={voice.remote} />
 
       <main className="flex flex-1 flex-col gap-6 pt-6 min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:items-center">
         {game.phase === 'finished' ? (
