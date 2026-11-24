@@ -1,6 +1,19 @@
 {
   "entries": [
     {
+      "version": "2026-11-25.2",
+      "fr": [
+        "Nouveau : joue avec Axis, l’IA du jeu ! Il joue, écrit des défis, vote et parle dans le chat",
+        "« Jouer avec l’IA » sur l’accueil, ou « Ajouter Axis » dans n’importe quel salon",
+        "Le guide saute les éléments cachés et chaque étape est annoncée aux lecteurs d’écran"
+      ],
+      "en": [
+        "New: play with Axis, the game’s AI! He plays, writes dares, votes and chats",
+        "“Play with the AI” on the home screen, or “Add Axis” in any room",
+        "The guide skips hidden elements and each step is announced to screen readers"
+      ]
+    },
+    {
       "version": "2026-11-25.1",
       "fr": [
         "Nouveau guide pas à pas : il montre chaque bouton et explique à quoi il sert (accueil, salon, partie)",

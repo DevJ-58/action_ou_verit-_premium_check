@@ -9,9 +9,9 @@ test('a newcomer gets the home guide once, step by step, without the page slidin
   await page.getByRole('button', { name: /J’ai 18 ans ou plus/ }).click()
   const bubble = page.getByRole('dialog')
   await expect(bubble).toBeVisible()
-  await expect(bubble).toContainText('1 / 5')
-  for (let step = 1; step <= 5; step++) {
-    await expect(bubble).toContainText(`${step} / 5`)
+  await expect(bubble).toContainText('1 / 6')
+  for (let step = 1; step <= 6; step++) {
+    await expect(bubble).toContainText(`${step} / 6`)
     const box = (await bubble.boundingBox())!
     expect(box.x).toBeGreaterThanOrEqual(0)
     expect(box.x + box.width).toBeLessThanOrEqual(320)
@@ -20,7 +20,7 @@ test('a newcomer gets the home guide once, step by step, without the page slidin
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth),
     ).toBeLessThanOrEqual(0)
-    await bubble.getByRole('button', { name: step === 5 ? 'Terminer' : 'Suivant' }).click()
+    await bubble.getByRole('button', { name: step === 6 ? 'Terminer' : 'Suivant' }).click()
   }
   await expect(bubble).toBeHidden()
   await page.reload()
@@ -29,7 +29,7 @@ test('a newcomer gets the home guide once, step by step, without the page slidin
   await expect(page.getByRole('dialog')).toBeHidden()
 
   await page.getByRole('button', { name: /guide de l’écran/i }).click()
-  await expect(page.getByRole('dialog')).toContainText('1 / 5')
+  await expect(page.getByRole('dialog')).toContainText('1 / 6')
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog')).toBeHidden()
 })

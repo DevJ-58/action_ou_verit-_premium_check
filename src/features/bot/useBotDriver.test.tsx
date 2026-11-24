@@ -59,8 +59,11 @@ test('a guest’s phone never plays for Axis', async () => {
   expect(guest.say).not.toHaveBeenCalled()
 })
 
-test('Axis answers when someone greets him or says his name', () => {
+test('Axis answers when someone greets him or says his name', async () => {
   expect(replyFor('Salut !', 'Awa', 'm1', 'fr')).toMatch(/Awa/)
+  const { linesFor } = await import('./lines')
+  const greetings = linesFor('greet', 'fr').map((l) => l.replace('{name}', 'Awa'))
+  expect(greetings).toContain(replyFor('Salut Axis !', 'Awa', 'm4', 'fr'))
   expect(replyFor('axis tu triches', 'Awa', 'm2', 'fr')).toMatch(/Awa/)
   expect(replyFor('on mange quoi ce soir', 'Awa', 'm3', 'fr')).toBeNull()
 })
