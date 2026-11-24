@@ -9,6 +9,10 @@ export type ThemeName = 'nuit' | 'ivoire' | 'terre' | 'kente' | 'indigo'
 /** Themes exclusive to Premium players. */
 export const PREMIUM_THEMES: readonly ThemeName[] = ['kente', 'indigo']
 
+/** The screens that have a step-by-step guide. */
+export type TourName = 'home' | 'lobby' | 'game'
+export const TOUR_NAMES: readonly TourName[] = ['home', 'lobby', 'game']
+
 export interface SettingsValues {
   language: Language
   theme: ThemeName
@@ -17,6 +21,8 @@ export interface SettingsValues {
   /** Background melody during games. */
   music: boolean
   ageConfirmedAt: string | null
+  /** Guides already shown on this phone (they start by themselves only once). */
+  toursSeen: TourName[]
 }
 
 export interface SettingsState extends SettingsValues {
@@ -26,6 +32,8 @@ export interface SettingsState extends SettingsValues {
   setHaptics(haptics: boolean): void
   setMusic(music: boolean): void
   confirmAge(): void
+  markTourSeen(name: TourName): void
+  resetTours(): void
 }
 
 export const SETTINGS_DEFAULTS: SettingsValues = {
@@ -35,6 +43,7 @@ export const SETTINGS_DEFAULTS: SettingsValues = {
   haptics: true,
   music: true,
   ageConfirmedAt: null,
+  toursSeen: [],
 }
 
 const SETTINGS_VERSION = 1
@@ -51,6 +60,9 @@ function sanitizeSettings(raw: unknown): Partial<SettingsValues> {
   if (typeof s.haptics === 'boolean') out.haptics = s.haptics
   if (typeof s.music === 'boolean') out.music = s.music
   if (typeof s.ageConfirmedAt === 'string') out.ageConfirmedAt = s.ageConfirmedAt
+  if (Array.isArray(s.toursSeen)) {
+    out.toursSeen = TOUR_NAMES.filter((name) => (s.toursSeen as unknown[]).includes(name))
+  }
   return out
 }
 
@@ -65,18 +77,22 @@ export function createSettingsStore() {
         setHaptics: (haptics) => set({ haptics }),
         setMusic: (music) => set({ music }),
         confirmAge: () => set({ ageConfirmedAt: new Date().toISOString() }),
+        markTourSeen: (name) =>
+          set((s) => (s.toursSeen.includes(name) ? s : { toursSeen: [...s.toursSeen, name] })),
+        resetTours: () => set({ toursSeen: [] }),
       }),
       {
         name: 'av:settings',
         version: SETTINGS_VERSION,
         storage: createJSONStorage(() => safeStorage),
-        partialize: ({ language, theme, sound, haptics, music, ageConfirmedAt }) => ({
+        partialize: ({ language, theme, sound, haptics, music, ageConfirmedAt, toursSeen }) => ({
           language,
           theme,
           sound,
           haptics,
           music,
           ageConfirmedAt,
+          toursSeen,
         }),
         // Any unknown or older shape is discarded: settings are cheap to redo.
         migrate: () => ({ ...SETTINGS_DEFAULTS }) as SettingsState,

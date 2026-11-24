@@ -531,6 +531,149 @@ export const fr = {
     intimate: { name: 'Très intime', description: 'Pour celles et ceux qui osent tout' },
     noreturn: { name: 'Pas de retour en arrière', description: 'Le point de non-retour' },
   },
+  tour: {
+    next: 'Suivant',
+    skip: 'Passer',
+    finish: 'Terminer',
+    counter: '{n} / {total}',
+    help: 'Guide de l’écran',
+    rulesLink: 'Règles du jeu',
+    replay: 'Revoir le guide',
+    replayHint: 'Le guide se relancera sur chaque écran.',
+    home: [
+      {
+        target: 'play-here',
+        title: 'Autour de la table',
+        text: 'Un seul téléphone pour tout le groupe : vous le passez de main en main.',
+      },
+      {
+        target: 'create-room',
+        title: 'Créer un salon',
+        text: 'Chacun joue sur son téléphone, ensemble ou à distance. Tu invites les autres avec un code.',
+      },
+      {
+        target: 'join-room',
+        title: 'Rejoindre',
+        text: 'Un ami a créé un salon ? Entre son code ou scanne son QR code.',
+      },
+      {
+        target: 'nav',
+        title: 'Les onglets',
+        text: 'Joueurs, tes défis perso et ton profil (amis, stats, réglages).',
+      },
+      {
+        target: 'rules',
+        title: 'Comment jouer',
+        text: 'Les règles, étape par étape. Tu peux relancer ce guide avec le bouton « ? ».',
+      },
+    ],
+    lobby: [
+      {
+        target: 'room-code',
+        title: 'Le code du salon',
+        text: 'Partage-le (lien ou QR code) pour que tes amis te rejoignent.',
+      },
+      {
+        target: 'categories',
+        title: 'Les catégories',
+        text: 'Choisis le ton des défis. La couronne marque le contenu Premium.',
+      },
+      {
+        target: 'rounds',
+        title: 'Le nombre de tours',
+        text: 'Chaque joueur passe une fois par tour.',
+      },
+      {
+        target: 'start-game',
+        title: 'Lancer la partie',
+        text: 'Dès que tout le monde est là, c’est parti.',
+      },
+    ],
+    game: [
+      {
+        target: 'turn-guide',
+        title: 'Les étapes du tour',
+        text: 'Bouteille, choix, défis, carte, verdict. La bande jaune dit qui doit jouer.',
+      },
+      {
+        target: 'card',
+        title: 'Le défi',
+        text: 'La carte retournée, avec le nom de celui qui l’a écrit.',
+      },
+      {
+        target: 'vote',
+        title: 'Le verdict',
+        text: 'Les autres disent « Validé » ou « Pas convaincu ».',
+      },
+      {
+        target: 'done',
+        title: 'C’est fait',
+        text: 'Après au moins un verdict, celui qui joue appuie ici pour gagner ses points.',
+      },
+      {
+        target: 'dock-chat',
+        title: 'Discussion',
+        text: 'Écris aux autres, envoie un vocal ou une photo.',
+      },
+      { target: 'dock-mic', title: 'Micro', text: 'Parle en direct avec les joueurs (Premium).' },
+      {
+        target: 'dock-react',
+        title: 'Réagir',
+        text: 'Envoie un emoji qui s’affiche chez tout le monde.',
+      },
+      {
+        target: 'dock-players',
+        title: 'Joueurs',
+        text: 'Les joueurs de la partie, leur profil et les demandes d’ami.',
+      },
+    ],
+  },
+  rules: {
+    title: 'Comment jouer',
+    intro: 'Tout ce qu’il faut savoir, en cinq étapes.',
+    startTour: 'Lancer le guide',
+    points: 'Vérité réussie : {truth} pts · Action réussie : {dare} pts · Passer : {skip} pt',
+    sections: [
+      {
+        title: 'Le but',
+        lines: [
+          'À ton tour, choisis Vérité (tu réponds à une question) ou Action (tu relèves un défi).',
+          'Chaque défi réussi rapporte des points. Le plus de points gagne.',
+        ],
+      },
+      {
+        title: 'Autour de la table',
+        lines: [
+          'Un seul téléphone : ajoute les joueurs dans l’ordre où vous êtes assis.',
+          'Tourne la bouteille, le joueur désigné choisit Vérité ou Action et lit la carte à voix haute.',
+          'Puis passe le téléphone au suivant.',
+        ],
+      },
+      {
+        title: 'À distance (un salon)',
+        lines: [
+          'L’hôte crée le salon et partage le code ; chacun rejoint sur son téléphone.',
+          'La bouteille désigne un joueur, qui choisit Vérité ou Action.',
+          'Les autres lui écrivent un défi ; il retourne une carte au hasard.',
+          'Il répond ou relève le défi, les autres donnent leur verdict, puis il appuie sur « C’est fait ».',
+        ],
+      },
+      {
+        title: 'Points et passes',
+        lines: [
+          'Tu peux passer ton tour un nombre limité de fois.',
+          'Si un joueur ne répond plus, l’hôte peut passer son tour.',
+        ],
+      },
+      {
+        title: 'Le Premium',
+        lines: [
+          'La couronne dorée marque ce qui est Premium : catégories en plus, micro, vidéo en direct, photos, salons de 12.',
+          'Le Premium de l’hôte profite à tout le salon.',
+        ],
+      },
+    ],
+  },
   common: {
     back: 'Retour',
     cancel: 'Annuler',

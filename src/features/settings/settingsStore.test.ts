@@ -8,6 +8,7 @@ test('defaults are French, Nuit theme, music, sound and haptics on, age not conf
     haptics: true,
     music: true,
     ageConfirmedAt: null,
+    toursSeen: [],
   })
 })
 
@@ -51,4 +52,20 @@ test('unknown values in a same-version save fall back field by field', async () 
   const store = createSettingsStore()
   await store.persist.rehydrate()
   expect(store.getState()).toMatchObject({ ...SETTINGS_DEFAULTS, haptics: false })
+})
+
+test('markTourSeen keeps each name once and survives a reload; unknown names are dropped', async () => {
+  const store = createSettingsStore()
+  store.getState().markTourSeen('home')
+  store.getState().markTourSeen('home')
+  store.getState().markTourSeen('game')
+  expect(store.getState().toursSeen).toEqual(['home', 'game'])
+  const saved = JSON.parse(localStorage.getItem('av:settings')!)
+  saved.state.toursSeen = ['home', 'nope', 3]
+  localStorage.setItem('av:settings', JSON.stringify(saved))
+  const again = createSettingsStore()
+  await again.persist.rehydrate()
+  expect(again.getState().toursSeen).toEqual(['home'])
+  again.getState().resetTours()
+  expect(again.getState().toursSeen).toEqual([])
 })

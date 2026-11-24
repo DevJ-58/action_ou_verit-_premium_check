@@ -10,6 +10,7 @@ import { UpdateBanner } from '@/features/update/UpdateBanner'
 import { TrialWelcome } from '@/features/premium/TrialWelcome'
 import { FriendRequestToast } from '@/features/friends/FriendRequestToast'
 import { PublicProfileSheet } from '@/features/friends/PublicProfileSheet'
+import { TourHost } from '@/features/guide/TourHost'
 
 /** Applies settings, fades/slides each new screen in, and offers app updates. */
 export function RootLayout() {
@@ -36,6 +37,7 @@ export function RootLayout() {
       <TrialWelcome />
       <FriendRequestToast />
       <PublicProfileSheet />
+      <TourHost />
     </>
   )
 }

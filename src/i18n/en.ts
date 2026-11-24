@@ -524,6 +524,145 @@ export const en: Dictionary = {
     intimate: { name: 'Very intimate', description: 'For those who dare everything' },
     noreturn: { name: 'Point of no return', description: 'No way back' },
   },
+  tour: {
+    next: 'Next',
+    skip: 'Skip',
+    finish: 'Done',
+    counter: '{n} / {total}',
+    help: 'Screen guide',
+    rulesLink: 'Game rules',
+    replay: 'Replay the guide',
+    replayHint: 'The guide will show again on each screen.',
+    home: [
+      {
+        target: 'play-here',
+        title: 'Around the table',
+        text: 'One phone for the whole group: pass it from hand to hand.',
+      },
+      {
+        target: 'create-room',
+        title: 'Create a room',
+        text: 'Everyone plays on their own phone, together or apart. Invite others with a code.',
+      },
+      {
+        target: 'join-room',
+        title: 'Join',
+        text: 'A friend created a room? Enter their code or scan their QR code.',
+      },
+      {
+        target: 'nav',
+        title: 'Tabs',
+        text: 'Players, your own dares and your profile (friends, stats, settings).',
+      },
+      {
+        target: 'rules',
+        title: 'How to play',
+        text: 'The rules, step by step. Replay this guide with the “?” button.',
+      },
+    ],
+    lobby: [
+      {
+        target: 'room-code',
+        title: 'Room code',
+        text: 'Share it (link or QR code) so your friends can join.',
+      },
+      {
+        target: 'categories',
+        title: 'Categories',
+        text: 'Pick the tone of the dares. The crown marks Premium content.',
+      },
+      { target: 'rounds', title: 'Rounds', text: 'Each player plays once per round.' },
+      {
+        target: 'start-game',
+        title: 'Start the game',
+        text: 'As soon as everyone is in, off you go.',
+      },
+    ],
+    game: [
+      {
+        target: 'turn-guide',
+        title: 'Turn steps',
+        text: 'Bottle, choice, dares, card, verdict. The yellow strip says who plays.',
+      },
+      {
+        target: 'card',
+        title: 'The dare',
+        text: 'The turned card, with the name of who wrote it.',
+      },
+      {
+        target: 'vote',
+        title: 'The verdict',
+        text: 'The others say “Convinced” or “Not convinced”.',
+      },
+      {
+        target: 'done',
+        title: 'Done',
+        text: 'After at least one verdict, the player taps here to score.',
+      },
+      {
+        target: 'dock-chat',
+        title: 'Chat',
+        text: 'Write to the others, send a voice note or a photo.',
+      },
+      { target: 'dock-mic', title: 'Mic', text: 'Talk live with the players (Premium).' },
+      {
+        target: 'dock-react',
+        title: 'React',
+        text: 'Send an emoji that shows on everyone’s screen.',
+      },
+      {
+        target: 'dock-players',
+        title: 'Players',
+        text: 'Who is playing, their profile and friend requests.',
+      },
+    ],
+  },
+  rules: {
+    title: 'How to play',
+    intro: 'Everything you need, in five steps.',
+    startTour: 'Start the guide',
+    points: 'Truth done: {truth} pts · Dare done: {dare} pts · Skip: {skip} pt',
+    sections: [
+      {
+        title: 'The goal',
+        lines: [
+          'On your turn, pick Truth (answer a question) or Dare (take on a challenge).',
+          'Each one you complete scores points. Most points wins.',
+        ],
+      },
+      {
+        title: 'Around the table',
+        lines: [
+          'One phone: add players in the order you sit.',
+          'Spin the bottle; the chosen player picks Truth or Dare and reads the card aloud.',
+          'Then pass the phone on.',
+        ],
+      },
+      {
+        title: 'Apart (a room)',
+        lines: [
+          'The host creates the room and shares the code; everyone joins on their phone.',
+          'The bottle picks a player, who chooses Truth or Dare.',
+          'The others write them a dare; they turn a card at random.',
+          'They answer or do it, the others give their verdict, then they tap “Done”.',
+        ],
+      },
+      {
+        title: 'Points and skips',
+        lines: [
+          'You can skip your turn a limited number of times.',
+          'If a player stops answering, the host can skip their turn.',
+        ],
+      },
+      {
+        title: 'Premium',
+        lines: [
+          'The gold crown marks Premium: extra categories, mic, live video, photos, rooms of 12.',
+          'The host’s Premium covers the whole room.',
+        ],
+      },
+    ],
+  },
   common: {
     back: 'Back',
     cancel: 'Cancel',
