@@ -1,3 +1,4 @@
+import { isBot } from '@/content/axis'
 import { useState } from 'react'
 import { Check, Clock, UserPlus } from 'lucide-react'
 import { useAccount } from '@/features/account/accountStore'
@@ -17,7 +18,8 @@ export function AddFriendButton({ person }: { person: Friend }) {
   const sent = useSocial((h) => h.requests.some((r) => r.toId === person.id))
   const incoming = useSocial((h) => h.requests.find((r) => r.fromId === person.id))
   const [justSent, setJustSent] = useState(false)
-  if (!selfId || selfId === person.id) return null
+  // Axis, the game's AI, is nobody's friend request.
+  if (!selfId || selfId === person.id || isBot(person.id)) return null
 
   if (isFriend) {
     return (

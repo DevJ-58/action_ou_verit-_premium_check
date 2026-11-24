@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router'
 import { motion } from 'motion/react'
-import { Button, KenteBand, springs, Wordmark } from '@/design-system'
+import { Avatar, Button, KenteBand, springs, Wordmark } from '@/design-system'
+import { AXIS_AVATAR } from '@/content/axis'
 import { hasResumableGame } from '@/features/game/resumable'
 import { TourButton } from '@/features/guide/TourButton'
 import { useAutoTour } from '@/features/guide/useAutoTour'
@@ -84,6 +85,14 @@ export function HomeScreen() {
                   compact
                 />
               </div>
+              <EntryLink
+                to="/salon/nouveau?ia=1"
+                tour="play-ai"
+                emoji="game"
+                icon={<Avatar name="Axis" avatarId={AXIS_AVATAR} size="md" />}
+                title={t.bot.playWith}
+                hint={t.bot.playWithHint}
+              />
               <Link
                 to="/regles"
                 data-tour="rules"

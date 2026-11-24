@@ -550,6 +550,11 @@ export const en: Dictionary = {
         text: 'A friend created a room? Enter their code or scan their QR code.',
       },
       {
+        target: 'play-ai',
+        title: 'Play with the AI',
+        text: 'Axis, your virtual friend, plays with you even when you’re alone. He chats too.',
+      },
+      {
         target: 'nav',
         title: 'Tabs',
         text: 'Players, your own dares and your profile (friends, stats, settings).',
@@ -663,6 +668,16 @@ export const en: Dictionary = {
         ],
       },
     ],
+  },
+  bot: {
+    playWith: 'Play with the AI',
+    playWithHint: 'Axis plays with you, any time',
+    add: 'Add Axis',
+    addHint: 'The AI plays with you',
+    remove: 'Remove {name}',
+    removeShort: 'Remove',
+    badge: 'AI',
+    bio: 'I’m Axis, the game’s AI. I play, vote and chat. I’m not a real player, but I play for real! 😎',
   },
   common: {
     back: 'Back',

@@ -557,6 +557,11 @@ export const fr = {
         text: 'Un ami a créé un salon ? Entre son code ou scanne son QR code.',
       },
       {
+        target: 'play-ai',
+        title: 'Jouer avec l’IA',
+        text: 'Axis, l’ami virtuel, joue avec toi même quand tu es seul. Il parle aussi dans le chat.',
+      },
+      {
         target: 'nav',
         title: 'Les onglets',
         text: 'Joueurs, tes défis perso et ton profil (amis, stats, réglages).',
@@ -674,6 +679,16 @@ export const fr = {
         ],
       },
     ],
+  },
+  bot: {
+    playWith: 'Jouer avec l’IA',
+    playWithHint: 'Axis joue avec toi, à tout moment',
+    add: 'Ajouter Axis',
+    addHint: 'L’IA joue avec vous',
+    remove: 'Retirer {name}',
+    removeShort: 'Retirer',
+    badge: 'IA',
+    bio: 'Je suis Axis, l’IA du jeu. Je joue, je vote et je parle dans le chat. Je ne suis pas un vrai joueur, mais je joue pour de vrai ! 😎',
   },
   common: {
     back: 'Retour',

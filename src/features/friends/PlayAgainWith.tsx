@@ -1,3 +1,4 @@
+import { isBot } from '@/content/axis'
 import { Avatar } from '@/design-system'
 import { useAccount } from '@/features/account/accountStore'
 import type { Member } from '@/features/room/types'
@@ -10,7 +11,7 @@ import { openProfile } from './profileViewer'
 export function PlayAgainWith({ members }: { members: Member[] }) {
   const t = useT()
   const selfId = useAccount((s) => s.session?.profile.id)
-  const others = members.filter((m) => m.id !== selfId)
+  const others = members.filter((m) => m.id !== selfId && !isBot(m.id))
   if (!selfId || others.length === 0) return null
   return (
     <section aria-label={t.friends.again} className="flex flex-col gap-3">

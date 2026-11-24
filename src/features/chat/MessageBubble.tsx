@@ -1,3 +1,5 @@
+import { isBot } from '@/content/axis'
+import { BotBadge } from '@/features/bot/BotBadge'
 import { Avatar } from '@/design-system'
 import type { Member } from '@/features/room/types'
 import { format } from '@/i18n/format'
@@ -38,7 +40,12 @@ export function MessageBubble({ message, author, mine, resolveVoice }: MessageBu
           mine ? 'rounded-br-md bg-gold text-on-gold' : 'rounded-bl-md bg-seat text-text',
         )}
       >
-        {mine ? null : <span className="text-xs font-extrabold text-gold-text">{name}</span>}
+        {mine ? null : (
+          <span className="flex items-center gap-1.5 text-xs font-extrabold text-gold-text">
+            {name}
+            {isBot(message.from) ? <BotBadge /> : null}
+          </span>
+        )}
         {message.text ? (
           <p className="text-[15px] leading-snug break-words whitespace-pre-wrap">{message.text}</p>
         ) : null}

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { motion } from 'motion/react'
@@ -8,6 +9,8 @@ import { cn } from '@/lib/cn'
 export interface EntryLinkProps {
   to: string
   emoji: EmojiName
+  /** Shown instead of the emoji (e.g. Axis's face). */
+  icon?: ReactNode
   title: string
   hint: string
   primary?: boolean
@@ -28,6 +31,7 @@ export function EntryLink({
   primary = false,
   compact = false,
   tour,
+  icon,
 }: EntryLinkProps) {
   return (
     <MotionLink
@@ -47,7 +51,7 @@ export function EntryLink({
           primary ? 'bg-on-gold/10' : 'bg-seat',
         )}
       >
-        <Emoji name={emoji} size={34} />
+        {icon ?? <Emoji name={emoji} size={34} />}
       </span>
       <span className="flex flex-1 flex-col">
         <span className={cn('font-extrabold', compact ? 'text-base leading-tight' : 'text-lg')}>

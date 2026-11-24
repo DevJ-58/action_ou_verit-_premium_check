@@ -1,3 +1,4 @@
+import { isBot } from '@/content/axis'
 import { Emoji } from '@/design-system'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
@@ -34,6 +35,14 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
             hostId={room.hostId}
             selfId={state.self.id}
             online={state.online}
+            {...(state.role === 'host'
+              ? {
+                  onBot: (on: boolean) => state.setBot(on),
+                  canAddBot:
+                    !room.members.some((m) => isBot(m.id)) &&
+                    room.members.length < roomCapacity(room),
+                }
+              : {})}
           />
           <InviteFriendsButton code={room.code} memberIds={room.members.map((m) => m.id)} />
         </section>

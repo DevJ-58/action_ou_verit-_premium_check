@@ -1,3 +1,5 @@
+import { isBot } from '@/content/axis'
+import { BotBadge } from '@/features/bot/BotBadge'
 import { useState } from 'react'
 import { UsersRound } from 'lucide-react'
 import { Avatar, Sheet } from '@/design-system'
@@ -59,6 +61,12 @@ export function GamePlayersButton({ members, selfId, online }: GamePlayersButton
                 </span>
                 <span className="truncate font-bold">
                   {m.pseudo}
+                  {isBot(m.id) ? (
+                    <>
+                      {' '}
+                      <BotBadge />
+                    </>
+                  ) : null}
                   {m.id === selfId ? (
                     <span className="font-semibold text-muted"> · {t.room.you}</span>
                   ) : null}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Avatar, Sheet } from '@/design-system'
+import { AXIS_AVATAR, isBot } from '@/content/axis'
+import { BotBadge } from '@/features/bot/BotBadge'
 import { StatsGrid } from '@/features/profile/StatsGrid'
 import { useT } from '@/i18n/useT'
 import { AddFriendButton } from './AddFriendButton'
@@ -14,7 +16,7 @@ export function PublicProfileSheet() {
   const [loaded, setLoaded] = useState<{ id: string; profile: PublicProfile | null } | null>(null)
 
   useEffect(() => {
-    if (!id) return
+    if (!id || isBot(id)) return
     let alive = true
     void getSocial()
       .publicProfile(id)
@@ -26,6 +28,19 @@ export function PublicProfileSheet() {
   }, [id])
 
   const profile = loaded?.id === id ? loaded.profile : undefined
+  if (id && isBot(id)) {
+    return (
+      <Sheet open onClose={closeProfile} title="Axis">
+        <header className="flex flex-col items-center gap-3 pb-4 text-center">
+          <Avatar name="Axis" avatarId={AXIS_AVATAR} size="xl" />
+          <h3 className="flex items-center gap-2 font-display text-[34px] leading-none">
+            Axis <BotBadge />
+          </h3>
+          <p className="max-w-xs text-muted">{t.bot.bio}</p>
+        </header>
+      </Sheet>
+    )
+  }
   return (
     <Sheet open={id !== null} onClose={closeProfile} title={profile?.pseudo ?? t.profile.title}>
       {profile === undefined ? (

@@ -63,3 +63,9 @@ test('going to another screen closes the guide', async () => {
   await act(() => router.navigate('/regles'))
   expect(tourStore.getState().active).toBeNull()
 })
+
+test('“Jouer avec l’IA” opens a room with Axis already seated', async () => {
+  renderHome()
+  const link = await screen.findByRole('link', { name: /jouer avec l’ia/i })
+  expect(link).toHaveAttribute('href', '/salon/nouveau?ia=1')
+})
