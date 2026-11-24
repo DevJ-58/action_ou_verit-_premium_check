@@ -162,6 +162,9 @@ export function Tour({ steps, onClose, footer }: TourProps) {
           </span>
         </div>
         <p className="text-sm leading-normal text-muted">{step.text}</p>
+        <p role="status" className="sr-only">
+          {`${step.title}. ${step.text} ${format(t.tour.counter, { n, total })}`}
+        </p>
         {last && footer ? footer : null}
         <div className="flex flex-row-reverse items-center justify-between gap-3">
           <Button size="md" onClick={() => (last ? onClose() : setWanted(spot.index + 1))}>

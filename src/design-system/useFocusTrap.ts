@@ -3,6 +3,9 @@ import { useEffect, type RefObject } from 'react'
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
+/** Open windows, oldest first: Escape and Tab belong to the last one. */
+const stack: object[] = []
+
 /**
  * While `active`, keeps keyboard focus inside `ref`, closes on Escape,
  * and gives focus back to the previously focused element afterwards.
@@ -18,8 +21,11 @@ export function useFocusTrap(
     const container = ref.current
     const first = container?.querySelector<HTMLElement>(FOCUSABLE)
     ;(first ?? container)?.focus()
+    const me = {}
+    stack.push(me)
 
     function onKeyDown(event: KeyboardEvent) {
+      if (stack[stack.length - 1] !== me) return
       if (event.key === 'Escape') {
         event.stopPropagation()
         onEscape()
@@ -42,6 +48,7 @@ export function useFocusTrap(
     document.addEventListener('keydown', onKeyDown)
     return () => {
       document.removeEventListener('keydown', onKeyDown)
+      stack.splice(stack.indexOf(me), 1)
       previous?.focus?.()
     }
   }, [active, onEscape, ref])

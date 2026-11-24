@@ -103,3 +103,19 @@ test('when the element shown leaves the page, the guide moves on by itself', asy
   )
   expect(await screen.findByRole('dialog', { name: 'Second' })).toBeInTheDocument()
 })
+
+test('a step whose element is hidden by the page style is skipped', async () => {
+  const proto = HTMLElement.prototype as { checkVisibility?: () => boolean }
+  proto.checkVisibility = function (this: HTMLElement) {
+    return this.dataset.tour !== 'a'
+  }
+  page()
+  expect(await screen.findByRole('dialog', { name: 'Second' })).toHaveTextContent('1 / 1')
+  delete proto.checkVisibility
+})
+
+test('each new step is announced to screen readers', async () => {
+  page()
+  await userEvent.click(await screen.findByRole('button', { name: 'Suivant' }))
+  await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(/Second.*2 \/ 2/))
+})

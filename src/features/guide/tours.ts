@@ -5,5 +5,9 @@ export interface TourStep {
   text: string
 }
 
-export const findTarget = (target: string) =>
-  document.querySelector<HTMLElement>(`[data-tour="${target}"]`)
+/** The element of a step, if it is on the page and not hidden by its style. */
+export function findTarget(target: string): HTMLElement | null {
+  const el = document.querySelector<HTMLElement>(`[data-tour="${target}"]`)
+  // Browsers without checkVisibility (and tests) count any element in the page.
+  return el && (el.checkVisibility?.() ?? true) ? el : null
+}

@@ -50,3 +50,15 @@ test('waits while another window (sheet, dialog) is open, then starts', () => {
   act(() => vi.advanceTimersByTime(3000))
   expect(tourStore.getState().active).toBe('home')
 })
+
+test('gives up for now if a window stays open a long time (it will try on the next visit)', () => {
+  const sheet = document.createElement('div')
+  sheet.setAttribute('role', 'dialog')
+  document.body.append(sheet)
+  renderHook(() => useAutoTour('home'))
+  act(() => vi.advanceTimersByTime(60_000))
+  sheet.remove()
+  act(() => vi.advanceTimersByTime(5_000))
+  expect(tourStore.getState().active).toBeNull()
+  expect(vi.getTimerCount()).toBe(0)
+})
