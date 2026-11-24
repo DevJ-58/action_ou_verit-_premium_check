@@ -14,7 +14,7 @@ toujours disponible, qui joue vraiment et parle dans le chat.
 - L'IA joue tout le tour : tourne la bouteille, choisit Vérité/Action, retourne une carte, répond (vérité) ou raconte qu'elle a relevé le défi (action), écrit des défis pour les autres (pioche dans les défis du jeu, catégories du salon), vote (presque toujours « Validé »), passe parfois son tour, réagit avec des emojis.
 - Elle **parle dans le chat** : commente les moments clés (choix, défi reçu, verdict, fin de partie) et répond quand on la mentionne ou qu'on la salue. Pas plus d'un message toutes les ~8 s pour ne pas envahir.
 - Délais « humains » (1,5 à 4 s) avant chaque action ; les minuteurs du salon restent respectés.
-- Toujours identifiable : prénom **Zouzou**, avatar robot, badge **IA** partout (table, liste, chat, profil). Pas de demande d'ami possible.
+- Toujours identifiable : prénom **Axis**, son visage (6 expressions fournies par le porteur), badge **IA** partout (table, liste, chat, profil). Pas de demande d'ami possible.
 
 ## Non-objectifs
 - Pas de vraie compréhension du langage ; pas de vidéo, micro ou photo pour l'IA.
@@ -36,3 +36,6 @@ toujours disponible, qui joue vraiment et parle dans le chat.
 - Les comptes de stats ignorent déjà les identifiants non-uuid : rien à changer côté serveur.
 - Textes FR + EN ; environ 15 répliques par situation pour éviter les répétitions.
 - Gratuit pour tous (pas de couronne).
+- Expressions d'Axis (image du porteur découpée en 6) : 1 content (défaut), 2 parle, 3 calme, 4 taquin, 5 sceptique, 6 rit. Quand il écrit dans le chat, sa bouche s'anime ~2 s (2→3→1) ; son humeur suit le moment (taquin quand il pose un défi, sceptique quand il hésite à valider, rit quand quelqu'un passe son tour).
+- Ses choix aléatoires dépendent du tour (graine = tour), pour qu'il ne change pas d'avis si l'écran de l'hôte se rafraîchit.
+- Axis ne devient jamais hôte ; si l'hôte part et qu'il ne reste qu'Axis, le salon se ferme.
