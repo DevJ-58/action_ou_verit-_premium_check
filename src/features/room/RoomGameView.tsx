@@ -21,7 +21,7 @@ import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
 import { FloatingReactions } from './game/FloatingReactions'
 import { TourButton } from '@/features/guide/TourButton'
-import { useAutoTour } from '@/features/guide/useAutoTour'
+import { useAutoTour, useEndTourWhen } from '@/features/guide/useAutoTour'
 import { GameDock } from './game/GameDock'
 import { TurnGuideBar } from './game/TurnGuideBar'
 import { TurnStage } from './game/TurnStage'
@@ -49,6 +49,7 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   useReadDare(game)
   // The guide waits for the turned card, where most of what it shows is on screen.
   useAutoTour('game', game.phase === 'challenge')
+  useEndTourWhen('game', game.phase !== 'challenge')
   const voices = useMemo(() => {
     const all = new Map(voice.remote)
     if (voice.local) all.set(state.self.id, voice.local)

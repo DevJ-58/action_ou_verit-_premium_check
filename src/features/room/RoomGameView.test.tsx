@@ -222,3 +222,23 @@ test('the game guide waits while the bottle has not chosen yet', async () => {
   await new Promise((r) => setTimeout(r, 900))
   expect(tourStore.getState().active).toBeNull()
 })
+
+test('the game guide closes when the turn moves on, so it never hides the next one', async () => {
+  const { settingsStore } = await import('@/features/settings/settingsStore')
+  const { startTour, stopTour, tourStore } = await import('@/features/guide/tourStore')
+  stopTour()
+  const g = gameAt(() => [{ type: 'CHOOSE_KIND', kind: 'dare' }, { type: 'CLOSE_PROPOSALS' }])
+  const { render } = await import('@testing-library/react')
+  const { MemoryRouter } = await import('react-router')
+  const { RoomGameView } = await import('./RoomGameView')
+  const view = (state: ReturnType<typeof stateFor>) => (
+    <MemoryRouter>
+      <RoomGameView state={state} onLeave={() => {}} />
+    </MemoryRouter>
+  )
+  const { rerender } = render(view(stateFor('a', g)))
+  startTour('game')
+  rerender(view(stateFor('a', proposing())))
+  await waitFor(() => expect(tourStore.getState().active).toBeNull())
+  expect(settingsStore.getState().toursSeen).toContain('game')
+})

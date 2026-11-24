@@ -33,6 +33,8 @@ export interface SettingsState extends SettingsValues {
   setMusic(music: boolean): void
   confirmAge(): void
   markTourSeen(name: TourName): void
+  /** This guide will start by itself again next time its screen shows. */
+  forgetTour(name: TourName): void
   resetTours(): void
 }
 
@@ -79,6 +81,7 @@ export function createSettingsStore() {
         confirmAge: () => set({ ageConfirmedAt: new Date().toISOString() }),
         markTourSeen: (name) =>
           set((s) => (s.toursSeen.includes(name) ? s : { toursSeen: [...s.toursSeen, name] })),
+        forgetTour: (name) => set((s) => ({ toursSeen: s.toursSeen.filter((n) => n !== name) })),
         resetTours: () => set({ toursSeen: [] }),
       }),
       {

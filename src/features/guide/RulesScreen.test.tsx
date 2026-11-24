@@ -1,4 +1,4 @@
-import { act, render, screen, within } from '@testing-library/react'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '@/app/router'
@@ -36,7 +36,8 @@ test('the points shown are the game’s own', async () => {
 test('“Lancer le guide” goes home and starts its guide', async () => {
   stopTour()
   renderRules()
+  act(() => settingsStore.setState({ toursSeen: ['home'] }))
   await userEvent.click(await screen.findByRole('button', { name: /lancer le guide/i }))
-  expect(tourStore.getState().active).toBe('home')
+  await waitFor(() => expect(tourStore.getState().active).toBe('home'))
   act(() => stopTour())
 })

@@ -12,9 +12,13 @@ const steps: TourStep[] = [
 function page(onClose = vi.fn()) {
   render(
     <>
-      <button data-tour="a">A</button>
-      <button data-tour="b">B</button>
-      <Tour steps={steps} onClose={onClose} />
+      <button key="a" data-tour="a">
+        A
+      </button>
+      <button key="b" data-tour="b">
+        B
+      </button>
+      <Tour key="tour" steps={steps} onClose={onClose} />
     </>,
   )
   return onClose
@@ -53,18 +57,49 @@ test('the guide follows a target that moves away: it goes on to the next one', a
   const onClose = vi.fn()
   const { rerender } = render(
     <>
-      <button data-tour="a">A</button>
-      <button data-tour="b">B</button>
-      <Tour steps={steps} onClose={onClose} />
+      <button key="a" data-tour="a">
+        A
+      </button>
+      <button key="b" data-tour="b">
+        B
+      </button>
+      <Tour key="tour" steps={steps} onClose={onClose} />
     </>,
   )
   await screen.findByRole('dialog', { name: 'Premier' })
   rerender(
     <>
-      <button data-tour="b">B</button>
-      <Tour steps={steps} onClose={onClose} />
+      <button key="b" data-tour="b">
+        B
+      </button>
+      <Tour key="tour" steps={steps} onClose={onClose} />
     </>,
   )
   window.dispatchEvent(new Event('resize'))
+  expect(await screen.findByRole('dialog', { name: 'Second' })).toBeInTheDocument()
+})
+
+test('when the element shown leaves the page, the guide moves on by itself', async () => {
+  const onClose = vi.fn()
+  const { rerender } = render(
+    <>
+      <button key="a" data-tour="a">
+        A
+      </button>
+      <button key="b" data-tour="b">
+        B
+      </button>
+      <Tour key="tour" steps={steps} onClose={onClose} />
+    </>,
+  )
+  await screen.findByRole('dialog', { name: 'Premier' })
+  rerender(
+    <>
+      <button key="b" data-tour="b">
+        B
+      </button>
+      <Tour key="tour" steps={steps} onClose={onClose} />
+    </>,
+  )
   expect(await screen.findByRole('dialog', { name: 'Second' })).toBeInTheDocument()
 })

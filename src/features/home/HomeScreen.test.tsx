@@ -52,3 +52,14 @@ test('the “?” button starts the home guide; “Comment jouer” leads to the
     expect(document.querySelector(`[data-tour="${target}"]`)).not.toBeNull()
   }
 })
+
+test('going to another screen closes the guide', async () => {
+  const { startTour, stopTour, tourStore } = await import('@/features/guide/tourStore')
+  stopTour()
+  const router = createMemoryRouter(routes, { initialEntries: ['/'] })
+  render(<RouterProvider router={router} />)
+  await screen.findByRole('link', { name: /comment jouer/i })
+  act(() => startTour('home'))
+  await act(() => router.navigate('/regles'))
+  expect(tourStore.getState().active).toBeNull()
+})

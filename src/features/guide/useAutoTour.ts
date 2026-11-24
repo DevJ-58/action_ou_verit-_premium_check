@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { settingsStore, type TourName } from '@/features/settings/settingsStore'
-import { startTour, tourStore } from './tourStore'
+import { endTour, startTour, tourStore } from './tourStore'
 
 const SETTLE_MS = 600
 const RETRY_MS = 1000
@@ -26,4 +26,11 @@ export function useAutoTour(name: TourName, ready = true): void {
     timer = setTimeout(tryStart, SETTLE_MS)
     return () => clearTimeout(timer)
   }, [name, ready])
+}
+
+/** Closes this guide (as seen) once `over` — e.g. the turn it explains has moved on. */
+export function useEndTourWhen(name: TourName, over: boolean): void {
+  useEffect(() => {
+    if (over && tourStore.getState().active === name) endTour()
+  }, [name, over])
 }

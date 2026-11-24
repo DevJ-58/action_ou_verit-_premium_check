@@ -3,7 +3,7 @@ import { Button, Screen } from '@/design-system'
 import { pointsFor } from '@/engine'
 import { format } from '@/i18n/format'
 import { useT } from '@/i18n/useT'
-import { startTour } from './tourStore'
+import { settingsStore } from '@/features/settings/settingsStore'
 
 /** How to play, in five numbered steps. */
 export function RulesScreen() {
@@ -45,8 +45,8 @@ export function RulesScreen() {
         <Button
           size="lg"
           onClick={() => {
+            settingsStore.getState().forgetTour('home')
             navigate('/')
-            startTour('home')
           }}
         >
           {t.rules.startTour}

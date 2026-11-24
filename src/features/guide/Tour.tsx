@@ -16,10 +16,22 @@ interface Spot {
   /** Index in `steps` of the step shown. */
   index: number
   rect: { top: number; left: number; width: number; height: number }
+  bubbleHeight: number
 }
 
+const sameSpot = (a: Spot | null, b: Spot) =>
+  a !== null &&
+  a.index === b.index &&
+  a.bubbleHeight === b.bubbleHeight &&
+  a.rect.top === b.rect.top &&
+  a.rect.left === b.rect.left &&
+  a.rect.width === b.rect.width &&
+  a.rect.height === b.rect.height
+
 const PAD = 8
-const BUBBLE_ROOM = 220
+const MARGIN = 16
+/** Height assumed for the bubble before it has been measured once. */
+const BUBBLE_GUESS = 240
 
 /** Next step at or after `from` whose element is on screen, or -1. */
 function nextPresent(steps: readonly TourStep[], from: number): number {
@@ -45,6 +57,14 @@ export function Tour({ steps, onClose, footer }: TourProps) {
   useEffect(() => {
     let scrolled = -1
     let frame = 0
+    let watched: HTMLElement | null = null
+    // The page changes under the guide (next turn, a new answer…): it follows.
+    const resized: Pick<ResizeObserver, 'observe' | 'unobserve' | 'disconnect'> =
+      typeof ResizeObserver === 'undefined'
+        ? { observe() {}, unobserve() {}, disconnect() {} }
+        : new ResizeObserver(() => later())
+    const changed = new MutationObserver(() => later())
+    changed.observe(document.body, { childList: true, subtree: true })
     const measure = () => {
       const index = nextPresent(steps, wanted)
       if (index < 0) {
@@ -53,12 +73,23 @@ export function Tour({ steps, onClose, footer }: TourProps) {
         return
       }
       const el = findTarget(steps[index]!.target)!
+      if (watched !== el) {
+        if (watched) resized.unobserve(watched)
+        resized.observe(el)
+        watched = el
+      }
+      if (bubble.current) resized.observe(bubble.current)
       if (scrolled !== index) {
         scrolled = index
         el.scrollIntoView?.({ block: 'center', behavior: 'instant' })
       }
       const r = el.getBoundingClientRect()
-      setSpot({ index, rect: { top: r.top, left: r.left, width: r.width, height: r.height } })
+      const next: Spot = {
+        index,
+        rect: { top: r.top, left: r.left, width: r.width, height: r.height },
+        bubbleHeight: bubble.current?.offsetHeight || BUBBLE_GUESS,
+      }
+      setSpot((current) => (sameSpot(current, next) ? current : next))
     }
     const later = () => {
       cancelAnimationFrame(frame)
@@ -69,6 +100,8 @@ export function Tour({ steps, onClose, footer }: TourProps) {
     window.addEventListener('scroll', later, true)
     window.visualViewport?.addEventListener('resize', later)
     return () => {
+      resized.disconnect()
+      changed.disconnect()
       cancelAnimationFrame(frame)
       window.removeEventListener('resize', later)
       window.removeEventListener('scroll', later, true)
@@ -90,17 +123,18 @@ export function Tour({ steps, onClose, footer }: TourProps) {
   // The ring stays inside the screen, even around full-width elements.
   const left = Math.max(4, rect.left - PAD)
   const right = Math.min(window.innerWidth - 4, rect.left + rect.width + PAD)
-  const below = rect.top + rect.height + PAD + BUBBLE_ROOM < height
-  const above = rect.top - PAD - BUBBLE_ROOM > 0
+  const room = spot.bubbleHeight + PAD + 8
+  const below = rect.top + rect.height + room + MARGIN <= height
+  const above = rect.top - room - MARGIN >= 0
+  // Too tall to fit beside its element (a card, a grid): the bubble stays at the bottom.
   const place = below
     ? { top: rect.top + rect.height + PAD + 8 }
     : above
       ? { bottom: height - rect.top + PAD + 8 }
-      : { bottom: 16 }
+      : { bottom: MARGIN }
 
   return (
-    <div className="fixed inset-0 z-[60] overflow-hidden">
-      <div className="absolute inset-0" aria-hidden="true" />
+    <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute rounded-2xl ring-2 ring-gold transition-all duration-300 motion-reduce:transition-none"
@@ -115,9 +149,8 @@ export function Tour({ steps, onClose, footer }: TourProps) {
       <div
         ref={bubble}
         role="dialog"
-        aria-modal="true"
         aria-labelledby={titleId}
-        className="absolute inset-x-4 mx-auto flex max-w-sm flex-col gap-3 rounded-[24px] border border-line bg-bg p-5 shadow-card"
+        className="pointer-events-auto absolute inset-x-4 mx-auto flex max-w-sm flex-col gap-3 rounded-[24px] border border-line bg-bg p-5 shadow-card"
         style={place}
       >
         <div className="flex items-baseline justify-between gap-3">
