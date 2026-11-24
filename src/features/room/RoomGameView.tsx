@@ -20,6 +20,7 @@ import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
 import { FloatingReactions } from './game/FloatingReactions'
+import { useBotChat, useBotDriver } from '@/features/bot/useBotDriver'
 import { TourButton } from '@/features/guide/TourButton'
 import { useAutoTour, useEndTourWhen } from '@/features/guide/useAutoTour'
 import { GameDock } from './game/GameDock'
@@ -45,6 +46,8 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   const game = room.game!
   useRoomFeedback(room, state.self.id)
   const chat = useRoomChat(room.code, state.self.id)
+  useBotDriver(state, chat)
+  useBotChat(room, chat)
   const voice = useVoiceRoom(state)
   useReadDare(game)
   // The guide waits for the turned card, where most of what it shows is on screen.

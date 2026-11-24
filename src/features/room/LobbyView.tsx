@@ -4,6 +4,7 @@ import { useT } from '@/i18n/useT'
 import { InviteFriendsButton } from '@/features/friends/InviteFriendsButton'
 import { roomCapacity, roomIsPremium } from './applyIntent'
 import { PremiumMark } from '@/features/premium/PremiumMark'
+import { useBotDriver } from '@/features/bot/useBotDriver'
 import { useAutoTour } from '@/features/guide/useAutoTour'
 import { HostSetup } from './HostSetup'
 import { InviteCard } from './InviteCard'
@@ -16,6 +17,7 @@ export function LobbyView({ state }: { state: RoomStoreState }) {
   const room = state.room!
   const host = room.members.find((m) => m.id === room.hostId)
   useAutoTour('lobby')
+  useBotDriver(state)
   return (
     <div className="grid gap-8 min-[900px]:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] min-[900px]:gap-x-12">
       <div className="flex flex-col gap-8">

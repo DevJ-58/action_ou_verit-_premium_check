@@ -20,6 +20,8 @@ export interface ChatState {
   sendVoice(blob: Blob, ms: number): Promise<boolean>
   sendPhoto(blob: Blob, width: number, height: number): Promise<boolean>
   setOpen(open: boolean): void
+  /** Adds a message that did not come through the chat (Axis's lines); false if already there. */
+  receive(message: ChatMessage, incoming: boolean): boolean
 }
 
 export type ChatStore = ReturnType<typeof createChatStore>
@@ -34,12 +36,13 @@ export function createChatStore(input: {
   const { transport, code, selfId, onIncoming } = input
   return createStore<ChatState>()((set, get) => {
     const add = (message: ChatMessage, incoming: boolean) => {
-      if (get().messages.some((m) => m.id === message.id)) return
+      if (get().messages.some((m) => m.id === message.id)) return false
       set((s) => ({
-        messages: [...s.messages, message].slice(-CHAT_KEPT),
+        messages: [...s.messages, message].sort((a, b) => a.at - b.at).slice(-CHAT_KEPT),
         unread: incoming && !s.open ? s.unread + 1 : s.unread,
       }))
       if (incoming) onIncoming?.(message)
+      return true
     }
     const send = async (outgoing: Omit<ChatMessage, 'id' | 'from' | 'at'>) => {
       try {
@@ -89,6 +92,7 @@ export function createChatStore(input: {
         }
       },
       setOpen: (open) => set(open ? { open, unread: 0 } : { open }),
+      receive: (message, incoming) => add(message, incoming),
     }
   })
 }
