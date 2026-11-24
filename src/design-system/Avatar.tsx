@@ -1,4 +1,6 @@
+import { AXIS_AVATAR } from '@/content/axis'
 import { avatarById } from '@/content/avatars'
+import { AxisFace } from './AxisFace'
 import { cn } from '@/lib/cn'
 
 export type AvatarRole = 'none' | 'answerer' | 'asker'
@@ -40,6 +42,13 @@ export function Avatar({ name, avatarId, size = 'md', highlight = 'none' }: Avat
     roles[highlight],
     fills[highlight],
   )
+  if (avatarId === AXIS_AVATAR) {
+    return (
+      <span className={cn(base, 'overflow-hidden')}>
+        <AxisFace name={name} />
+      </span>
+    )
+  }
   if (avatar) {
     return (
       <span className={cn(base, 'overflow-hidden')}>
