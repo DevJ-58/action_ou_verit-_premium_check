@@ -31,7 +31,7 @@ export function VoteBar({ votes, mine, onVote }: VoteBarProps) {
     </button>
   )
   return (
-    <div className="flex w-full max-w-sm flex-col items-center gap-2">
+    <div data-tour="vote" className="flex w-full max-w-sm flex-col items-center gap-2">
       {onVote ? (
         <div role="group" aria-label={t.roomGame.voteLabel} className="flex w-full gap-2">
           {choice(true, t.roomGame.voteOk, 'clap')}

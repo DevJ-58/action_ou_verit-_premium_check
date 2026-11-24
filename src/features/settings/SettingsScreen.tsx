@@ -13,6 +13,7 @@ import { AvatarGallery } from './AvatarGallery'
 import { BioField } from './BioField'
 import { PseudoField } from './PseudoField'
 import { SettingsGroup } from './SettingsGroup'
+import { settingsStore } from './settingsStore'
 
 /** Everything the player can tune: their look, limits, appearance, audio, account. */
 export function SettingsScreen() {
@@ -71,6 +72,23 @@ export function SettingsScreen() {
         <div className="flex flex-col gap-10">
           <AppearanceSection />
           <AudioSection />
+          <SettingsGroup emoji="speech" title={t.rules.title}>
+            <p className="text-sm text-muted">{t.tour.replayHint}</p>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  settingsStore.getState().resetTours()
+                  navigate('/')
+                }}
+              >
+                {t.tour.replay}
+              </Button>
+              <Button variant="ghost" onClick={() => navigate('/regles')}>
+                {t.rules.title}
+              </Button>
+            </div>
+          </SettingsGroup>
           {profile ? (
             <Button
               variant="ghost"

@@ -188,3 +188,37 @@ test('a guide says what happens and who must act; the dock gathers chat, mic, re
     expect(screen.getByRole('button', { name })).toBeInTheDocument()
   }
 })
+
+test('the game guide starts once the card is turned, and every element it shows is marked', async () => {
+  const { settingsStore } = await import('@/features/settings/settingsStore')
+  const { stopTour, tourStore } = await import('@/features/guide/tourStore')
+  stopTour()
+  settingsStore.setState({ toursSeen: [], ageConfirmedAt: '2026-01-01' })
+  const g0 = gameAt(() => [{ type: 'CHOOSE_KIND', kind: 'dare' }, { type: 'CLOSE_PROPOSALS' }])
+  const g = { ...g0, turn: { ...g0.turn!, votes: { [notAnswerer(g0)]: true } } }
+  show(stateFor(g.turn.answererId, g))
+  await waitFor(() => expect(tourStore.getState().active).toBe('game'))
+  for (const target of [
+    'turn-guide',
+    'card',
+    'vote',
+    'done',
+    'dock-chat',
+    'dock-mic',
+    'dock-react',
+    'dock-players',
+  ]) {
+    expect(document.querySelector(`[data-tour="${target}"]`), target).not.toBeNull()
+  }
+  stopTour()
+})
+
+test('the game guide waits while the bottle has not chosen yet', async () => {
+  const { settingsStore } = await import('@/features/settings/settingsStore')
+  const { stopTour, tourStore } = await import('@/features/guide/tourStore')
+  stopTour()
+  settingsStore.setState({ toursSeen: [], ageConfirmedAt: '2026-01-01' })
+  show(stateFor('a', proposing()))
+  await new Promise((r) => setTimeout(r, 900))
+  expect(tourStore.getState().active).toBeNull()
+})

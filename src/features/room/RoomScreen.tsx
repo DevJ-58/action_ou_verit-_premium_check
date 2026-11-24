@@ -4,6 +4,7 @@ import { Emoji, Screen } from '@/design-system'
 import { useT } from '@/i18n/useT'
 import { activeRoomStore, useActiveRoom } from './activeRoom'
 import { joinActiveRoom } from './joinActiveRoom'
+import { TourButton } from '@/features/guide/TourButton'
 import { LobbyView } from './LobbyView'
 import { RoomGameView } from './RoomGameView'
 import type { RoomError } from './types'
@@ -51,7 +52,13 @@ export function RoomScreen() {
     return <div role="status" aria-busy="true" className="min-h-dvh" />
 
   return state.room.status === 'lobby' ? (
-    <Screen wide title={t.room.lobbyTitle} back={leave} backLabel={t.room.leave}>
+    <Screen
+      wide
+      title={t.room.lobbyTitle}
+      back={leave}
+      backLabel={t.room.leave}
+      actions={<TourButton name="lobby" />}
+    >
       <div className="pt-4">
         <LobbyView state={state} />
       </div>

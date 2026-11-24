@@ -101,3 +101,10 @@ describe('Premium looks', () => {
     expect(settingsStore.getState().theme).toBe('kente')
   })
 })
+
+test('“Revoir le guide” makes every guide start again', async () => {
+  act(() => settingsStore.setState({ toursSeen: ['home', 'lobby', 'game'] }))
+  renderSettings()
+  await userEvent.click(await screen.findByRole('button', { name: /revoir le guide/i }))
+  expect(settingsStore.getState().toursSeen).toEqual([])
+})

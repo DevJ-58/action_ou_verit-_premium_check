@@ -38,3 +38,17 @@ test('does not offer to resume when there is no game or it is finished', async (
   await screen.findByRole('link', { name: /jouer sur ce téléphone/i })
   expect(screen.queryByRole('button', { name: /reprendre/i })).not.toBeInTheDocument()
 })
+
+test('the “?” button starts the home guide; “Comment jouer” leads to the rules', async () => {
+  const { stopTour, tourStore } = await import('@/features/guide/tourStore')
+  stopTour()
+  renderHome()
+  const { default: userEvent } = await import('@testing-library/user-event')
+  await userEvent.click(await screen.findByRole('button', { name: /guide de l’écran/i }))
+  expect(tourStore.getState().active).toBe('home')
+  act(() => stopTour())
+  expect(screen.getByRole('link', { name: /comment jouer/i })).toHaveAttribute('href', '/regles')
+  for (const target of ['play-here', 'create-room', 'join-room', 'nav', 'rules']) {
+    expect(document.querySelector(`[data-tour="${target}"]`)).not.toBeNull()
+  }
+})

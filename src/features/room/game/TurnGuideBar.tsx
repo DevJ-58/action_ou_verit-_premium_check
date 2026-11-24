@@ -15,7 +15,7 @@ export function TurnGuideBar({ game, selfId, nameOf }: TurnGuideBarProps) {
   const t = useT()
   const guide = turnGuide(game, selfId, nameOf, t)
   return (
-    <section aria-label={t.guide.label} className="flex flex-col gap-2">
+    <section data-tour="turn-guide" aria-label={t.guide.label} className="flex flex-col gap-2">
       <ol className="flex items-center gap-1">
         {t.guide.steps.map((label, i) => (
           <li key={label} className="flex flex-1 flex-col items-center gap-1">

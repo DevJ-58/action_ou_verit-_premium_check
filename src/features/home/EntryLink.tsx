@@ -13,6 +13,8 @@ export interface EntryLinkProps {
   primary?: boolean
   /** Stacked tile, for two side by side. */
   compact?: boolean
+  /** Marks it for the step-by-step guide. */
+  tour?: string
 }
 
 const MotionLink = motion.create(Link)
@@ -25,10 +27,12 @@ export function EntryLink({
   hint,
   primary = false,
   compact = false,
+  tour,
 }: EntryLinkProps) {
   return (
     <MotionLink
       to={to}
+      data-tour={tour}
       whileTap={{ scale: 0.97 }}
       whileHover={{ y: -2 }}
       className={cn(

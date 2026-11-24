@@ -66,12 +66,14 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
         {live && live.by !== selfId ? (
           <LiveViewerView code={code} selfId={selfId} live={live} name={nameOf(live.by)} />
         ) : null}
-        <ChallengeCard
-          dare={turn.dare}
-          rotation={0}
-          compact
-          byline={format(t.roomGame.by, { name: nameOf(turn.askerId) })}
-        />
+        <div data-tour="card" className="flex w-full justify-center">
+          <ChallengeCard
+            dare={turn.dare}
+            rotation={0}
+            compact
+            byline={format(t.roomGame.by, { name: nameOf(turn.askerId) })}
+          />
+        </div>
       </div>
       <div className="flex w-full flex-col items-center gap-5 min-[900px]:pt-12">
         {turn.answer ? <AnswerBubble answer={turn.answer} name={answerer} /> : null}
@@ -120,6 +122,7 @@ export function ChallengeStage({ state, game, turn, nameOf, extra }: ChallengeSt
               </p>
             ) : null}
             <Button
+              data-tour="done"
               size="lg"
               disabled={verdicts === 0}
               onClick={() => state.act({ type: 'COMPLETE' })}

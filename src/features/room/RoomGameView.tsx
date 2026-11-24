@@ -20,6 +20,8 @@ import { Table } from '@/features/game/Table'
 import { useT } from '@/i18n/useT'
 import { cn } from '@/lib/cn'
 import { FloatingReactions } from './game/FloatingReactions'
+import { TourButton } from '@/features/guide/TourButton'
+import { useAutoTour } from '@/features/guide/useAutoTour'
 import { GameDock } from './game/GameDock'
 import { TurnGuideBar } from './game/TurnGuideBar'
 import { TurnStage } from './game/TurnStage'
@@ -45,6 +47,8 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
   const chat = useRoomChat(room.code, state.self.id)
   const voice = useVoiceRoom(state)
   useReadDare(game)
+  // The guide waits for the turned card, where most of what it shows is on screen.
+  useAutoTour('game', game.phase === 'challenge')
   const voices = useMemo(() => {
     const all = new Map(voice.remote)
     if (voice.local) all.set(state.self.id, voice.local)
@@ -77,9 +81,12 @@ export function RoomGameView({ state, onLeave }: RoomGameViewProps) {
           <span className="text-lg text-text tabular-nums">{game.round}</span>/
           {game.settings.rounds}
         </span>
-        <span className="font-mono text-sm font-bold tracking-[0.2em] text-gold-text">
-          {room.code}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-sm font-bold tracking-[0.2em] text-gold-text max-[359px]:sr-only">
+            {room.code}
+          </span>
+          <TourButton name="game" className="size-10" />
+        </div>
       </header>
       {game.phase !== 'finished' ? (
         <div className="sticky top-0 z-20 -mx-5 bg-bg/95 px-5 pt-3 pb-2 backdrop-blur">

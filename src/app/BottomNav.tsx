@@ -14,6 +14,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label={t.nav.label}
+      data-tour="nav"
       className="sticky bottom-0 border-t border-line bg-bg pb-[max(0.75rem,env(safe-area-inset-bottom))]"
     >
       <ul className="mx-auto flex max-w-lg justify-around px-2 pt-2">

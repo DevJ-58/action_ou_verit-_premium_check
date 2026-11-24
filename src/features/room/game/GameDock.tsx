@@ -16,8 +16,8 @@ export interface GameDockProps {
 export function GameDock({ chat, mic, players, onReact }: GameDockProps) {
   const t = useT()
   const [reacting, setReacting] = useState(false)
-  const slot = (child: ReactNode, label: string) => (
-    <div className="flex flex-col items-center gap-1">
+  const slot = (child: ReactNode, label: string, tour: string) => (
+    <div data-tour={tour} className="flex flex-col items-center gap-1">
       {child}
       <span aria-hidden="true" className="text-[11px] font-bold text-muted">
         {label}
@@ -39,8 +39,8 @@ export function GameDock({ chat, mic, players, onReact }: GameDockProps) {
         </div>
       ) : null}
       <div className="mx-auto grid max-w-lg grid-cols-4 px-3 pt-2">
-        {slot(chat, t.guide.chatShort)}
-        {slot(mic, t.guide.micShort)}
+        {slot(chat, t.guide.chatShort, 'dock-chat')}
+        {slot(mic, t.guide.micShort, 'dock-mic')}
         {slot(
           <button
             type="button"
@@ -55,8 +55,9 @@ export function GameDock({ chat, mic, players, onReact }: GameDockProps) {
             <Smile aria-hidden="true" size={21} />
           </button>,
           t.guide.react,
+          'dock-react',
         )}
-        {slot(players, t.guide.playersShort)}
+        {slot(players, t.guide.playersShort, 'dock-players')}
       </div>
     </div>
   )

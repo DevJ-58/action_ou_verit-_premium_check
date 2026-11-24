@@ -36,13 +36,17 @@ export function HostSetup({ memberCount, premium, onStart }: HostSetupProps) {
   return (
     <section className="flex flex-col gap-6">
       <h2 className="text-lg font-extrabold">{t.setup.categories}</h2>
-      <PremiumCategoryGrid premium={premium} selected={categories} onChange={setCategories} />
-      <Segmented
-        label={t.setup.rounds}
-        value={String(rounds)}
-        options={ROUNDS.map((r) => ({ value: r, label: r }))}
-        onChange={(v) => setRounds(Number(v))}
-      />
+      <div data-tour="categories">
+        <PremiumCategoryGrid premium={premium} selected={categories} onChange={setCategories} />
+      </div>
+      <div data-tour="rounds">
+        <Segmented
+          label={t.setup.rounds}
+          value={String(rounds)}
+          options={ROUNDS.map((r) => ({ value: r, label: r }))}
+          onChange={(v) => setRounds(Number(v))}
+        />
+      </div>
       <Segmented
         label={t.room.proposeTime}
         value={String(proposeSeconds)}
@@ -80,6 +84,7 @@ export function HostSetup({ memberCount, premium, onStart }: HostSetupProps) {
         <p className="text-sm font-semibold text-muted">{t.room.needTwo}</p>
       ) : null}
       <Button
+        data-tour="start-game"
         size="lg"
         disabled={!canStart}
         onClick={() =>
