@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test.js'
 
 // Chromium's fake microphone stands in for a real one.
 test.use({

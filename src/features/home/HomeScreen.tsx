@@ -21,8 +21,8 @@ export function HomeScreen() {
       <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 min-[900px]:max-w-5xl">
         <header className="flex items-center justify-between pt-4">
           <Wordmark />
-          <div className="flex items-center gap-2">
-            <TourButton name="home" className="size-10" />
+          <div className="flex shrink-0 items-center gap-1.5">
+            <TourButton name="home" className="size-9" />
             <span className="rounded-full border-[1.5px] border-gold-text px-2.5 py-0.5 text-xs font-extrabold tracking-[0.14em] text-gold-text">
               18+
             </span>

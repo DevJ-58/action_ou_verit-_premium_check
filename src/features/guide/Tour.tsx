@@ -87,6 +87,9 @@ export function Tour({ steps, onClose, footer }: TourProps) {
   const step = steps[spot.index]!
   const { rect } = spot
   const height = window.innerHeight
+  // The ring stays inside the screen, even around full-width elements.
+  const left = Math.max(4, rect.left - PAD)
+  const right = Math.min(window.innerWidth - 4, rect.left + rect.width + PAD)
   const below = rect.top + rect.height + PAD + BUBBLE_ROOM < height
   const above = rect.top - PAD - BUBBLE_ROOM > 0
   const place = below
@@ -96,15 +99,15 @@ export function Tour({ steps, onClose, footer }: TourProps) {
       : { bottom: 16 }
 
   return (
-    <div className="fixed inset-0 z-[60]">
+    <div className="fixed inset-0 z-[60] overflow-hidden">
       <div className="absolute inset-0" aria-hidden="true" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute rounded-2xl ring-2 ring-gold transition-all duration-300 motion-reduce:transition-none"
         style={{
           top: rect.top - PAD,
-          left: rect.left - PAD,
-          width: rect.width + PAD * 2,
+          left,
+          width: Math.max(0, right - left),
           height: rect.height + PAD * 2,
           boxShadow: '0 0 0 9999px rgb(0 0 0 / 0.72)',
         }}

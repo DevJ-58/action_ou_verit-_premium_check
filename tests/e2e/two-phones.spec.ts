@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test.js'
 
 async function signUp(page: Page, pseudo: string) {
   await page.goto('./compte?next=%2F')

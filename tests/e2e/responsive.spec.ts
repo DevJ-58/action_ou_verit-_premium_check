@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './test.js'
 
 // Measure the real layout width: a mobile emulation would zoom out to fit and hide overflow.
 test.use({ isMobile: false, hasTouch: false })

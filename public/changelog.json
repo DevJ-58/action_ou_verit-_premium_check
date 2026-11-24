@@ -1,6 +1,19 @@
 {
   "entries": [
     {
+      "version": "2026-11-25.1",
+      "fr": [
+        "Nouveau guide pas à pas : il montre chaque bouton et explique à quoi il sert (accueil, salon, partie)",
+        "Le bouton « ? » relance le guide de l’écran ; « Revoir le guide » dans les Réglages",
+        "Nouvelle page « Comment jouer » : les règles en cinq étapes"
+      ],
+      "en": [
+        "New step-by-step guide: it points at each button and says what it does (home, room, game)",
+        "The “?” button replays the screen’s guide; “Replay the guide” in Settings",
+        "New “How to play” page: the rules in five steps"
+      ]
+    },
+    {
       "version": "2026-11-24.5",
       "fr": [
         "Une couronne dorée signale chaque élément Premium",
