@@ -632,6 +632,7 @@ export const fr = {
     title: 'Comment jouer',
     intro: 'Tout ce qu’il faut savoir, en cinq étapes.',
     startTour: 'Lancer le guide',
+    stepsLabel: 'Les étapes',
     points: 'Vérité réussie : {truth} pts · Action réussie : {dare} pts · Passer : {skip} pt',
     sections: [
       {

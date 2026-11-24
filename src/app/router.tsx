@@ -46,6 +46,12 @@ export const routes: RouteObject[] = [
             }),
           },
           {
+            path: 'regles',
+            lazy: async () => ({
+              Component: (await import('@/features/guide/RulesScreen')).RulesScreen,
+            }),
+          },
+          {
             path: 'partie/nouvelle',
             lazy: async () => ({
               Component: (await import('@/features/game-setup/SetupScreen')).SetupScreen,

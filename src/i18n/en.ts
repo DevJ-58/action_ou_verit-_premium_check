@@ -621,6 +621,7 @@ export const en: Dictionary = {
     title: 'How to play',
     intro: 'Everything you need, in five steps.',
     startTour: 'Start the guide',
+    stepsLabel: 'Steps',
     points: 'Truth done: {truth} pts · Dare done: {dare} pts · Skip: {skip} pt',
     sections: [
       {
