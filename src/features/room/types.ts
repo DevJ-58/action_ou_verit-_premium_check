@@ -1,3 +1,4 @@
+import type { AxisMood } from '@/content/axis'
 import type { EmojiName } from '@/content/emoji'
 import type { ChatMessage } from '@/features/chat/types'
 import type { Invite } from '@/features/friends/invites'
@@ -38,7 +39,12 @@ export interface RoomState {
   voice?: string[]
   /** Result of the previous game (kept on replay, so phones that missed its end still count it). */
   lastGame?: Pick<GameState, 'id' | 'phase' | 'scores'> | null
+  /** What Axis (the built-in player) said, newest last. Written by the host, who plays him. */
+  botChat?: BotMessage[]
 }
+
+/** A chat line from Axis, with the face he makes saying it. */
+export type BotMessage = ChatMessage & { mood: AxisMood }
 
 export interface Live {
   by: string
@@ -59,6 +65,8 @@ export type Intent = { id: string; from: string } & (
   | { type: 'react'; emoji: EmojiName }
   | { type: 'live'; on: boolean }
   | { type: 'voice'; on: boolean }
+  /** The host seats Axis at the table, or takes him away (lobby only). */
+  | { type: 'bot'; on: boolean }
 )
 
 /** An intent without the id and sender, which the room store fills in. */

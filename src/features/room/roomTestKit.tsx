@@ -59,6 +59,9 @@ export function stateFor(
     react: vi.fn(),
     setLive: vi.fn(),
     setVoice: vi.fn(),
+    setBot: vi.fn(),
+    actAs: vi.fn(),
+    say: vi.fn(),
     leave: vi.fn(),
   }
 }

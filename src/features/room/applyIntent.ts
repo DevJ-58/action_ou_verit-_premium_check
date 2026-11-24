@@ -1,3 +1,4 @@
+import { AXIS_ID, axisMember } from '@/content/axis'
 import { systemDares } from '@/content/systemDares'
 import {
   createGame,
@@ -136,6 +137,14 @@ export function applyIntent(room: RoomState, intent: Intent, rng: Rng): RoomStat
     }
     case 'live':
       return setLive(room, intent.from, intent.on)
+    case 'bot': {
+      if (intent.from !== room.hostId || room.status !== 'lobby') return null
+      const seated = room.members.some((m) => m.id === AXIS_ID)
+      if (intent.on === seated) return null
+      if (!intent.on) return { ...room, members: room.members.filter((m) => m.id !== AXIS_ID) }
+      if (room.members.length >= roomCapacity(room)) return null
+      return { ...room, members: [...room.members, axisMember()] }
+    }
     case 'voice': {
       const current = room.voice ?? []
       const has = current.includes(intent.from)

@@ -2,6 +2,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla'
 import type { EmojiName } from '@/content/emoji'
 import type { GameAction, Rng } from '@/engine'
 import { newId } from '@/lib/id'
+import { isBot, type AxisMood } from '@/content/axis'
 import { applyIntent, roomCapacity, withoutMember } from './applyIntent'
 import type { RoomTransport } from './localTransport'
 import { generateRoomCode } from './roomCode'
@@ -32,6 +33,9 @@ export const DEFAULT_TIMING: RoomTiming = {
   pullIntentsMs: 3000,
 }
 
+/** Chat lines of built-in players kept in the room state. */
+const BOT_CHAT_KEPT = 20
+
 export interface RoomStoreState {
   self: Member
   room: RoomState | null
@@ -47,6 +51,12 @@ export interface RoomStoreState {
   setLive(on: boolean): void
   /** Joins or leaves the live voice (mic). */
   setVoice(on: boolean): void
+  /** Host: seats Axis (the built-in player) at the table, or takes him away. */
+  setBot(on: boolean): void
+  /** Host: plays a move for a built-in player of the room. */
+  actAs(botId: string, intent: IntentBody): void
+  /** Host: a chat line from a built-in player. */
+  say(botId: string, text: string, mood: AxisMood): void
   /** Leaves for good (others are told). */
   leave(): void
   /** Stops talking to the room without leaving (app closed, phone locked). */
@@ -72,19 +82,25 @@ export function createRoomStore(deps: {
 
   return createStore<RoomStoreState>()((set, get, storeApi) => {
     const roleFor = (room: RoomState) => (room.hostId === self.id ? 'host' : 'guest')
+    // Who the presence channel sees; built-in players are added on top: they are always here.
+    let present: ReadonlySet<string> = new Set()
+    const onlineIn = (room: RoomState | null): ReadonlySet<string> => {
+      const bots = room?.members.filter((m) => isBot(m.id)) ?? []
+      return bots.length ? new Set([...present, ...bots.map((m) => m.id)]) : present
+    }
 
     /** Takes a newer room state (live, or re-read after a missed update). */
     function receive(state: RoomState) {
       const current = get().room
       if (current && state.version <= current.version) return
       if (state.hostId === self.id && current?.hostId !== self.id) hostSince = Date.now()
-      set({ room: state, role: roleFor(state) })
+      set({ room: state, role: roleFor(state), online: onlineIn(state) })
       watchHost()
     }
 
     function commit(next: RoomState) {
       const room = { ...next, version: next.version + 1 }
-      set({ room, role: roleFor(room) })
+      set({ room, role: roleFor(room), online: onlineIn(room) })
       transport.publishState(room)
     }
 
@@ -106,7 +122,9 @@ export function createRoomStore(deps: {
         const current = get()
         const r = current.room
         if (!r || current.online.has(r.hostId)) return
-        const successor = r.members.find((m) => m.id !== r.hostId && current.online.has(m.id))
+        const successor = r.members.find(
+          (m) => m.id !== r.hostId && !isBot(m.id) && current.online.has(m.id),
+        )
         if (successor?.id !== self.id) return
         // Jump the version so no late state from the old host can win.
         const taken = { ...r, hostId: self.id, version: r.version + 10 }
@@ -121,7 +139,8 @@ export function createRoomStore(deps: {
       const offState = transport.onState(code, receive)
       const offIntent = transport.onIntent(code, handle)
       const offPresence = transport.onPresence(code, (online) => {
-        set({ online })
+        present = online
+        set({ online: onlineIn(get().room) })
         watchHost()
       })
       stopTracking = transport.track(code, self.id)
@@ -170,6 +189,7 @@ export function createRoomStore(deps: {
       cleanup = null
       stopTracking?.(!sayGoodbye)
       stopTracking = null
+      present = new Set()
       set({ room: null, role: null, online: new Set() })
     }
 
@@ -238,10 +258,23 @@ export function createRoomStore(deps: {
       react: (emoji) => send({ type: 'react', emoji }),
       setLive: (on) => send({ type: 'live', on }),
       setVoice: (on) => send({ type: 'voice', on }),
+      setBot: (on) => send({ type: 'bot', on }),
+      actAs: (botId, intent) => {
+        const { room, role } = get()
+        if (!room || role !== 'host' || !isBot(botId)) return
+        if (!room.members.some((m) => m.id === botId)) return
+        handle({ ...intent, id: newId('intent'), from: botId } as Intent)
+      },
+      say: (botId, text, mood) => {
+        const { room, role } = get()
+        if (!room || role !== 'host' || !room.members.some((m) => m.id === botId)) return
+        const line = { id: newId('msg'), from: botId, text, at: Date.now(), mood }
+        commit({ ...room, botChat: [...(room.botChat ?? []), line].slice(-BOT_CHAT_KEPT) })
+      },
       leave: () => {
         const { room, role } = get()
         if (room && role === 'host') {
-          const next = room.members.find((m) => m.id !== self.id)
+          const next = room.members.find((m) => m.id !== self.id && !isBot(m.id))
           if (next) commit({ ...withoutMember(room, self.id, rng), hostId: next.id })
         } else if (room) {
           send({ type: 'leave' })
